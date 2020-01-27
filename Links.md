@@ -21,3 +21,7 @@ http://lacam.di.uniba.it:8000/systems/inthelex/
 METAGOL
 
 https://github.com/metagol/metagol
+
+ALEPH
+
+http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html#SEC2
