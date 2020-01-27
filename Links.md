@@ -24,4 +24,4 @@ https://github.com/metagol/metagol
 
 ALEPH
 
-http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html#SEC2
+http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html
