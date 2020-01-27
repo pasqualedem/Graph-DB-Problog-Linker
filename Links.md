@@ -1,4 +1,13 @@
-PROGOL and GOLEM
+PROGOL
+
+https://en.wikipedia.org/wiki/PROGOL
+
+http://www.doc.ic.ac.uk/~shm/Software/
+
+GOLEM
+
+https://en.wikipedia.org/wiki/Golem_(ILP)
+
 http://www.doc.ic.ac.uk/~shm/Software/
 
 DL Learner
