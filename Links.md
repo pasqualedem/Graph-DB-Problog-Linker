@@ -17,3 +17,7 @@ http://dl-learner.org/
 INTHELEX
 
 http://lacam.di.uniba.it:8000/systems/inthelex/
+
+METAGOL
+
+https://github.com/metagol/metagol
