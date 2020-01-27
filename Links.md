@@ -13,3 +13,7 @@ http://www.doc.ic.ac.uk/~shm/Software/
 DL Learner
 
 http://dl-learner.org/
+
+INTHELEX
+
+http://lacam.di.uniba.it:8000/systems/inthelex/
