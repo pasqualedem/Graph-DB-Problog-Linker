@@ -37,3 +37,7 @@ https://github.com/nicoladimauro/lynx
 **Probabilistic logic programming**
 
 http://ml.unife.it/software/
+
+https://www.youtube.com/watch?v=5g0Z5b77rOs
+
+https://dtai.cs.kuleuven.be/problog/index.html
