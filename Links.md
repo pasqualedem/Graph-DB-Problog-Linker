@@ -28,7 +28,7 @@ ALEPH
 
 http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html
 
-**PILP**
+**Probabilistic model for Relational sequence learning**
 
 LYNX
 
