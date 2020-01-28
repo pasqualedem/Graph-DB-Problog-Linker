@@ -33,3 +33,7 @@ http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html
 LYNX
 
 https://github.com/nicoladimauro/lynx
+
+**Probabilistic logic programming**
+
+http://ml.unife.it/software/
