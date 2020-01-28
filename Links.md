@@ -1,3 +1,5 @@
+**ILP IMPLEMENTATIONS**
+
 PROGOL
 
 https://en.wikipedia.org/wiki/PROGOL
@@ -25,3 +27,9 @@ https://github.com/metagol/metagol
 ALEPH
 
 http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html
+
+**PILP**
+
+LYNX
+
+https://github.com/nicoladimauro/lynx
