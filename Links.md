@@ -38,6 +38,12 @@ https://github.com/nicoladimauro/lynx
 
 http://ml.unife.it/software/
 
-https://www.youtube.com/watch?v=5g0Z5b77rOs
+https://www.youtube.com/watch?v=3lnVBqxjC88
+
+ProbLog
 
 https://dtai.cs.kuleuven.be/problog/index.html
+
+ProbFOIL
+
+https://pypi.org/project/probfoil/
