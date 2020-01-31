@@ -1,0 +1,15 @@
+1. Calcolare probabilità da un modello di probabilità
+2. Generare campioni da un modello
+3. Generare campioni, e stimare la probabilità del modello.
+4. Generare il mondo più probabile (MPE).
+5. Stimare probabilità sconosciute da "Evidences"
+	Learning From Interpretations (LFI) 
+6. Usare ProbLog senza query ed evidences,
+	Decision Theoretic (DT)
+   ci sono fatti annotati come'decisioni' e
+   atomi annotati come 'utilities' (utility(win,10)) che
+   determinano lo score finale
+7. Esportare modelli in reti Bayesiane
+
+
+	

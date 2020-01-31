@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<smile version="1.0" id="Aa" numsamples="1000">
+  <nodes>
+    <cpt id="c0">
+      <state id="0" />
+      <state id="1" />
+      <probabilities>0.5 0.5</probabilities>
+    </cpt>
+    <cpt id="c1">
+      <state id="0" />
+      <state id="1" />
+      <probabilities>0.4 0.6</probabilities>
+    </cpt>
+    <cpt id="heads1">
+      <state id="0" />
+      <state id="1" />
+      <parents>c0</parents>
+      <probabilities>1.0 0.0 0.0 1.0</probabilities>
+    </cpt>
+    <cpt id="heads2">
+      <state id="0" />
+      <state id="1" />
+      <parents>c1</parents>
+      <probabilities>1.0 0.0 0.0 1.0</probabilities>
+    </cpt>
+    <cpt id="c3">
+      <state id="0" />
+      <state id="1" />
+      <parents>heads2</parents>
+      <probabilities>1.0 0.0 0.0 1.0</probabilities>
+    </cpt>
+    <cpt id="c2">
+      <state id="0" />
+      <state id="1" />
+      <parents>heads1</parents>
+      <probabilities>1.0 0.0 0.0 1.0</probabilities>
+    </cpt>
+    <cpt id="someHeads">
+      <state id="0" />
+      <state id="1" />
+      <parents>c2 c3</parents>
+      <probabilities>1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0</probabilities>
+    </cpt>
+  </nodes>
+  <extensions>
+    <genie version="1.0" app="ProbLog" name="PGM 1" faultnameformat="nodestate">
+      <node id="c0">
+        <name>c0</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+      <node id="c1">
+        <name>c1</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+      <node id="heads1">
+        <name>heads1</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+      <node id="heads2">
+        <name>heads2</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+      <node id="c3">
+        <name>c3</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+      <node id="c2">
+        <name>c2</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+      <node id="someHeads">
+        <name>someHeads</name>
+        <interior color="e5f6f7" />
+        <outline color="000080" />
+        <font color="000000" name="Arial" size="8" />
+        <position>100 100 150 150</position>
+      </node>
+    </genie>
+  </extensions>
+</smile>
