@@ -28,8 +28,22 @@ ALEPH
 
 http://www.cs.ox.ac.uk/activities/programinduction/Aleph/aleph.html
 
-**PILP**
+**Probabilistic model for Relational sequence learning**
 
 LYNX
 
 https://github.com/nicoladimauro/lynx
+
+**Probabilistic logic programming**
+
+http://ml.unife.it/software/
+
+https://www.youtube.com/watch?v=3lnVBqxjC88
+
+ProbLog
+
+https://dtai.cs.kuleuven.be/problog/index.html
+
+ProbFOIL
+
+https://pypi.org/project/probfoil/
