@@ -25,7 +25,7 @@ def main():
     log = init_logger()
     
     learn_class = ProbFOIL2
-    learn = learn_class(data, logger=logger, **vars((a="molto",b="bello")))
+    learn = learn_class(data, logger=logger)
 
     hypothesis = learn.learn()
     time_total = time.time() - time_start
