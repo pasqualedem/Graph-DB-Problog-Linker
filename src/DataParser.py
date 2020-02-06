@@ -3,6 +3,14 @@ from problog.logic import Constant, Var, Term, AnnotatedDisjunction
 
 
 class DataParser:
+    """
+    Takes a list of triples or quadreples and generates a SimpleProgram object
+    For every tuple:
+    First: Subject
+    Second: Predicate
+    Third: Object
+    Fourth: Prabability (Optional)
+    """
     def __init__(self, query_data=None):
         self.__data = query_data
         self.__program = None
@@ -11,6 +19,7 @@ class DataParser:
         self.__data = query_data
 
     def parse(self):
+        """Parse a list of triples/quadruples into a SimpleProgram"""
         self.__program = SimpleProgram()
         term_dict = dict()
         const_dict = dict()
