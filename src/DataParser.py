@@ -11,8 +11,9 @@ class DataParser:
     Third: Object
     Fourth: Prabability (Optional)
     """
+
     def __init__(self, query_data=None):
-        self.__data = query_data
+        self.__data = query_data  # List of triples/quadruples
         self.__program = None
 
     def set_data(self, query_data):
