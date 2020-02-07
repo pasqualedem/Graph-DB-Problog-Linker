@@ -48,9 +48,13 @@ graph.run("MATCH (p:Person {name: 'Luigi'}), (q:Car {targa: '123'}) CREATE (p)-[
 graph.run("MATCH (p:Person {name: 'Sergio'}), (q:Car {targa: '124'}) CREATE (p)-[:OWNS]->(q)")
 graph.run("MATCH (p:Person {name: 'Pasquale'}), (q:Car {targa: '127'}) CREATE (p)-[:OWNS]->(q)")
 graph.run("MATCH (p:Person {name: 'Giuseppe'}), (q:Car {targa: '143'}) CREATE (p)-[:OWNS]->(q)")
-graph.run("MATCH (p:Person {name: 'Roberto'}), (q:Car {targa: '125'}) CREATE (p)-[:OWNS]->(q)")
 
-result = graph.run("MATCH (b:Person {name: 'Luigi'})-[:KNOWS]->(a:Person)-[:OWNS]->(c:Car)) RETURN a.name, a.age")
+result = graph.run("MATCH (b:Person {name: 'Luigi'})-[:KNOWS]->(a:Person)-[:OWNS]->(c:Car) RETURN a.name, a.age")
+
+while result.forward():
+    print(result.current)
+
+result = graph.run("MATCH (b:Person)-[r]->(:Car) RETURN b, type(r)")
 
 while result.forward():
     print(result.current)

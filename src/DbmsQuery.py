@@ -2,7 +2,8 @@ from src.IGraphDBQuery import IGraphDBQuery
 from py2neo import Graph
 
 
-def parse_features_array(query_result):
+# RETURN ID(n), n.prop1, ..., n.propN
+def parse_props_array(query_result):
     triples = []
     while query_result.forward():
         id = query_result.current[0]
@@ -18,6 +19,7 @@ def parse_features_array(query_result):
     return triples
 
 
+# RETURN n
 def parse_node(query_result):
     triples = []
     while query_result.forward():
@@ -32,6 +34,7 @@ def parse_node(query_result):
     return triples
 
 
+# RETURN ID(n), properties(n)
 def parse_property_map(query_result):
     triples = []
     while query_result.forward():
@@ -46,6 +49,7 @@ def parse_property_map(query_result):
     return triples
 
 
+#RETURN n, TYPE(r), m
 def parse_node_rels_with_props(query_result):
     triples = []
     while query_result.forward():
@@ -74,6 +78,7 @@ def parse_node_rels_with_props(query_result):
     return triples
 
 
+#RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)
 def parse_node_rels_with_props_map(query_result):
     triples = []
     while query_result.forward():
@@ -104,6 +109,7 @@ def parse_node_rels_with_props_map(query_result):
     return triples
 
 
+#RETURN ID(n), TYPE(r), ID(m)
 def parse_node_rels(query_result):
     triples = []
     while query_result.forward():
@@ -117,7 +123,8 @@ def parse_node_rels(query_result):
     return triples
 
 
-def parse_node_rels_with_features_array(query_result):
+#RETURN size(keys(n)), ID(n), n.prop1, ..., n.propN, TYPE(r), size(keys(m)), ID(m), m.prop1, ..., m.propM
+def parse_node_rels_with_props_array(query_result):
     triples = []
     while query_result.forward():
         first_node_property_number = query_result.current[0]
