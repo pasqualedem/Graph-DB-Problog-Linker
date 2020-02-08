@@ -1,4 +1,4 @@
-from src.CloudQuery import DbmsQuery
+from src.CloudQuery import CloudQuery
 
 
 class Test:
@@ -7,7 +7,7 @@ class Test:
                      " SELECT ?cheese ?label WHERE {  ?cheese a <http://dbpedia.org/ontology/Cheese> " \
                      " dbp:region <http://dbpedia.org/resource/Asturias> ;          rdfs:label ?label .}"
         self.dataset = "http://dbpedia.org/sparql"
-        self.t = DbmsQuery(self.query, self.dataset)
+        self.t = CloudQuery(self.query, self.dataset)
         print(self.t.get_query())
         print(self.t.get_dataset())
 
