@@ -5,3 +5,6 @@ class Data:
 
     def set_triples(self, triples):
         self.__triples = triples
+
+    def get_triples(self):
+        return self.__triples
