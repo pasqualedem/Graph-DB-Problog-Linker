@@ -3,10 +3,10 @@ import unittest
 from problog import get_evaluatable
 from problog.logic import Term, Var, Constant
 
-from DataParser import DataParser
+from DataParsing import DataParser
 
 
-class MyTestCase(unittest.TestCase):
+class DataParserTest(unittest.TestCase):
     def test_parse(self):
         l = list()
         l.append(('marco', 'papa', 'giovanni'))

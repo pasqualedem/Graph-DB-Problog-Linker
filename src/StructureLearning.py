@@ -4,76 +4,73 @@ Created on Fri Jan 31 17:14:20 2020
 
 @author: PasqualeDeMarinis
 """
+import random
 
 from probfoil.data import DataFile
-from probfoil.probfoil import ProbFOIL2
+from probfoil.probfoil import ProbFOIL2, ProbFOIL
 from probfoil.score import accuracy, precision, recall
-from problog.program import PrologFile
-from problog.util import init_logger
 import time
+
+from problog.util import init_logger
 
 
 class StructureLearner:
-    def __init__(self, learn_class=ProbFOIL2, logger='probfoil', *data):
-        __data = DataFile(*(for source in data))
-        __learn_class = learn_class
-        __logger = logger
-        __hypothesis = None
+    def __init__(self, *data, log_file=None, seed=None):
+        self.__data = DataFile(*data)
+        self.__learner = None
+        self.__hypothesis = None
+        self.__rules = None
+        if log_file is not None:
+            self.__log_file = open(log_file, 'w')
+        else:
+            self.__log_file = None
+
+        if seed:
+            self.__seed = seed
+        else:
+            self.__seed = str(random.random())
+        random.seed(self.__seed)
 
     def set_data(self, *data):
-        __data = DataFile(*(for source in data))
+        self.__data = DataFile(*data)
 
-    def learn(self):
+    def set_log_file(self, log_file):
+        self.__log_file = open(log_file, 'w')
+
+    def learn(self, significance=None, max_rule_length=None, beam_size=5, m_estimator=1, deterministic=False):
+        log_name = 'structure_learner'
+        if self.__log_file is not None:
+            log = init_logger(verbose=True, name=log_name, out=self.__log_file)
+            log.info('Random seed: %s' % self.__seed)
+
+        if deterministic:
+            learn_class = ProbFOIL
+        else:
+            learn_class = ProbFOIL2
+
+        self.__learner = learn_class(self.__data, logger=log_name, p=significance, l=max_rule_length,
+                                     beam_size=beam_size, m=m_estimator)
+
         time_start = time.time()
-        learner = self.__learn_class(self.__data, logger=self.__logger)
-        __hypothesis = learner.learn()
+        self.__hypothesis = self.__learner.learn()
+        self.__rules = self.__hypothesis.to_clauses(self.__hypothesis.target.functor)
+
+        # First rule is failing rule: don't consider it if there are other rules.
+        if len(self.__rules) > 1:
+            del self.__rules[0]
         return time.time() - time_start
 
+    def get_learned_rules(self):
+        return self.__rules
+
     def accuracy(self):
-        return accuracy(self.__hypothesis))
+        return accuracy(self.__hypothesis)
 
     def precision(self):
-        return precision(self.__hypothesis))
+        return precision(self.__hypothesis)
 
     def recall(self):
-        return recall(self.__hypothesis))
+        return recall(self.__hypothesis)
 
     def get_statistics(self):
-        return self.__learn_class.statistic()
-
-def main():
-    data = DataFile((PrologFile('surfing.data')))
-
-    time_start = time.time()
-
-    args = 'ciao'
-    logger = 'probfoil'
-    logfile = None
-    log = init_logger()
-
-    learn_class = ProbFOIL2
-    learn = learn_class(data, logger=logger)
-
-    hypothesis = learn.learn()
-    time_total = time.time() - time_start
-
-    rule = hypothesis
-    rules = rule.to_clauses(rule.target.functor)
-
-    # First rule is failing rule: don't print it if there are other rules.
-    if len(rules) > 1:
-        for rule in rules[1:]:
-            print(rule)
-    else:
-        print(rules[0])
-    print('==================== SCORES ====================')
-    print('            Accuracy:\t', accuracy(hypothesis))
-    print('           Precision:\t', precision(hypothesis))
-    print('              Recall:\t', recall(hypothesis))
-    print('================== STATISTICS ==================')
-    for name, value in learn.statistics():
-        print('%20s:\t%s' % (name, value))
-    print('          Total time:\t%.4fs' % time_total)
-
-    if logfile:
-        logfile.close()
+        return self.__learner.statistics()
