@@ -48,5 +48,26 @@ class MyTestCase(unittest.TestCase):
         print(*pr)
         assert True
 
+    def test_pars_capital(self):
+        l = list()
+        l.append(('Marco', 'papa', 'Giovanni'))
+        l.append(('Gianna', 'mamma', 'Giovanni'))
+        qp = DataParser(l)
+        qp.parse()
+        pr = qp.get_program()
+        query = Term('query')
+        x = Var('X')
+        y = Var('Y')
+        marco = Constant('Marco')
+        gianna = Constant('Gianna')
+        papa = Term('papa')
+        mamma = Term('mamma')
+        pr += query(papa(marco, x))
+        #pr += query(mamma(gianna, y))
+        r = get_evaluatable().create_from(pr).evaluate()
+        print(r)
+        assert True
+
+
 if __name__ == '__main__':
     unittest.main()
