@@ -17,7 +17,7 @@ dbmsQuery = DbmsQuery("MATCH(n:Person) OPTIONAL MATCH (n:Person)-[r]->(c:Car) RE
                       "parse_node_rels_with_props",
                       "test")
 
-print(dbmsQuery.run_query())
+print(dbmsQuery.run_query().__triples)
 
 dbmsQuery = DbmsQuery("MATCH(n:Person) OPTIONAL MATCH (n:Person)-[r]->(c:Car) RETURN ID(n), properties(n), TYPE(r), "
                       "ID(c), properties(c)",
