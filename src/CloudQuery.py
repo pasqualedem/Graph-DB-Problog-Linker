@@ -3,7 +3,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON  # pip install sparqlwrapper
 from src.Data import Data
 
 
-class DbmsQuery(IGraphDBQuery):
+class CloudQuery(IGraphDBQuery):
 
     def __init__(self, query, dataset):
         self.__query = query
