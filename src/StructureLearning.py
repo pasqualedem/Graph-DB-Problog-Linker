@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jan 31 17:14:20 2020
-
-@author: PasqualeDeMarinis
-"""
+## @package StructureLearning
+# Implements classes fro structure learning
+# @author Pasquale De Marinis, Barile Roberto, Caputo Sergio
 import random
 
 from probfoil.data import DataFile
@@ -14,7 +12,14 @@ import time
 from problog.util import init_logger
 
 
+##
+# Represents the ProbFOIL module and permits to use it as an object
 class StructureLearner:
+
+    ## The constructor
+    # @param: *data: list of data sources
+    # @param: log_file: log file name (no log produced if None)
+    # @param: seed: seed that initialize random generations
     def __init__(self, *data, log_file=None, seed=None):
         self.__data = DataFile(*data)
         self.__learner = None
@@ -31,12 +36,23 @@ class StructureLearner:
             self.__seed = str(random.random())
         random.seed(self.__seed)
 
+    ## Set the data input of structure learning (BG and examples)
+    # @param: *data: list of data sources
     def set_data(self, *data):
         self.__data = DataFile(*data)
 
+    ## Set the log file
+    # @param: log_file: log file name
     def set_log_file(self, log_file):
         self.__log_file = open(log_file, 'w')
 
+    ## Learns the structure and validate __rules member
+    # @param: significance: minimum significance of learned rule
+    # @param: beam_size: size of the population of Beam search algorithm
+    # @param: max_rule_length: max length of body of the learned rules
+    # @param: m_estimator
+    # @param: deterministic: set if learn deterministic rules, so using ProbFOIL1 or ProbFOIL2
+    # @returns time spent for learning
     def learn(self, significance=None, max_rule_length=None, beam_size=5, m_estimator=1, deterministic=False):
         log_name = 'structure_learner'
         if self.__log_file is not None:
