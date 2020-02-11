@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'GUI.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
-
+# @package Data
+# application frontend
+# @author Pasquale De Marinis, Barile Roberto, Caputo Sergio
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem
 
-from src.DbmsQuery import DbmsQuery
+from src.Query import DbmsQuery
+from src.Query import CloudQuery
 
-
+##
+# Implements a class for GUI representation and operations' execution
 class UiMainWindow(object):
+    ## constructor
+    # @param main_window: main_window of the application
     def __init__(self, main_window):
         main_window.setObjectName("main_window")
         main_window.resize(892, 566)
@@ -346,20 +346,20 @@ class UiMainWindow(object):
         self.__sparql_endpoint_label.setObjectName("sparql_endpoint_label")
         self.__gridLayout_9.addWidget(self.__sparql_endpoint_label, 0, 0, 1, 1)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../resources/sparql-blog-1-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../resources/sparql-blog-1-removebg-preview.png"), QtGui.QIcon.Normal,
+                        QtGui.QIcon.Off)
         self.__tabs.addTab(self.__sparql, icon1, "")
         main_window.setCentralWidget(self.__centralwidget)
         self.__statusbar = QtWidgets.QStatusBar(main_window)
         self.__statusbar.setObjectName("statusbar")
         main_window.setStatusBar(self.__statusbar)
 
-        self.__property_filters_list = []
-        self.__sparql_property_filters_list = []
-
         self.__retranslate_ui(main_window)
         self.__tabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
+    ## define label text, table headers and other GUI parameters
+    # @param main_window: main_window of the application
     def __retranslate_ui(self, main_window):
         _translate = QtCore.QCoreApplication.translate
         main_window.setWindowTitle(_translate("main_window", "main_window"))
@@ -374,7 +374,8 @@ class UiMainWindow(object):
         self.__parse_method_combo.setItemText(5, _translate("main_window", "parse_node_rels"))
         self.__parse_method_combo.setItemText(6, _translate("main_window", "parse_node_rels_with_props_array"))
         self.__nodes_and_relationships.setText(_translate("main_window", "Get all nodes and relationship"))
-        self.__relationships_without_properties.setText(_translate("main_window", "Get all nodes\' relationship without node properties"))
+        self.__relationships_without_properties.setText(
+            _translate("main_window", "Get all nodes\' relationship without node properties"))
         self.__add_filter.setText(_translate("main_window", "Add filter"))
         self.__filter_nodes_label.setText(_translate("main_window", "Filter nodes by properties"))
         self.__execute_property_filters_query.setText(_translate("main_window", "Execute"))
@@ -421,30 +422,30 @@ class UiMainWindow(object):
         self.__sparql_endpoint_label.setText(_translate("main_window", "SPARQL endpoint"))
         self.__tabs.setTabText(self.__tabs.indexOf(self.__sparql), _translate("main_window", "SPARQL endpoint"))
 
-    def initialize_tables(self):
+    ## initialize (add first row) to filters table, both SPARQL and graph DB
+    def initialize_filters_tables(self):
         property_name = QtWidgets.QLineEdit(self.__layoutWidget)
         property_value = QtWidgets.QLineEdit(self.__layoutWidget)
-        self.__property_filters_list.append((property_name, property_value))
 
-        self.__property_filters_table.setCellWidget(0, 0, self.__property_filters_list[0][0])
-        self.__property_filters_table.setCellWidget(0, 1, self.__property_filters_list[0][1])
+        self.__property_filters_table.setCellWidget(0, 0, property_name)
+        self.__property_filters_table.setCellWidget(0, 1, property_value)
 
         property_name = QtWidgets.QLineEdit(self.__layoutWidget)
         property_value = QtWidgets.QLineEdit(self.__layoutWidget)
-        self.__sparql_property_filters_list.append((property_name, property_value))
 
-        self.__sparql_property_filters_table.setCellWidget(0, 0, self.__sparql_property_filters_list[0][0])
-        self.__sparql_property_filters_table.setCellWidget(0, 1, self.__sparql_property_filters_list[0][1])
+        self.__sparql_property_filters_table.setCellWidget(0, 0, property_name)
+        self.__sparql_property_filters_table.setCellWidget(0, 1, property_value)
 
+    ## define method to call when buttons are clicked
     def setup_signals(self):
         self.__execute_user_query.clicked.connect(
             lambda: self.execute_user_query())
 
         self.__add_filter.clicked.connect(
-            lambda: self.add_filter(self.__property_filters_table, self.__property_filters_list))
+            lambda: self.add_filter(self.__property_filters_table))
 
         self.__sparql_add_filter.clicked.connect(
-            lambda: self.add_filter(self.__sparql_property_filters_table, self.__sparql_property_filters_list))
+            lambda: self.add_filter(self.__sparql_property_filters_table))
 
         self.__nodes_and_relationships.clicked.connect(
             lambda: self.nodes_and_relationships())
@@ -461,32 +462,40 @@ class UiMainWindow(object):
         self.__execute_property_filters_query.clicked.connect(
             lambda: self.execute_property_filters_query())
 
+        self.__sparql_execute_user_query.cliked.connect(
+            lambda: self.sparql_execute_user_query())
+
+    ## method related to __execute_user_query button
     def execute_user_query(self):
         dbms_query = DbmsQuery(self.__user_query.text(), self.__parse_method_combo.currentText())
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
-    def add_filter(self, table, filters_list):
+    ## method to add a row in a filter table
+    # @param table: in which table the filter should be added
+    def add_filter(self, table):
         row_count = table.rowCount()
         table.insertRow(row_count)
 
         property_name = QtWidgets.QLineEdit(self.__layoutWidget)
         property_value = QtWidgets.QLineEdit(self.__layoutWidget)
-        filters_list.append((property_name, property_value))
 
-        table.setCellWidget(row_count, 0, filters_list[row_count][0])
-        table.setCellWidget(row_count, 1, filters_list[row_count][1])
+        table.setCellWidget(row_count, 0, property_name)
+        table.setCellWidget(row_count, 1, property_value)
 
+    ## execute cypher query that retrieves all nodes (with properties) and relationships between them
     def nodes_and_relationships(self):
         dbms_query = DbmsQuery(
             "MATCH (n) OPTIONAL MATCH (n)-[r]-(m) RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
             "parse_node_rels_with_props_map")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
+    ## execute cypher query that retrieves all relationships between nodes
     def relationships_without_properties(self):
         dbms_query = DbmsQuery("MATCH (n)-[r]-(m) RETURN ID(n), TYPE(r), ID(m)", "parse_node_rels")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
-    def __normalize_filters(self):
+    ## add : before filter for non empty filters
+    def __add_dots_to_filter(self):
         first_node_label_text = ""
         second_node_label_text = ""
         relationship_text = ""
@@ -502,32 +511,45 @@ class UiMainWindow(object):
 
         return first_node_label_text, second_node_label_text, relationship_text
 
+    ## relationships, eventually of a specified type, between nodes, eventually of a specified type (both for first and second node); also node properties are retrieved
     def relationships_between_with_properties(self):
-        first_node_label_text, second_node_label_text, relationship_text = self.__normalize_filters()
+        first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
         dbms_query = DbmsQuery(
             "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]-(m" + second_node_label_text + ") RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
             "parse_node_rels_with_props_map")
 
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
+    ## relationships, eventually of a specified type, between nodes, eventually of a specified type (both for first and second node); ndoe properties are not retrieved
     def relationships_between_without_properties(self):
-        first_node_label_text, second_node_label_text, relationship_text = self.__normalize_filters()
+        first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
 
         dbms_query = DbmsQuery(
             "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]-(m" + second_node_label_text + ") RETURN ID(n), TYPE(r), ID(m)",
             "parse_node_rels")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
+    ## all nodes that has the specified values for the specified properties, retrieves all nodes if nothing is specified
     def execute_property_filters_query(self):
         query = "MATCH(n) "
-        query_where = ''.join([((" AND " + "n." + x[0].text() + "=" +
-                                 (str(x[1].text()) if x[1].text().isdecimal() else ("'" + x[1].text()) + "'"))
-                                if x[0].text() != "" and x[1].text() != "" else '') for x in self.__property_filters_list])[5:]
+        query_where = " AND ".join(
+            [
+                (("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
+                  (str(self.__property_filters_table.cellWidget(i, 1).text())
+                   if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
+                if self.__property_filters_table.cellWidget(i, 0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
+             for i in range (0, self.__property_filters_table.rowCount())
+            ]
+        )
+
         if query_where != "":
             query += "WHERE " + query_where
         query += " RETURN ID(n), properties(n)"
+
         dbms_query = DbmsQuery(query, "parse_property_map")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
+
+    def sparql_execute_user_query(self):
 
 
 def write_results(table, triples):
@@ -549,7 +571,7 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
     main_window = QtWidgets.QMainWindow()
     ui = UiMainWindow(main_window)
-    ui.initialize_tables()
+    ui.initialize_filters_tables()
     ui.setup_signals()
     main_window.show()
     sys.exit(app.exec_())
