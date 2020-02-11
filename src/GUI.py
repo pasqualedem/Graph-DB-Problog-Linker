@@ -522,10 +522,9 @@ class UiMainWindow(object):
         query = "MATCH(n) "
         query_where = ''.join([((" AND " + "n." + x[0].text() + "=" +
                                  (str(x[1].text()) if x[1].text().isdecimal() else ("'" + x[1].text()) + "'"))
-                                if x[0].text() != "" and x[1].text() != "" else '') for x in self.property_filters_list])[5:]
+                                if x[0].text() != "" and x[1].text() != "" else '') for x in self.__property_filters_list])[5:]
         if query_where != "":
             query += "WHERE " + query_where
-        print(query)
         query += " RETURN ID(n), properties(n)"
         dbms_query = DbmsQuery(query, "parse_property_map")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
