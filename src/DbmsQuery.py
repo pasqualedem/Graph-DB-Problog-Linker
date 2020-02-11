@@ -6,6 +6,7 @@ from py2neo import Graph
 # RETURN ID(n), n.prop1, ..., n.propN
 def parse_props_array(query_result):
     triples = []
+    length = 0
     while query_result.forward():
         id = query_result.current[0]
         property_number = len(query_result.current)
@@ -35,7 +36,7 @@ def parse_node(query_result):
             triples.append(triple)
             length += 1
 
-    return triples.length
+    return triples, length
 
 
 # RETURN ID(n), properties(n)
@@ -187,7 +188,7 @@ It generates quadruples for probabilistic queries
 
 
 class DbmsQuery(IGraphDBQuery):
-    def __init__(self, query, parse, password):
+    def __init__(self, query, parse, password="test"):
         self.__query = query
         self.__parse = parse
         self.__password = password
@@ -197,13 +198,10 @@ class DbmsQuery(IGraphDBQuery):
         possibles = globals().copy()
         possibles.update(locals())
         function = possibles.get(self.__parse)
-        triples, length = function(self.__run_query())
+        triples, length = function(self.__graph.run(self.__query))
         data = Data(triples, length)
 
         return data
-
-    def __run_query(self):
-        return self.__graph.run(self.__query)
 
     def set_query(self, query):
         self.__query = query
