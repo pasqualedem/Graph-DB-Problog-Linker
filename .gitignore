@@ -1,1 +1,5 @@
 /.idea
+/implementation
+/docs/html
+/docs/latex
+.gitignore
