@@ -550,6 +550,7 @@ class UiMainWindow(object):
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
     def sparql_execute_user_query(self):
+        pass
 
 
 def write_results(table, triples):
