@@ -4,6 +4,11 @@ from statistics import mean, stdev
 from Util import binary_search
 from numpy import linspace, logspace
 from scipy.stats import norm
+import random
+
+## return a sample of a Gauss distribution with mu and sigma value
+def normal_sampling(mu, sigma):
+    return random.gauss(mu, sigma)
 
 ##
 # Represents a generic statistic distribution
@@ -14,15 +19,18 @@ class Distribution(ABC):
     def add(self, value):
         pass
 
+
 ##
 # Represents a generic statistic continuous distribution
 class Continuous(Distribution):
     pass
 
+
 ##
 # Represents a generic statistic discrete distribution
 class Discrete(Distribution):
     pass
+
 
 ##
 # Represents a normal distribution
@@ -70,6 +78,7 @@ class Normal(Continuous):
             self.calculate_stdev()
         return norm.pdf(x, loc=self.__mean, scale=self.__stdev)
 
+
 ##
 # Represents the multinomial distribution
 class Multinomial(Discrete):
@@ -101,13 +110,14 @@ class Multinomial(Discrete):
             self._counts[value] = self._counts[value] + 1
         self.__total = self.__total + 1
 
+
 ##
 # A continuous distribution transformed into a multinomial interspersing the domain
 class Interspersed(Multinomial):
 
     ## Interspersed constructor
     # @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts member
-    def __init__(self, intervals, pseudocounts : dict=None):
+    def __init__(self, intervals, pseudocounts: dict = None):
         Multinomial.__init__(pseudocounts)
         self.__intervals = intervals
 
@@ -137,4 +147,3 @@ class Interspersed(Multinomial):
         index = binary_search(self.__intervals, value)
         interval = '[' + str(self.__intervals[index]) + ', ' + str(self.__intervals[index]) + ']'
         Distribution.add(self, interval)
-
