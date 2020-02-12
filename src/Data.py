@@ -6,9 +6,11 @@ from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
 
-
 ##
 # Implements class for Data representation
+from src.Distribution import Distribution, Normal, Multinomial
+
+
 class Data:
 
     ## The constructor
@@ -32,21 +34,29 @@ class Data:
     def get_triples(self):
         return self.__triples
 
-    ## Create a nested dictionary to count how many times a value appears for property
     def learn_distributions(self):
-        triple_names = defaultdict(dict)
+        distributions = defaultdict(dict)
+        distribution = Distribution()
+        normal = Normal()
+        multinomial = Multinomial()
 
         for prop, value in self.__triples:
-            if prop not in triple_names.keys():
-                triple_names[prop][value] = 1
+            if prop in distributions.keys():
+                distribution.add(value)
+                distributions[prop] = distribution
             else:
-                if value in triple_names[prop].keys():
-                    triple_names[prop][value] = triple_names[prop][value] + 1
+                if prop in self.__property_types.keys():
+                    distributions[prop] = self.__property_types[prop]()
+                    distributions[prop].add(value)
                 else:
-                    triple_names[prop][value] = 1
+                    if type(value) is float:
+                        normal.add(value)
+                        distributions[prop] = normal
+                    else:
+                        multinomial.add(value)
+                        distributions[prop] = multinomial
 
-
-        return triple_names
+        return distributions
 
         # usare property types per capire che distribuziona apprendere per la proprietà
         # se non c'è nel map, usare di default discrete se è una stringa o un intero e normal se è un double
