@@ -560,8 +560,7 @@ class UiMainWindow(object):
         write_results(self.__sparql_triples_table, cloud_query.run_query().get_triples())
 
     def sparql_execute_property_filters_query(self):
-        query = "SELECT *"
-
+        pass
 
 ## function to write triples in a specified three column table
 # @param: table: in which table the tripels should be added
