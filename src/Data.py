@@ -19,7 +19,6 @@ class Data:
     def __init__(self, triples, length):
         self.__triples = triples
         self.__length = length
-        self.__property_types = None
 
     ## doc
     #
@@ -35,28 +34,24 @@ class Data:
         return self.__triples
 
     def learn_distributions(self):
-        distributions = defaultdict(dict)
-        distribution = Distribution()
-        normal = Normal()
-        multinomial = Multinomial()
+        properties = defaultdict(dict)
 
-        for prop, value in self.__triples:
-            if prop in distributions.keys():
-                distribution.add(value)
-                distributions[prop] = distribution
-            else:
-                if prop in self.__property_types.keys():
-                    distributions[prop] = self.__property_types[prop]()
-                    distributions[prop].add(value)
+        for prop_name, value in self.__triples:
+            if prop_name in properties.keys():
+                prop = properties[prop_name]
+                if prop.distribution is not None:
+                    prop.distribution.add(value)
                 else:
                     if type(value) is float:
+                        normal = Normal()
                         normal.add(value)
-                        distributions[prop] = normal
+                        properties[prop_name].distribution = normal
                     else:
+                        multinomial = Multinomial()
                         multinomial.add(value)
-                        distributions[prop] = multinomial
+                        properties[prop_name].distribution = multinomial
 
-        return distributions
+        return properties
 
         # usare property types per capire che distribuziona apprendere per la proprietà
         # se non c'è nel map, usare di default discrete se è una stringa o un intero e normal se è un double
@@ -84,7 +79,7 @@ class Data:
             return program
 
 
-class PropertyList:
+class PropertyMap(dict):
 
     def __init__(self, properties):
         self.__properties = properties
@@ -97,10 +92,10 @@ class PropertyList:
 
 class Property:
 
-    def __init__(self, name, distribution, property_type):
+    def __init__(self, name, distribution, type):
         self.__name = name
-        self.__distribution = distribution
-        self.__property_type = property_type
+        self.distribution = distribution
+        self.type = type
 
     def to_atom(self):
         pass
