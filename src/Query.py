@@ -4,10 +4,21 @@
 # @author Pasquale De Marinis, Barile Roberto, Caputo Sergio
 
 from py2neo import Graph
-from src.IGraphDBQuery import IGraphDBQuery
 from SPARQLWrapper import SPARQLWrapper, JSON  # pip install sparqlwrapper
 from src.Data import Data
 
+from abc import ABC, abstractmethod
+
+##
+# interface for query execution
+class IGraphDBQuery(ABC):
+    @abstractmethod
+    def run_query(self):
+        pass
+
+    @abstractmethod
+    def set_query(self, query):
+        pass
 
 ## parse to triples result of a query with return like RETURN ID(n), n.prop1, ..., n.propN
 def parse_props_array(query_result):
@@ -232,12 +243,22 @@ class CloudQuery(IGraphDBQuery):
     def run_query(self):
         self.__sparql.setReturnFormat(JSON)
         results = self.__sparql.query().convert()
+
+        xml_lang = 'xml:lang'
         triples = []
         length = 0
-        for results in results["results"]["bindings"]:
-            triples.append((results["s"]["value"], results["p"]["value"], results["o"]["value"]))
-            length = length + 1
+        for element in results["results"]["bindings"]:
+            keys = list(element.keys())
+            keys.remove('subject')
+            for key in keys:
+                if xml_lang in element[key]:
+                    triples.append((element["subject"]["value"], key + '-' + element[key][xml_lang], element[key]["value"]))
+                else:
+                    triples.append((element["subject"]["value"], key, element[key]["value"]))
+                length += 1
+
         data = Data(triples, length)
+
         return data
 
     ## Set query for CloudQuery object
