@@ -62,7 +62,7 @@ class CloudQueryTest(unittest.TestCase):
                 "SELECT ?subject ?label " \
                 "WHERE {  " \
                 "  ?subject a <http://dbpedia.org/ontology/Cheese>; " \
-                "  dbp:region <http://dbpedia.org/resource/Asturias> ;          " \
+                "  dbp:region <http://dbpedia.org/resource/Asturias> ;" \
                 "  rdfs:label ?label." \
                 "}"
 
@@ -79,7 +79,7 @@ class CloudQueryTest(unittest.TestCase):
         self.assertEqual(test.run_query().get_triples(), expected)
 
     def test_run_query_2(self):
-        query = "PREFIX dbo: <http://dbpedia.org/ontology/> " \
+        query = "PREFIX dbo: <http://dbpedia.org/ontology/>" \
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " \
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " \
                 "PREFIX : <http://dbpedia.org/resource/> " \

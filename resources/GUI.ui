@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="graph_db">
      <attribute name="icon">
@@ -531,23 +531,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="0">
-        <widget class="QLabel" name="__sparql_query_results_label">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>QUERY RESULTS</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QTableWidget" name="__sparql_triples_table">
          <property name="horizontalScrollBarPolicy">
@@ -573,71 +556,20 @@
          </column>
         </widget>
        </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>140</y>
-        <width>801</width>
-        <height>136</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_6">
-       <item row="0" column="1">
-        <widget class="QPushButton" name="__sparql_add_filter">
-         <property name="text">
-          <string>Add filter</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="__sparql_filter_nodes_label">
+        <widget class="QLabel" name="__sparql_query_results_label">
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>14</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
          <property name="text">
-          <string>Filter nodes by properties</string>
+          <string>QUERY RESULTS</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QTableWidget" name="__sparql_property_filters_table">
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>399</number>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Property name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Property value</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QPushButton" name="__sparql_execute_property_filters_query">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Execute</string>
          </property>
         </widget>
        </item>
@@ -669,7 +601,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -692,6 +624,122 @@
          <property name="text">
           <string>SPARQL endpoint</string>
          </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>21</x>
+        <y>131</y>
+        <width>391</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="0">
+        <widget class="QLabel" name="__prefixs_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Specify PREFIXs</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="__sparql_add_prefix">
+         <property name="text">
+          <string>Add prefix</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QTableWidget" name="__prefixs_table">
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>193</number>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>URL</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>alias</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>130</y>
+        <width>391</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_10">
+       <item row="0" column="0">
+        <widget class="QLabel" name="__sparql_filter_nodes_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Filter nodes by properties</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="__sparql_add_filter">
+         <property name="text">
+          <string>Add filter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="__sparql_execute_property_filters_query">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Execute</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QTableWidget" name="__sparql_property_filters_table">
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>193</number>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>property name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>property value</string>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>
