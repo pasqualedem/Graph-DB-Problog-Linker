@@ -246,15 +246,18 @@ class CloudQuery(IGraphDBQuery):
 
         xml_lang = 'xml:lang'
         triples = []
+        length = 0
         for element in results["results"]["bindings"]:
             keys = list(element.keys())
             keys.remove('subject')
             for key in keys:
                 if xml_lang in element[key]:
                     triples.append((element["subject"]["value"], key + '-' + element[key][xml_lang], element[key]["value"]))
+                    length += 1
 
-        for triple in triples:
-            print(triple)
+        data = Data(triples, length)
+
+        return data
 
     ## Set query for CloudQuery object
     # @param: query: query to run on endpoint
