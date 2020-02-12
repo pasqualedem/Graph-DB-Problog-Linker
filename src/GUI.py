@@ -9,11 +9,12 @@ from PyQt5.QtWidgets import QTableWidgetItem
 from src.Query import DbmsQuery
 from src.Query import CloudQuery
 
+
 ##
 # Implements a class for GUI representation and operations' execution
 class UiMainWindow(object):
     ## constructor
-    # @param main_window: main_window of the application
+    # @param: main_window: main_window of the application
     def __init__(self, main_window):
         main_window.setObjectName("main_window")
         main_window.resize(892, 566)
@@ -359,7 +360,7 @@ class UiMainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     ## define label text, table headers and other GUI parameters
-    # @param main_window: main_window of the application
+    # @param: main_window: main_window of the application
     def __retranslate_ui(self, main_window):
         _translate = QtCore.QCoreApplication.translate
         main_window.setWindowTitle(_translate("main_window", "main_window"))
@@ -462,7 +463,7 @@ class UiMainWindow(object):
         self.__execute_property_filters_query.clicked.connect(
             lambda: self.execute_property_filters_query())
 
-        self.__sparql_execute_user_query.cliked.connect(
+        self.__sparql_execute_user_query.clicked.connect(
             lambda: self.sparql_execute_user_query())
 
     ## method related to __execute_user_query button
@@ -470,8 +471,8 @@ class UiMainWindow(object):
         dbms_query = DbmsQuery(self.__user_query.text(), self.__parse_method_combo.currentText())
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
-    ## method to add a row in a filter table
-    # @param table: in which table the filter should be added
+    ## method related to __add_filter or sparql_add_filer, add a row in a filter table
+    # @param: table: in which table the filter should be added
     def add_filter(self, table):
         row_count = table.rowCount()
         table.insertRow(row_count)
@@ -482,14 +483,14 @@ class UiMainWindow(object):
         table.setCellWidget(row_count, 0, property_name)
         table.setCellWidget(row_count, 1, property_value)
 
-    ## execute cypher query that retrieves all nodes (with properties) and relationships between them
+    ## method related to __nodes_and_relationships, execute cypher query that retrieves all nodes (with properties) and relationships between them
     def nodes_and_relationships(self):
         dbms_query = DbmsQuery(
             "MATCH (n) OPTIONAL MATCH (n)-[r]-(m) RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
             "parse_node_rels_with_props_map")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
-    ## execute cypher query that retrieves all relationships between nodes
+    ## method related to __relationships_without_properties, execute cypher query that retrieves all relationships between nodes
     def relationships_without_properties(self):
         dbms_query = DbmsQuery("MATCH (n)-[r]-(m) RETURN ID(n), TYPE(r), ID(m)", "parse_node_rels")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
@@ -511,7 +512,8 @@ class UiMainWindow(object):
 
         return first_node_label_text, second_node_label_text, relationship_text
 
-    ## relationships, eventually of a specified type, between nodes, eventually of a specified type (both for first and second node); also node properties are retrieved
+    ## method related to __relationships_between_with_properties
+    ## retrieves relationships, eventually of a specified type, between nodes, eventually of a specified type (both for first and second node); also node properties are retrieved
     def relationships_between_with_properties(self):
         first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
         dbms_query = DbmsQuery(
@@ -520,6 +522,7 @@ class UiMainWindow(object):
 
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
+    ## method related to __relationships_between_without_properties
     ## relationships, eventually of a specified type, between nodes, eventually of a specified type (both for first and second node); ndoe properties are not retrieved
     def relationships_between_without_properties(self):
         first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
@@ -529,16 +532,22 @@ class UiMainWindow(object):
             "parse_node_rels")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
-    ## all nodes that has the specified values for the specified properties, retrieves all nodes if nothing is specified
+    ## method related to __execute_property_filters_query
+    ## all nodes that have the specified values for the specified properties, retrieves all nodes if nothing is specified
     def execute_property_filters_query(self):
         query = "MATCH(n) "
         query_where = " AND ".join(
             [
                 (("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                   (str(self.__property_filters_table.cellWidget(i, 1).text())
-                   if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
-                if self.__property_filters_table.cellWidget(i, 0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
-             for i in range (0, self.__property_filters_table.rowCount())
+                   if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
+                                                                                                     "'" + self.__property_filters_table.cellWidget(
+                                                                                                 i,
+                                                                                                 1).text()) + "'"))
+                 if self.__property_filters_table.cellWidget(i,
+                                                             0).text() != "" and self.__property_filters_table.cellWidget(
+                    i, 1).text() != "" else '')
+                for i in range(0, self.__property_filters_table.rowCount())
             ]
         )
 
@@ -549,10 +558,16 @@ class UiMainWindow(object):
         dbms_query = DbmsQuery(query, "parse_property_map")
         write_results(self.__triples_table, dbms_query.run_query().get_triples())
 
+    ## method related to __sparql_execute_user_query
     def sparql_execute_user_query(self):
-        pass
+        cloud_query = CloudQuery(self.__sparql_user_query, self.__sparql_endpoint.text())
+
+        write_results(self.__sparql_triples_table, cloud_query.run_query().get_triples())
 
 
+## function to write triples in a specified three column table
+# @param: table: in which table the tripels should be added
+# @param: triples: triples to add
 def write_results(table, triples):
     table.setRowCount(0)
     for triple in triples:

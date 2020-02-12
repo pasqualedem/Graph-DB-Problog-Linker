@@ -1,9 +1,15 @@
-from src.Data import Data
-from src.IGraphDBQuery import IGraphDBQuery
+# -*- coding: utf-8 -*-
+## @package Query
+# Implements class for query execution, both for DBMS (Neo4j) and SPARQL
+# @author Pasquale De Marinis, Barile Roberto, Caputo Sergio
+
 from py2neo import Graph
+from src.IGraphDBQuery import IGraphDBQuery
+from SPARQLWrapper import SPARQLWrapper, JSON  # pip install sparqlwrapper
+from src.Data import Data
 
 
-# RETURN ID(n), n.prop1, ..., n.propN
+## parse to triples result of a query with return like RETURN ID(n), n.prop1, ..., n.propN
 def parse_props_array(query_result):
     triples = []
     length = 0
@@ -22,7 +28,7 @@ def parse_props_array(query_result):
     return triples, length
 
 
-# RETURN n
+# parse to triples result of a query with return like RETURN n
 def parse_node(query_result):
     triples = []
     length = 0
@@ -39,7 +45,7 @@ def parse_node(query_result):
     return triples, length
 
 
-# RETURN ID(n), properties(n)
+# parse to triples result of a query with return like RETURN ID(n), properties(n)
 def parse_property_map(query_result):
     triples = []
     length = 0
@@ -56,7 +62,7 @@ def parse_property_map(query_result):
     return triples, length
 
 
-# RETURN n, TYPE(r), m
+# parse to triples result of a query with return like RETURN n, TYPE(r), m
 def parse_node_rels_with_props(query_result):
     triples = []
     length = 0
@@ -89,7 +95,7 @@ def parse_node_rels_with_props(query_result):
     return triples, length
 
 
-# RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)
+# parse to triples result of a query with return like RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)
 def parse_node_rels_with_props_map(query_result):
     triples = []
     length = 0
@@ -124,7 +130,7 @@ def parse_node_rels_with_props_map(query_result):
     return triples, length
 
 
-# RETURN ID(n), TYPE(r), ID(m)
+# parse to triples result of a query with return like RETURN ID(n), TYPE(r), ID(m)
 def parse_node_rels(query_result):
     triples = []
     length = 0
@@ -140,7 +146,7 @@ def parse_node_rels(query_result):
     return triples, length
 
 
-# RETURN size(keys(n)), ID(n), n.prop1, ..., n.propN, TYPE(r), size(keys(m)), ID(m), m.prop1, ..., m.propM
+# parse to triples result of a query with return like RETURN size(keys(n)), ID(n), n.prop1, ..., n.propN, TYPE(r), size(keys(m)), ID(m), m.prop1, ..., m.propM
 def parse_node_rels_with_props_array(query_result):
     triples = []
     length = 0
@@ -180,20 +186,20 @@ def parse_node_rels_with_props_array(query_result):
     return triples, length
 
 
-"""
-Takes a Neo4j query result in several formats and generates triples
-Triples represent nodes relations and node properties (both optional)
-It generates quadruples for probabilistic queries 
-"""
-
-
+##
+# Implements class to operate with query on Neo4j DBMS
 class DbmsQuery(IGraphDBQuery):
+    ## The constructor
+    # @param: query: query to run on the DBMS
+    # @param: parse: name of the function for the result parsing to triples
+    # @param: password: password for the Neo4j graph
     def __init__(self, query, parse, password="test"):
         self.__query = query
         self.__parse = parse
         self.__password = password
         self.__graph = Graph(password=self.__password)
 
+    ## Run specified query
     def run_query(self):
         possibles = globals().copy()
         possibles.update(locals())
@@ -203,16 +209,10 @@ class DbmsQuery(IGraphDBQuery):
 
         return data
 
+    ## Set query for DbmsQuery object
+    # @param: query: query to run on graph
     def set_query(self, query):
         self.__query = query
-
-# -*- coding: utf-8 -*-
-## @package CloudQuery
-# Implements class for SPARQL query
-# @author Pasquale De Marinis, Barile Roberto, Caputo Sergio
-from src.IGraphDBQuery import IGraphDBQuery
-from SPARQLWrapper import SPARQLWrapper, JSON  # pip install sparqlwrapper
-from src.Data import Data
 
 
 ##
@@ -227,6 +227,7 @@ class CloudQuery(IGraphDBQuery):
         self.__dataset = dataset
         self.__sparql = SPARQLWrapper(dataset)
 
+    ## Run specified query
     def run_query(self):
         self.__sparql.setReturnFormat(JSON)
         results = self.__sparql.query().convert()
