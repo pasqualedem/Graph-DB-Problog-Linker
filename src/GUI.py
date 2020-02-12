@@ -466,6 +466,9 @@ class UiMainWindow(object):
         self.__sparql_execute_user_query.clicked.connect(
             lambda: self.sparql_execute_user_query())
 
+        self.__sparql_execute_property_filters_query.clicked.connect(
+            lambda: self.sparql_execute_property_filters_query())
+
     ## method related to __execute_user_query button
     def execute_user_query(self):
         dbms_query = DbmsQuery(self.__user_query.text(), self.__parse_method_combo.currentText())
@@ -537,19 +540,11 @@ class UiMainWindow(object):
     def execute_property_filters_query(self):
         query = "MATCH(n) "
         query_where = " AND ".join(
-            [
-                (("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
-                  (str(self.__property_filters_table.cellWidget(i, 1).text())
-                   if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
-                                                                                                     "'" + self.__property_filters_table.cellWidget(
-                                                                                                 i,
-                                                                                                 1).text()) + "'"))
-                 if self.__property_filters_table.cellWidget(i,
-                                                             0).text() != "" and self.__property_filters_table.cellWidget(
-                    i, 1).text() != "" else '')
-                for i in range(0, self.__property_filters_table.rowCount())
-            ]
-        )
+            [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
+               (str(self.__property_filters_table.cellWidget(i, 1).text())
+                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
+              if self.__property_filters_table.cellWidget(i,0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
+             for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
             query += "WHERE " + query_where
@@ -563,6 +558,9 @@ class UiMainWindow(object):
         cloud_query = CloudQuery(self.__sparql_user_query, self.__sparql_endpoint.text())
 
         write_results(self.__sparql_triples_table, cloud_query.run_query().get_triples())
+
+    def sparql_execute_property_filters_query(self):
+        query = "SELECT *"
 
 
 ## function to write triples in a specified three column table

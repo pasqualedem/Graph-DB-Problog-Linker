@@ -226,6 +226,7 @@ class CloudQuery(IGraphDBQuery):
         self.__query = query
         self.__dataset = dataset
         self.__sparql = SPARQLWrapper(dataset)
+        self.__sparql.setQuery(self.__query)
 
     ## Run specified query
     def run_query(self):
