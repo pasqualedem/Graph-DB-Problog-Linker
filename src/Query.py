@@ -253,7 +253,9 @@ class CloudQuery(IGraphDBQuery):
             for key in keys:
                 if xml_lang in element[key]:
                     triples.append((element["subject"]["value"], key + '-' + element[key][xml_lang], element[key]["value"]))
-                    length += 1
+                else:
+                    triples.append((element["subject"]["value"], key, element[key]["value"]))
+                length += 1
 
         data = Data(triples, length)
 
