@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 ## @package Data
-# Implements class for Data representation
 # @author Pasquale De Marinis, Barile Roberto, Caputo Sergio
 from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
-
-##
-# Implements class for Data representation
 from src.Distribution import Distribution, Normal, Multinomial
 
-
+## Implements class for Data representation
 class Data:
 
     ## The constructor
@@ -58,9 +54,8 @@ class Data:
 
         # da completare, costruire lista di property (CON DISTRIBUZIONE)
 
+    ## Parse a list of triples/quadruples into a SimpleProgram"
     def parse(self):
-        ###Modifica commento succesivo
-        """Parse a list of triples/quadruples into a SimpleProgram"""
         program = SimpleProgram()
         term_dict = dict()
         const_dict = dict()
@@ -84,10 +79,12 @@ class PropertyMap(dict):
     def __init__(self, properties):
         self.__properties = properties
 
+    ## create a simple program from property clauses
     def to_simple_program(self):
         program = SimpleProgram()
         for property in self.__properties:
-            pass
+            program += property.to_atom()
+        return program
 
 
 class Property:
@@ -97,6 +94,16 @@ class Property:
         self.distribution = distribution
         self.type = type
 
+    ## create a list of clauses from property
     def to_atom(self):
-        pass
-        # to implement
+        prop = Constant('prop')
+        value = Term('value')
+        I = Var('I')
+        clauses = []
+
+        dic = self.distribution.get_parameters()
+        values = dic.keys()
+        for value in values:
+            clauses.append(prop + '(I,' + self.__name + ',' + value + ',' + 'p=' + str(dic[value]) + ')')
+
+        return AnnotatedDisjunction(clauses)
