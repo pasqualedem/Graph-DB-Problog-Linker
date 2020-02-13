@@ -243,7 +243,6 @@ class CloudQuery(IGraphDBQuery):
     def run_query(self):
         self.__sparql.setReturnFormat(JSON)
         results = self.__sparql.query().convert()
-
         xml_lang = 'xml:lang'
         triples = []
         length = 0
