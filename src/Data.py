@@ -48,7 +48,7 @@ class Data:
                         multinomial.add(value)
                         properties[prop_name].distribution = multinomial
 
-        return properties
+        return PropertyMap(properties)
 
         # usare property types per capire che distribuziona apprendere per la proprietà
         # se non c'è nel map, usare di default discrete se è una stringa o un intero e normal se è un double
