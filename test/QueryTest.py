@@ -129,8 +129,8 @@ class CloudQueryTest(unittest.TestCase):
             ('http://dbpedia.org/resource/Adam_Müller', 'death', '1829-01-17'),
             ('http://dbpedia.org/resource/Adam_Müller', 'name-en', 'Adam Müller'),
             ('http://dbpedia.org/resource/Adam_Müller', 'birth', '1779-06-30'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'death', '1829-1-17'), (
-                'http://dbpedia.org/resource/Adolf_Brand', 'name-en', 'Adolf Brand'),
+            ('http://dbpedia.org/resource/Adam_Müller', 'death', '1829-1-17'),
+            ('http://dbpedia.org/resource/Adolf_Brand', 'name-en', 'Adolf Brand'),
             ('http://dbpedia.org/resource/Adolf_Brand', 'birth', '1874-11-14'),
             ('http://dbpedia.org/resource/Adolf_Brand', 'death', '1945-2-2'),
             ('http://dbpedia.org/resource/Adolf_Christen', 'name-en', 'Adolf Christen'),

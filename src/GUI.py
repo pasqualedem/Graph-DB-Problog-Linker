@@ -232,7 +232,8 @@ class UiMainWindow(object):
         self.__triples_table.horizontalHeader().setDefaultSectionSize(119)
         self.gridLayout_7.addWidget(self.__triples_table, 1, 0, 1, 1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../resources/neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../resources/neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal,
+                       QtGui.QIcon.Off)
         self.__tabs.addTab(self.graph_db, icon, "")
         self.sparql = QtWidgets.QWidget()
         self.sparql.setObjectName("sparql")
@@ -371,7 +372,8 @@ class UiMainWindow(object):
         self.__sparql_property_filters_table.horizontalHeader().setDefaultSectionSize(193)
         self.gridLayout_10.addWidget(self.__sparql_property_filters_table, 1, 0, 1, 2)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../resources/sparql-blog-1-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../resources/sparql-blog-1-removebg-preview.png"), QtGui.QIcon.Normal,
+                        QtGui.QIcon.Off)
         self.__tabs.addTab(self.sparql, icon1, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -398,7 +400,8 @@ class UiMainWindow(object):
         self.__parse_method_combo.setItemText(5, _translate("MainWindow", "parse_node_rels"))
         self.__parse_method_combo.setItemText(6, _translate("MainWindow", "parse_node_rels_with_props_array"))
         self.__nodes_and_relationships.setText(_translate("MainWindow", "Get all nodes and relationship"))
-        self.__relationships_without_properties.setText(_translate("MainWindow", "Get all nodes\' relationship without node properties"))
+        self.__relationships_without_properties.setText(
+            _translate("MainWindow", "Get all nodes\' relationship without node properties"))
         self.__add_filter.setText(_translate("MainWindow", "Add filter"))
         self.__filter_nodes_label.setText(_translate("MainWindow", "Filter nodes by properties"))
         self.__execute_property_filters_query.setText(_translate("MainWindow", "Execute"))
@@ -579,8 +582,12 @@ class UiMainWindow(object):
         query_where = " AND ".join(
             [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                (str(self.__property_filters_table.cellWidget(i, 1).text())
-                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
-              if self.__property_filters_table.cellWidget(i, 0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
+                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
+                                                                                                      "'" + self.__property_filters_table.cellWidget(
+                                                                                                  i, 1).text()) + "'"))
+              if self.__property_filters_table.cellWidget(i,
+                                                          0).text() != "" and self.__property_filters_table.cellWidget(
+                i, 1).text() != "" else '')
              for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
@@ -592,26 +599,30 @@ class UiMainWindow(object):
 
     ## method related to __sparql_execute_user_query
     def sparql_execute_user_query(self):
-        cloud_query = CloudQuery(self.__sparql_user_query, self.__sparql_endpoint.text())
-
+        cloud_query = CloudQuery(self.__sparql_user_query.text(), self.__sparql_endpoint.text())
         write_results(self.__sparql_triples_table, cloud_query.run_query().get_triples())
 
     def sparql_execute_property_filters_query(self):
         query = "\n".join(
-            [("PREFIX " + self.__prefixs_table.cellWidget(i, 1).text() + ': <' + self.__prefixs_table.cellWidget(i, 0).text() + '>'
-              if self.__prefixs_table.cellWidget(i, 0).text() != "" and self.__prefixs_table.cellWidget(i, 1).text() != "" else '')
+            [("PREFIX " + self.__prefixs_table.cellWidget(i, 1).text() + ': <' + self.__prefixs_table.cellWidget(i,
+                                                                                                                 0).text() + '>'
+              if self.__prefixs_table.cellWidget(i, 0).text() != "" and self.__prefixs_table.cellWidget(i,
+                                                                                                        1).text() != "" else '')
              for i in range(0, self.__prefixs_table.rowCount())])
 
-        query += "\nSELECT ?subject "
+        query += "\nSELECT * "
         query_where = " . ".join(
-            [("?subject " + self.__sparql_property_filters_table.cellWidget(i, 0).text() + " " + str(self.__sparql_property_filters_table.cellWidget(i, 1).text())
-              if self.__sparql_property_filters_table.cellWidget(i, 0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
+            [("?subject " + self.__sparql_property_filters_table.cellWidget(i, 0).text() + " " + str(
+                self.__sparql_property_filters_table.cellWidget(i, 1).text())
+              if self.__sparql_property_filters_table.cellWidget(i,0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__sparql_property_filters_table.rowCount())])
 
         if query_where != "":
-            query += "WHERE {" + query_where + "}"
+            query += "WHERE {" + query_where + ". }"
 
-        print(query)
+        cloud_query = CloudQuery(query, self.__sparql_endpoint.text())
+
+        write_results(self.__sparql_triples_table, cloud_query.run_query().get_triples())
 
 
 ## function to write triples in a specified three column table
@@ -625,8 +636,6 @@ def write_results(table, triples):
         table.setItem(row_count, 0, QTableWidgetItem(str(triple[0])))
         table.setItem(row_count, 1, QTableWidgetItem(str(triple[1])))
         table.setItem(row_count, 2, QTableWidgetItem(str(triple[2])))
-
-    return table
 
 
 if __name__ == "__main__":
