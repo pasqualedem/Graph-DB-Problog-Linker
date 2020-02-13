@@ -86,7 +86,7 @@ class Multinomial(Discrete):
     ## Multinomial constructor
     # @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts member
     def __init__(self, pseudocounts: dict = None):
-        if pseudocounts is None:
+        if pseudocounts is not None:
             self._counts = pseudocounts
             self.__total = sum(pseudocounts.values())
         else:
@@ -96,7 +96,6 @@ class Multinomial(Discrete):
     ## returns the dictionary key:probability
     def get_parameters(self):
         param = dict()
-        self._counts.items()
         for couple in self._counts.items():
             param[couple[0]] = param[couple[1]] / self.__total
         return param
