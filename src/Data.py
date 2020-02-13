@@ -6,6 +6,7 @@ from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
 from src.Distribution import Distribution, Normal, Multinomial
 
+
 ## Implements class for Data representation
 class Data:
 
@@ -96,14 +97,13 @@ class Property:
 
     ## create a list of clauses from property
     def to_atom(self):
-        prop = Constant('prop')
-        value = Term('value')
+        prop = Term('prop')
         I = Var('I')
         clauses = []
 
         dic = self.distribution.get_parameters()
         values = dic.keys()
         for value in values:
-            clauses.append(prop + '(I,' + self.__name + ',' + value + ',' + 'p=' + str(dic[value]) + ')')
+            clauses.append(prop(I, self.__name, Constant(value), p=dic[value]))
 
         return AnnotatedDisjunction(clauses)
