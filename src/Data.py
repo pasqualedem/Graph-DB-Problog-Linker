@@ -30,6 +30,21 @@ class Data:
     def get_triples(self):
         return self.__triples
 
+    def to_examples(self):
+        term_dict = {}
+        prop = Term('prop')
+        examples = []
+        for possible_world in self.__triples:
+            example = []
+            for triple in possible_world:
+                if term_dict.get(triple[1]) is None:
+                    term_dict[triple[1]] = Constant(triple[1])
+                if term_dict.get(triple[0]) is None:
+                    term_dict[triple[0]] = Constant(triple[0])
+                example.append((prop(term_dict[triple[0]], term_dict[triple[1]], triple[2])))
+                examples.append(example)
+        return examples
+
     def learn_distributions(self):
         properties = defaultdict(dict)
 
@@ -56,19 +71,20 @@ class Data:
         program = SimpleProgram()
         prop = Term('prop')
         const_dict = dict()
-        for triple in self.__data:
-            if const_dict[triple[1]] is None:
-                const_dict[triple[1]] = Constant(triple[1])
-            if const_dict[triple[0]] is None:
-                const_dict[triple[0]] = Constant(triple[0])
-            if const_dict[triple[2]] is None:
-                const_dict[triple[2]] = Constant(triple[2])
-            pred = const_dict[triple[1]]
-            subj = const_dict[triple[0]]
-            obj = const_dict[triple[2]]
-            program += prop(subj, pred, obj)
+        for row in self.__triples:
+            for triple in row:
+                if const_dict.get(triple[1]) is None:
+                    const_dict[triple[1]] = Constant(triple[1])
+                if const_dict.get(triple[0]) is None:
+                    const_dict[triple[0]] = Constant(triple[0])
+                if const_dict.get(triple[2]) is None:
+                    const_dict[triple[2]] = Constant(triple[2])
+                pred = const_dict[triple[1]]
+                subj = const_dict[triple[0]]
+                obj = const_dict[triple[2]]
+                program += prop(subj, pred, obj)
 
-            return program
+        return program
 
 
 class PropertyMap(dict):
