@@ -22,7 +22,7 @@ class Data:
     def set_triples(self, triples):
         self.__data = triples
 
-    def get_triples(self):
+    def get_data(self):
         return self.__data
 
     def to_examples(self):
