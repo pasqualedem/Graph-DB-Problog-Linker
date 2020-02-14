@@ -11,30 +11,25 @@ from src.Distribution import Distribution, Normal, Multinomial
 class Data:
 
     ## The constructor
-    # @param: triples: list of subject - predicate - object tuples
+    # @param: triples: list of list of (subject - predicate - object) tuples
     # @param: length: number of tuples in triples
-    def __init__(self, triples, length):
-        self.__triples = triples
+    def __init__(self, data: list[list[tuple]], length):
+        self.__data = data
         self.__length = length
-
-    ## doc
-    #
-    def set_property_types(self, property_types):
-        self.__property_types = property_types
 
     ## Set the triples of Data object
     # @param: triples: list of subject - predicate - object tuples
     def set_triples(self, triples):
-        self.__triples = triples
+        self.__data = triples
 
     def get_triples(self):
-        return self.__triples
+        return self.__data
 
     def to_examples(self):
         term_dict = {}
         prop = Term('prop')
         examples = []
-        for possible_world in self.__triples:
+        for possible_world in self.__data:
             example = []
             for triple in possible_world:
                 if term_dict.get(triple[1]) is None:
@@ -48,7 +43,7 @@ class Data:
     def learn_distributions(self):
         properties = defaultdict(dict)
 
-        for prop_name, value in self.__triples:
+        for prop_name, value in self.__data:
             if prop_name in properties.keys():
                 prop = properties[prop_name]
                 if prop.distribution is not None:
@@ -71,7 +66,7 @@ class Data:
         program = SimpleProgram()
         prop = Term('prop')
         const_dict = dict()
-        for row in self.__triples:
+        for row in self.__data:
             for triple in row:
                 if const_dict.get(triple[1]) is None:
                     const_dict[triple[1]] = Constant(triple[1])
