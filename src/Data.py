@@ -36,7 +36,7 @@ class Data:
                     term_dict[triple[1]] = Constant(triple[1])
                 if term_dict.get(triple[0]) is None:
                     term_dict[triple[0]] = Constant(triple[0])
-                example.append((prop(term_dict[triple[0]], term_dict[triple[1]], triple[2])))
+                example.append((prop(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
                 examples.append(example)
         return examples
 
