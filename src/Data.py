@@ -82,10 +82,6 @@ class Data:
 
 
 class PropertyMap(dict):
-
-    def __init__(self, properties):
-        self.__properties = properties
-
     ## create a simple program from property clauses
     def to_simple_program(self):
         program = SimpleProgram()
