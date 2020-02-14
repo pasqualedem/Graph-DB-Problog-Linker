@@ -47,7 +47,7 @@ class Data:
                         multinomial.add(value)
                         properties[prop_name].distribution = multinomial
 
-        return PropertyMap(properties)
+        return properties
 
     ## Parse a list of triples into a SimpleProgram
     # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
