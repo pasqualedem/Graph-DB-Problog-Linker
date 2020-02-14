@@ -40,8 +40,7 @@ class Data:
                 examples.append(example)
         return examples
 
-    def learn_distributions(self):
-        properties = defaultdict(dict)
+    def learn_distributions(self, properties):
 
         for prop_name, value in self.__data:
             if prop_name in properties.keys():
@@ -58,7 +57,7 @@ class Data:
                         multinomial.add(value)
                         properties[prop_name].distribution = multinomial
 
-        return PropertyMap(properties)
+        return properties
 
     ## Parse a list of triples into a SimpleProgram
     # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
