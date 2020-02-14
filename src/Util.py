@@ -17,7 +17,6 @@ def binary_search_rec(arr, left, right, x):
         mid = floor((left + right) / 2)
         if x > arr[mid]:
             left = mid + 1
-
         else:
             right = mid - 1
         return binary_search_rec(arr, left, right, x)
