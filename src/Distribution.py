@@ -88,26 +88,26 @@ class Multinomial(Discrete):
     def __init__(self, pseudocounts: dict = None):
         if pseudocounts is not None:
             self._counts = pseudocounts
-            self.__total = sum(pseudocounts.values())
+            self._total = sum(pseudocounts.values())
         else:
             self._counts = dict()
-            self.__total = 0
+            self._total = 0
 
     ## returns the dictionary key:probability
     def get_parameters(self):
         param = dict()
         for couple in self._counts.items():
-            param[couple[0]] = param[couple[1]] / self.__total
+            param[couple[0]] = couple[1] / self._total
         return param
 
     ## adds an occurence of a value to the counts
     # @param: value: the value occurred
     def add(self, value):
-        if self._counts[value] is None:
+        if self._counts.get(value) is None:
             self._counts[value] = 1
         else:
             self._counts[value] = self._counts[value] + 1
-        self.__total = self.__total + 1
+        self._total = self._total + 1
 
 
 ##
@@ -116,8 +116,9 @@ class Interspersed(Multinomial):
 
     ## Interspersed constructor
     # @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts member
+    # @param: intervals: a list of oredered values that represents the intervals
     def __init__(self, intervals, pseudocounts: dict = None):
-        Multinomial.__init__(pseudocounts)
+        super(Interspersed, self).__init__(pseudocounts)
         self.__intervals = intervals
 
     # Generate linear intervals
@@ -144,5 +145,5 @@ class Interspersed(Multinomial):
     # @param: value: the value occurred
     def add(self, value: float):
         index = binary_search(self.__intervals, value)
-        interval = '[' + str(self.__intervals[index]) + ', ' + str(self.__intervals[index]) + ']'
-        Distribution.add(self, interval)
+        interval = '[' + str(self.__intervals[index-1]) + ', ' + str(self.__intervals[index]) + ']'
+        super(Interspersed, self).add(interval)
