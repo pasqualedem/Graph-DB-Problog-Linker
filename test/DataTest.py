@@ -38,9 +38,9 @@ class MyTestCase(unittest.TestCase):
         assert True
 
     def test_distributions(self):
-        dat = Data((('a', 'valore1'), ('b', 'valore2'), ('b', 'valore3'), ('c', 'valore4'), ('c', 'valore4'),
-                    ('c', 'valore4'), ('c', 'valore1')), 6)
-        triple = dat.get_triples()
+        dat = Data([[('c', 'a', 'valore1'), ('c', 'b', 'valore2'), ('c', 'b', 'valore3')], [('c', 'c', 'valore4'), ('c', 'c', 'valore4'),
+                    ('c', 'c', 'valore4'), ('c', 'c', 'valore1')]], 6)
+        triple = dat.get_data()
         print(triple)
         dic = dat.learn_distributions()
         print(dic.keys())

@@ -11,59 +11,56 @@ from src.Distribution import Distribution, Normal, Multinomial
 class Data:
 
     ## The constructor
-    # @param: triples: list of subject - predicate - object tuples
+    # @param: triples: list of list of (subject - predicate - object) tuples
     # @param: length: number of tuples in triples
-    def __init__(self, triples, length):
-        self.__triples = triples
+    def __init__(self, data: [[tuple]], length):
+        self.__data = data
         self.__length = length
-
-    ## doc
-    #
-    def set_property_types(self, property_types):
-        self.__property_types = property_types
 
     ## Set the triples of Data object
     # @param: triples: list of subject - predicate - object tuples
     def set_triples(self, triples):
-        self.__triples = triples
+        self.__data = triples
 
-    def get_triples(self):
-        return self.__triples
+    def get_data(self):
+        return self.__data
 
     def to_examples(self):
         term_dict = {}
         prop = Term('prop')
         examples = []
-        for possible_world in self.__triples:
+        for possible_world in self.__data:
             example = []
             for triple in possible_world:
                 if term_dict.get(triple[1]) is None:
                     term_dict[triple[1]] = Constant(triple[1])
                 if term_dict.get(triple[0]) is None:
                     term_dict[triple[0]] = Constant(triple[0])
-                example.append((prop(term_dict[triple[0]], term_dict[triple[1]], triple[2])))
+                example.append((prop(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
                 examples.append(example)
         return examples
 
-    def learn_distributions(self):
-        properties = defaultdict(dict)
+    def learn_distributions(self, properties=dict()):
 
-        for prop_name, value in self.__triples:
-            if prop_name in properties.keys():
-                prop = properties[prop_name]
-                if prop.distribution is not None:
-                    prop.distribution.add(value)
+        for possible_world in self.__data:
+            for triple in possible_world:
+                print(triple)
+                prop_name = triple[1]
+                value = triple[2]
+                if properties is not None and prop_name in properties.keys():
+                    prop = properties[prop_name]
+                    prop.get_distribution().add(value)
                 else:
                     if type(value) is float:
-                        normal = Normal()
-                        normal.add(value)
-                        properties[prop_name].distribution = normal
+                        new_prop = Property(prop_name, Normal())
+                        new_prop.get_distribution().add(value)
+                        properties[prop_name] = new_prop
                     else:
-                        multinomial = Multinomial()
-                        multinomial.add(value)
-                        properties[prop_name].distribution = multinomial
+                        new_prop = Property(prop_name, Multinomial())
+                        new_prop.get_distribution().add(value)
+                        properties[prop_name] = new_prop
 
-        return PropertyMap(properties)
+        return properties
 
     ## Parse a list of triples into a SimpleProgram
     # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
@@ -71,7 +68,7 @@ class Data:
         program = SimpleProgram()
         prop = Term('prop')
         const_dict = dict()
-        for row in self.__triples:
+        for row in self.__data:
             for triple in row:
                 if const_dict.get(triple[1]) is None:
                     const_dict[triple[1]] = Constant(triple[1])
@@ -88,24 +85,19 @@ class Data:
 
 
 class PropertyMap(dict):
-
-    def __init__(self, properties):
-        self.__properties = properties
-
     ## create a simple program from property clauses
     def to_simple_program(self):
         program = SimpleProgram()
-        for property in self.__properties:
+        for property in self.values():
             program += property.to_atom()
         return program
 
 
 class Property:
 
-    def __init__(self, name, distribution, type):
+    def __init__(self, name, distribution):
         self.__name = name
-        self.distribution = distribution
-        self.type = type
+        self.__distribution = distribution
 
     ## create a list of clauses from property
     def to_atom(self):
@@ -113,9 +105,15 @@ class Property:
         I = Var('I')
         clauses = []
 
-        dic = self.distribution.get_parameters()
+        dic = self.__distribution.get_parameters()
         values = dic.keys()
         for value in values:
             clauses.append(prop(I, self.__name, Constant(value), p=dic[value]))
 
         return AnnotatedDisjunction(clauses)
+
+    def get_distribution(self):
+        return self.__distribution
+
+
+
