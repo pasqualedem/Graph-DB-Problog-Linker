@@ -30,8 +30,7 @@ class Data:
     def get_triples(self):
         return self.__triples
 
-    def learn_distributions(self):
-        properties = defaultdict(dict)
+    def learn_distributions(self, properties):
 
         for prop_name, value in self.__triples:
             if prop_name in properties.keys():
