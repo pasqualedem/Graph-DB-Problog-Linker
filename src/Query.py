@@ -237,10 +237,10 @@ class DbmsQuery(IGraphDBQuery):
         possibles = globals().copy()
         possibles.update(locals())
         function = possibles.get(self.__parse)
-        triples, length = function(self.__graph.run(self.__query))
-        data = Data(triples, length)
+        data, length = function(self.__graph.run(self.__query))
+        data_obj = Data(data, length)
 
-        return data
+        return data_obj
 
     ## Set query for DbmsQuery object
     # @param: query: query to run on graph
