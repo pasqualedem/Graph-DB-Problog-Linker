@@ -20,11 +20,12 @@ class IGraphDBQuery(ABC):
     def set_query(self, query):
         pass
 
-## parse to triples result of a query with return like RETURN ID(n), n.prop1, ..., n.propN
+## parse to list of list of triples result of a query with return like RETURN ID(n), n.prop1, ..., n.propN
 def parse_props_array(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
         id = query_result.current[0]
         property_number = len(query_result.current)
         length = 0
@@ -35,15 +36,17 @@ def parse_props_array(query_result):
             triple += (query_result.current.keys()[i], query_result.current[i])
             triples.append(triple)
             length += 1
+        data.append(triples)
 
-    return triples, length
+    return data, length
 
 
-# parse to triples result of a query with return like RETURN n
+# parse to list of list of triples result of a query with return like RETURN n
 def parse_node(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
         id = query_result.current[0].identity
         property_map = query_result.current[0]
 
@@ -52,15 +55,17 @@ def parse_node(query_result):
             triple += (key, property_map.get(key))
             triples.append(triple)
             length += 1
+        data.append(triples)
 
-    return triples, length
+    return data, length
 
 
 # parse to triples result of a query with return like RETURN ID(n), properties(n)
 def parse_property_map(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
         id = query_result.current[0]
         property_map = query_result.current[1]
 
@@ -69,15 +74,18 @@ def parse_property_map(query_result):
             triple += (key, property_map.get(key))
             triples.append(triple)
             length += 1
+        data.append(triples)
 
     return triples, length
 
 
 # parse to triples result of a query with return like RETURN n, TYPE(r), m
 def parse_node_rels_with_props(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
+
         first_node = query_result.current[0]
         relationship = query_result.current[1]
         second_node = query_result.current[2]
@@ -103,14 +111,18 @@ def parse_node_rels_with_props(query_result):
                     triples.append(triple)
                     length += 1
 
-    return triples, length
+        data.append(triples)
+
+    return data, length
 
 
 # parse to triples result of a query with return like RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)
 def parse_node_rels_with_props_map(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
+
         first_node_id = query_result.current[0]
         first_node_property_map = query_result.current[1]
         relationship = query_result.current[2]
@@ -138,14 +150,18 @@ def parse_node_rels_with_props_map(query_result):
                     triples.append(triple)
                     length += 1
 
-    return triples, length
+        data.append(triples)
+
+    return data, length
 
 
 # parse to triples result of a query with return like RETURN ID(n), TYPE(r), ID(m)
 def parse_node_rels(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
+
         first_node_id = query_result.current[0]
         relationship = query_result.current[1]
         second_node_ip = query_result.current[2]
@@ -154,14 +170,18 @@ def parse_node_rels(query_result):
             triples.append(triple)
             length += 1
 
-    return triples, length
+        data.append(triples)
+
+    return data, length
 
 
 # parse to triples result of a query with return like RETURN size(keys(n)), ID(n), n.prop1, ..., n.propN, TYPE(r), size(keys(m)), ID(m), m.prop1, ..., m.propM
 def parse_node_rels_with_props_array(query_result):
-    triples = []
+    data = []
     length = 0
     while query_result.forward():
+        triples = []
+
         first_node_property_number = query_result.current[0]
         first_node_id = query_result.current[1]
         first_node_first_attribute_index = 2
@@ -194,7 +214,9 @@ def parse_node_rels_with_props_array(query_result):
                 triples.append(triple)
                 length += 1
 
-    return triples, length
+        data.append(triples)
+
+    return data, length
 
 
 ##
@@ -215,10 +237,10 @@ class DbmsQuery(IGraphDBQuery):
         possibles = globals().copy()
         possibles.update(locals())
         function = possibles.get(self.__parse)
-        triples, length = function(self.__graph.run(self.__query))
-        data = Data(triples, length)
+        data, length = function(self.__graph.run(self.__query))
+        data_obj = Data(data, length)
 
-        return data
+        return data_obj
 
     ## Set query for DbmsQuery object
     # @param: query: query to run on graph
@@ -244,9 +266,10 @@ class CloudQuery(IGraphDBQuery):
         self.__sparql.setReturnFormat(JSON)
         results = self.__sparql.query().convert()
         xml_lang = 'xml:lang'
-        triples = []
+        data = []
         length = 0
         for element in results["results"]["bindings"]:
+            triples = []
             keys = list(element.keys())
             keys.remove('subject')
             for key in keys:
@@ -255,10 +278,11 @@ class CloudQuery(IGraphDBQuery):
                 else:
                     triples.append((element["subject"]["value"], key, element[key]["value"]))
                 length += 1
+            data.append(triples)
 
-        data = Data(triples, length)
+        data_obj = Data(data, length)
 
-        return data
+        return data_obj
 
     ## Set query for CloudQuery object
     # @param: query: query to run on endpoint
