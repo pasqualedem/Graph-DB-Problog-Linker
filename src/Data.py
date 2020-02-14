@@ -45,17 +45,16 @@ class Data:
         for prop_name, value in self.__data:
             if prop_name in properties.keys():
                 prop = properties[prop_name]
-                if prop.distribution is not None:
-                    prop.distribution.add(value)
+                prop.distribution.add(value)
+            else:
+                if type(value) is float:
+                    new_prop = Property(prop_name, Normal())
+                    new_prop.get_distribution().add(value)
+                    properties[prop_name] = new_prop
                 else:
-                    if type(value) is float:
-                        normal = Normal()
-                        normal.add(value)
-                        properties[prop_name].distribution = normal
-                    else:
-                        multinomial = Multinomial()
-                        multinomial.add(value)
-                        properties[prop_name].distribution = multinomial
+                    new_prop = Property(prop_name, Multinomial())
+                    new_prop.get_distribution().add(value)
+                    properties[prop_name] = new_prop
 
         return properties
 
@@ -85,17 +84,16 @@ class PropertyMap(dict):
     ## create a simple program from property clauses
     def to_simple_program(self):
         program = SimpleProgram()
-        for property in self.__properties:
+        for property in self.values:
             program += property.to_atom()
         return program
 
 
 class Property:
 
-    def __init__(self, name, distribution, type):
+    def __init__(self, name, distribution):
         self.__name = name
-        self.distribution = distribution
-        self.type = type
+        self.__distribution = distribution
 
     ## create a list of clauses from property
     def to_atom(self):
@@ -103,9 +101,12 @@ class Property:
         I = Var('I')
         clauses = []
 
-        dic = self.distribution.get_parameters()
+        dic = self.__distribution.get_parameters()
         values = dic.keys()
         for value in values:
             clauses.append(prop(I, self.__name, Constant(value), p=dic[value]))
 
         return AnnotatedDisjunction(clauses)
+
+    def get_distribution(self):
+        return self.__distribution
