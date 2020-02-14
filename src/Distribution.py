@@ -117,7 +117,7 @@ class Interspersed(Multinomial):
     ## Interspersed constructor
     # @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts member
     # @param: intervals: a list of oredered values that represents the intervals
-    def __init__(self, intervals, pseudocounts: dict = None):
+    def __init__(self, intervals: list = None, pseudocounts: dict = None):
         super(Interspersed, self).__init__(pseudocounts)
         self.__intervals = intervals
 
