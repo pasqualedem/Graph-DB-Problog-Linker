@@ -974,19 +974,16 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
-       <item row="1" column="0">
-        <widget class="QTableWidget" name="__problog_instructions_table">
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>168</number>
-         </attribute>
+       <item row="3" column="0">
+        <widget class="QTableWidget" name="__examples_table">
          <column>
           <property name="text">
-           <string>Probability</string>
+           <string>Property</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Instruction</string>
+           <string>Truth</string>
           </property>
          </column>
         </widget>
@@ -1006,10 +1003,45 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="4" column="0">
         <widget class="QPushButton" name="__execute_program">
          <property name="text">
           <string>Execute program</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTableWidget" name="__problog_instructions_table">
+         <attribute name="horizontalHeaderCascadingSectionResizes">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>168</number>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Probability</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Clause</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="__examples_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Examples</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>

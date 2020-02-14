@@ -6,10 +6,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QTableWidgetItem
+from problog.learning.lfi import read_examples
 from problog.program import SimpleProgram
+from problog.program import PrologFile
 
+from Data import PropertyMap
 from src.Query import DbmsQuery
 from src.Query import CloudQuery
+from Distribution import *
 
 
 ##
@@ -21,6 +25,7 @@ class UiMainWindow(object):
         self.__cypher_data = None
         self.__sparql_data = None
         self.__problog_program = SimpleProgram()
+        self.__examples = []
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(885, 635)
@@ -238,8 +243,7 @@ class UiMainWindow(object):
         self.__triples_table.horizontalHeader().setDefaultSectionSize(119)
         self.gridLayout_7.addWidget(self.__triples_table, 1, 0, 1, 1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.graph_db, icon, "")
         self.sparql = QtWidgets.QWidget()
         self.sparql.setObjectName("sparql")
@@ -483,16 +487,15 @@ class UiMainWindow(object):
         self.gridLayout_11 = QtWidgets.QGridLayout(self.layoutWidget8)
         self.gridLayout_11.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_11.setObjectName("gridLayout_11")
-        self.__problog_instructions_table = QtWidgets.QTableWidget(self.layoutWidget8)
-        self.__problog_instructions_table.setObjectName("__problog_instructions_table")
-        self.__problog_instructions_table.setColumnCount(2)
-        self.__problog_instructions_table.setRowCount(0)
+        self.__examples_table = QtWidgets.QTableWidget(self.layoutWidget8)
+        self.__examples_table.setObjectName("__examples_table")
+        self.__examples_table.setColumnCount(2)
+        self.__examples_table.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
-        self.__problog_instructions_table.setHorizontalHeaderItem(0, item)
+        self.__examples_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
-        self.__problog_instructions_table.setHorizontalHeaderItem(1, item)
-        self.__problog_instructions_table.horizontalHeader().setDefaultSectionSize(168)
-        self.gridLayout_11.addWidget(self.__problog_instructions_table, 1, 0, 1, 1)
+        self.__examples_table.setHorizontalHeaderItem(1, item)
+        self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 1)
         self.__problog_instructions_label = QtWidgets.QLabel(self.layoutWidget8)
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -502,7 +505,25 @@ class UiMainWindow(object):
         self.gridLayout_11.addWidget(self.__problog_instructions_label, 0, 0, 1, 1)
         self.__execute_program = QtWidgets.QPushButton(self.layoutWidget8)
         self.__execute_program.setObjectName("__execute_program")
-        self.gridLayout_11.addWidget(self.__execute_program, 2, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.__execute_program, 4, 0, 1, 1)
+        self.__problog_instructions_table = QtWidgets.QTableWidget(self.layoutWidget8)
+        self.__problog_instructions_table.setObjectName("__problog_instructions_table")
+        self.__problog_instructions_table.setColumnCount(2)
+        self.__problog_instructions_table.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.__problog_instructions_table.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__problog_instructions_table.setHorizontalHeaderItem(1, item)
+        self.__problog_instructions_table.horizontalHeader().setCascadingSectionResizes(False)
+        self.__problog_instructions_table.horizontalHeader().setDefaultSectionSize(168)
+        self.gridLayout_11.addWidget(self.__problog_instructions_table, 1, 0, 1, 1)
+        self.__examples_label = QtWidgets.QLabel(self.layoutWidget8)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__examples_label.setFont(font)
+        self.__examples_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__examples_label.setObjectName("__examples_label")
+        self.gridLayout_11.addWidget(self.__examples_label, 2, 0, 1, 1)
         self.layoutWidget9 = QtWidgets.QWidget(self.Problog)
         self.layoutWidget9.setGeometry(QtCore.QRect(390, 20, 211, 105))
         self.layoutWidget9.setObjectName("layoutWidget9")
@@ -713,12 +734,17 @@ class UiMainWindow(object):
         item.setText(_translate("MainWindow", "distribution to learn"))
         self.__distr_learning.setText(_translate("MainWindow", "Execute"))
         self.__add_distribution.setText(_translate("MainWindow", "Add distribution"))
+        item = self.__examples_table.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Property"))
+        item = self.__examples_table.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Truth"))
+        self.__problog_instructions_label.setText(_translate("MainWindow", "Problog instructions"))
+        self.__execute_program.setText(_translate("MainWindow", "Execute program"))
         item = self.__problog_instructions_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Probability"))
         item = self.__problog_instructions_table.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Instruction"))
-        self.__problog_instructions_label.setText(_translate("MainWindow", "Problog instructions"))
-        self.__execute_program.setText(_translate("MainWindow", "Execute program"))
+        item.setText(_translate("MainWindow", "Clause"))
+        self.__examples_label.setText(_translate("MainWindow", "Examples"))
         self.__background_knowledge_label.setText(_translate("MainWindow", "Background knowledge"))
         self.__bgk_cypher.setText(_translate("MainWindow", "Add cypher result "))
         self.__bgk_sparql.setText(_translate("MainWindow", "Add SPARQL result "))
@@ -736,8 +762,8 @@ class UiMainWindow(object):
                                                                  "save to file"))
         self.__tabs.setTabText(self.__tabs.indexOf(self.Problog), _translate("MainWindow", "Problog"))
 
-    ## initialize (add first row) to filters table, both SPARQL and graph DB
-    def initialize_filters_tables(self):
+    ## initialize (add first row, set measures) to some GUI tables
+    def initialize_tables(self):
         property_name = QtWidgets.QLineEdit(self.layoutWidget)
         property_value = QtWidgets.QLineEdit(self.layoutWidget)
 
@@ -773,6 +799,12 @@ class UiMainWindow(object):
 
         self.__sparql_prop_distr_table.setCellWidget(0, 0, property)
         self.__sparql_prop_distr_table.setCellWidget(0, 1, distribution)
+
+        self.__problog_instructions_table.setColumnWidth(0, 80);
+        self.__problog_instructions_table.setColumnWidth(1, 257);
+
+        self.__examples_table.setColumnWidth(0, 168);
+        self.__examples_table.setColumnWidth(1, 168);
 
     ## define method to call when buttons are clicked
     def setup_signals(self):
@@ -824,52 +856,74 @@ class UiMainWindow(object):
         self.__bgk_file.clicked.connect(
             lambda: self.bgk_file())
 
+        self.__evidence_cypher.clicked.connect(
+            lambda: self.evidence_cypher())
+
+        self.__evidence_sparql.clicked.connect(
+            lambda: self.evidence_sparql())
+
         self.__evidence_file.clicked.connect(
             lambda: self.evidence_file())
 
+        self.__distr_learning.clicked.connect(
+            lambda: self.distr_learning())
+
     def bgk_sparql(self):
         problog_program = self.__sparql_data.parse()
-        self.write_instructions(problog_program)
+        self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
     def bgk_cypher(self):
         problog_program = self.__cypher_data.parse()
 
         problog_program = self.__cypher_data.parse()
-        self.write_instructions(problog_program)
+        self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
     def bgk_file(self):
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Text files (*.txt)")
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
-        problog_program = #program da file
-        self.write_instructions(problog_program)
+        problog_program = PrologFile(file_name)
+        self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
-        """
-        if file_name:
-            bgk = open(file_name, "r")
-            for line in bgk:
-                probability, instruction = line.split("::")
-                row_count = self.__problog_instructions_table.rowCount()
-                self.__problog_instructions_table.insertRow(row_count)
-                self.__problog_instructions_table.setItem(row_count, 0, QTableWidgetItem(str(probability)))
-                self.__problog_instructions_table.setItem(row_count, 1, QTableWidgetItem(instruction))
-        """
+    def evidence_cypher(self):
+        examples = self.__cypher_data.to_examples()
+        self.write_examples(examples)
+        self.__examples.extend(examples)
 
-        SimpleProgram()
+    def evidence_sparql(self):
+        examples = self.__sparql_data.to_examples()
+        self.write_examples(examples)
+        self.__examples.extend(examples)
 
     def evidence_file(self):
-        file_name, _ = data_path, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:",
-                                                                            "All Files (*);;Text files (*.txt)")
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
-        if file_name:
-            evidences = open(file_name, "r")
-            for line in evidences:
-                row_count = self.__problog_instructions_table.rowCount()
-                self.__problog_instructions_table.insertRow(row_count)
-                self.__problog_instructions_table.setItem(row_count, 0, QTableWidgetItem(str(1)))
-                self.__problog_instructions_table.setItem(row_count, 1, QTableWidgetItem(line))
+        examples = list(read_examples(file_name))
+        self.write_examples(examples)
+        self.__examples.extend(examples)
+
+    def distr_learning(self):
+        property_map = PropertyMap()
+
+        for i in range(0, self.__prop_distr_table.rowCount()):
+            distr = self.__prop_distr_table.cellWidget(i, 1).currentText()
+            if distr == "Normal":
+                distr_obj = Normal()
+            elif distr == "Interspersed":
+                distr_obj = Interspersed()
+            else:
+                distr_obj = Multinomial()
+
+            property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = distr_obj
+
+        property_map = self.__cypher_data.learn_distributions(property_map)
+        print("debug")
+        problog_program = property_map.to_simple_program()
+        print(problog_program)
+        self.write_clauses(problog_program)
+        programs_merge(self.__problog_program, problog_program)
 
     ## method related to __execute_user_query button
     def execute_user_query(self):
@@ -964,12 +1018,8 @@ class UiMainWindow(object):
         query_where = " AND ".join(
             [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                (str(self.__property_filters_table.cellWidget(i, 1).text())
-                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
-                                                                                                  "'" + self.__property_filters_table.cellWidget(
-                                                                                              i, 1).text()) + "'"))
-              if self.__property_filters_table.cellWidget(i,
-                                                          0).text() != "" and self.__property_filters_table.cellWidget(
-                i, 1).text() != "" else '')
+                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
+              if self.__property_filters_table.cellWidget(i,0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1012,13 +1062,25 @@ class UiMainWindow(object):
         self.__sparql_data = cloud_query.run_query()
         write_results(self.__triples_table, self.__sparql_data)
 
-    def write_instructions(self, program):
-        for instruction in program:
+    def write_clauses(self, program):
+        for clause in program:
             row_count = self.__problog_instructions_table.rowCount()
             self.__problog_instructions_table.insertRow(row_count)
             self.__problog_instructions_table.setItem(row_count, 0, QTableWidgetItem(""))
-            self.__problog_instructions_table.setItem(row_count, 1, QTableWidgetItem(str(instruction)))
+            self.__problog_instructions_table.setItem(row_count, 1, QTableWidgetItem(str(clause)))
 
+    def write_examples(self, examples):
+        for possible_world in examples:
+            splitter = "------------------------------"
+            row_count = self.__examples_table.rowCount()
+            self.__examples_table.insertRow(row_count)
+            self.__examples_table.setItem(row_count, 0, QTableWidgetItem(splitter))
+            self.__examples_table.setItem(row_count, 1, QTableWidgetItem(splitter))
+            for example in possible_world:
+                row_count = self.__examples_table.rowCount()
+                self.__examples_table.insertRow(row_count)
+                self.__examples_table.setItem(row_count, 0, QTableWidgetItem(str(example[0])))
+                self.__examples_table.setItem(row_count, 1, QTableWidgetItem(str(example[1])))
 
 ## function to write triples in a specified three column table
 # @param: table: in which table the triples should be added
@@ -1041,8 +1103,8 @@ def write_results(table, data_obj):
 
 
 def programs_merge(first_program, second_program):
-    for instruction in second_program:
-        first_program += instruction
+    for clause in second_program:
+        first_program += clause
 
 
 if __name__ == "__main__":
@@ -1051,7 +1113,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = UiMainWindow(MainWindow)
-    ui.initialize_filters_tables()
+    ui.initialize_tables()
     ui.setup_signals()
     MainWindow.show()
     sys.exit(app.exec_())
