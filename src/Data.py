@@ -13,7 +13,7 @@ class Data:
     ## The constructor
     # @param: triples: list of list of (subject - predicate - object) tuples
     # @param: length: number of tuples in triples
-    def __init__(self, data: list[list[tuple]], length):
+    def __init__(self, data: [[tuple]], length):
         self.__data = data
         self.__length = length
 
