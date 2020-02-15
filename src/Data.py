@@ -4,7 +4,7 @@
 from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
-from src.Distribution import Distribution, Normal, Multinomial
+from src.Distribution import Normal, Multinomial
 
 
 ## Implements class for Data representation
@@ -25,10 +25,9 @@ class Data:
     def get_data(self):
         return self.__data
 
-    def to_examples(self):
+    def to_examples(self, examples=[]):
         term_dict = {}
         prop = Term('prop')
-        examples = []
         for possible_world in self.__data:
             example = []
             for triple in possible_world:
@@ -63,8 +62,7 @@ class Data:
 
     ## Parse a list of triples into a SimpleProgram
     # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
-    def parse(self):
-        program = SimpleProgram()
+    def parse(self, program=SimpleProgram()):
         prop = Term('prop')
         const_dict = dict()
         for row in self.__data:
@@ -85,10 +83,9 @@ class Data:
 
 class PropertyMap(dict):
     ## create a simple program from property clauses
-    def to_simple_program(self):
-        program = SimpleProgram()
-        for property in self.values():
-            program += property.to_atom()
+    def to_simple_program(self, program=SimpleProgram):
+        for prop in self.values():
+            program += prop.to_atom()
         return program
 
 
@@ -113,6 +110,3 @@ class Property:
 
     def get_distribution(self):
         return self.__distribution
-
-
-
