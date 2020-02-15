@@ -7,7 +7,7 @@ from problog.logic import Constant, Var, Term, AnnotatedDisjunction
 from src.Distribution import Normal, Multinomial
 
 
-## Implements class for Data representation
+## Implements class for data representation
 class Data:
 
     ## The constructor
@@ -88,6 +88,7 @@ class Data:
         return program
 
 
+## Implements class for simple program creation
 class PropertyMap(dict):
 
     ## Create a simple program from property clauses
@@ -98,6 +99,7 @@ class PropertyMap(dict):
         return program
 
 
+## Implements class for property representation
 class Property:
 
     ## The constructor
