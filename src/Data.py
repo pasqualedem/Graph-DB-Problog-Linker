@@ -39,12 +39,11 @@ class Data:
                 example.append((prop(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
                 examples.append(example)
         return examples
-
+      
     def learn_distributions(self, properties=dict()):
 
         for possible_world in self.__data:
             for triple in possible_world:
-                print(triple)
                 prop_name = triple[1]
                 value = triple[2]
                 if properties is not None and prop_name in properties.keys():
