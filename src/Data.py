@@ -22,9 +22,13 @@ class Data:
     def set_triples(self, triples):
         self.__data = triples
 
+    ## Get the triples of Data object
+    # @returns: triples
     def get_data(self):
         return self.__data
 
+    ## Create examples from triples
+    # @returns: list of examples
     def to_examples(self, examples=[]):
         term_dict = {}
         prop = Term('prop')
@@ -38,7 +42,10 @@ class Data:
                 example.append((prop(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
                 examples.append(example)
         return examples
-      
+
+    ## Learn the property distribution for each property in properties
+    # @param: properties: dictionary of properties
+    # @return: properties: dictionary of properties with their distributions
     def learn_distributions(self, properties=dict()):
 
         for possible_world in self.__data:
@@ -82,7 +89,9 @@ class Data:
 
 
 class PropertyMap(dict):
-    ## create a simple program from property clauses
+
+    ## Create a simple program from property clauses
+    # @return: program
     def to_simple_program(self, program=SimpleProgram()):
         for prop in self.values():
             program += prop.to_atom()
@@ -91,11 +100,13 @@ class PropertyMap(dict):
 
 class Property:
 
+    ## The constructor
     def __init__(self, name, distribution):
         self.__name = name
         self.__distribution = distribution
 
-    ## create a list of clauses from property
+    ## Create a list of clauses from property
+    # @return: annotated disjunction of the clauses
     def to_atom(self):
         prop = Term('prop')
         I = Var('I')
@@ -108,5 +119,7 @@ class Property:
 
         return AnnotatedDisjunction(clauses, True)
 
+    # Get the distribution of the property
+    # @return: distribution
     def get_distribution(self):
         return self.__distribution
