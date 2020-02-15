@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>892</width>
-    <height>566</height>
+    <width>885</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,11 +20,11 @@
       <x>20</x>
       <y>20</y>
       <width>851</width>
-      <height>511</height>
+      <height>591</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="graph_db">
      <attribute name="icon">
@@ -156,7 +156,7 @@
         <x>20</x>
         <y>292</y>
         <width>391</width>
-        <height>171</height>
+        <height>251</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
@@ -201,9 +201,13 @@
          <property name="horizontalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
+         <property name="rowCount">
+          <number>1</number>
+         </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>194</number>
          </attribute>
+         <row/>
          <column>
           <property name="text">
            <string>Property name</string>
@@ -263,7 +267,7 @@
         <x>425</x>
         <y>270</y>
         <width>20</width>
-        <height>221</height>
+        <height>291</height>
        </rect>
       </property>
       <property name="orientation">
@@ -425,7 +429,7 @@
         <x>460</x>
         <y>290</y>
         <width>361</width>
-        <height>171</height>
+        <height>251</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
@@ -525,9 +529,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>330</y>
+        <y>340</y>
         <width>801</width>
-        <height>131</height>
+        <height>211</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_8">
@@ -591,8 +595,8 @@
      <widget class="Line" name="__line_6">
       <property name="geometry">
        <rect>
-        <x>-30</x>
-        <y>290</y>
+        <x>-10</x>
+        <y>310</y>
         <width>891</width>
         <height>20</height>
        </rect>
@@ -634,7 +638,7 @@
         <x>21</x>
         <y>131</y>
         <width>391</width>
-        <height>151</height>
+        <height>171</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_6">
@@ -662,9 +666,13 @@
        </item>
        <item row="1" column="0" colspan="2">
         <widget class="QTableWidget" name="__prefixs_table">
+         <property name="rowCount">
+          <number>1</number>
+         </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>193</number>
          </attribute>
+         <row/>
          <column>
           <property name="text">
            <string>URL</string>
@@ -685,7 +693,7 @@
         <x>430</x>
         <y>130</y>
         <width>391</width>
-        <height>151</height>
+        <height>171</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_10">
@@ -727,9 +735,13 @@
        </item>
        <item row="1" column="0" colspan="2">
         <widget class="QTableWidget" name="__sparql_property_filters_table">
+         <property name="rowCount">
+          <number>1</number>
+         </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>193</number>
          </attribute>
+         <row/>
          <column>
           <property name="text">
            <string>property name</string>
@@ -740,6 +752,514 @@
            <string>property value</string>
           </property>
          </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Problog">
+     <attribute name="icon">
+      <iconset>
+       <normaloff>e6302100-9781-11e9-9e2d-f0b2848a9ad9.png</normaloff>e6302100-9781-11e9-9e2d-f0b2848a9ad9.png</iconset>
+     </attribute>
+     <attribute name="title">
+      <string>Problog</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>20</y>
+        <width>211</width>
+        <height>105</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_13">
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="__evidence_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Evidences</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="__evidence_cypher">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add cypher result </string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="__evidence_sparql">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add SPARQL result </string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="__evidence_file">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Load from file</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>310</y>
+        <width>441</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_15">
+       <item row="0" column="0">
+        <widget class="QLabel" name="__sparql_prob_bgk_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Learn probabilities on SPARQL results,
+ and use them as background knowledge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="__sparql_add_distribution">
+         <property name="text">
+          <string>Add distribution</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QTableWidget" name="__sparql_prop_distr_table">
+         <property name="rowCount">
+          <number>1</number>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>218</number>
+         </attribute>
+         <row/>
+         <column>
+          <property name="text">
+           <string>property</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>distribution to learn</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="__sparql_distr_learning">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Execute</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_6">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>140</y>
+        <width>441</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_16">
+       <item row="0" column="0">
+        <widget class="QLabel" name="__prob_bgk_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Learn probabilities on cypher results,
+ and use them as background knowledge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QTableWidget" name="__prop_distr_table">
+         <property name="rowCount">
+          <number>1</number>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>218</number>
+         </attribute>
+         <row/>
+         <column>
+          <property name="text">
+           <string>property</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>distribution to learn</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="__distr_learning">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Execute</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="__add_distribution">
+         <property name="text">
+          <string>Add distribution</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>341</width>
+        <height>441</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_11">
+       <item row="3" column="0">
+        <widget class="QTableWidget" name="__examples_table">
+         <column>
+          <property name="text">
+           <string>Property</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Truth</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="__problog_instructions_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Problog instructions</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QPushButton" name="__execute_program">
+         <property name="text">
+          <string>Execute program</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTableWidget" name="__problog_instructions_table">
+         <attribute name="horizontalHeaderCascadingSectionResizes">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>168</number>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Probability</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Clause</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="__examples_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Examples</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>20</y>
+        <width>211</width>
+        <height>105</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_12">
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="__background_knowledge_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Background knowledge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="__bgk_cypher">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add cypher result </string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="__bgk_sparql">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add SPARQL result </string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="__bgk_file">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Load from file</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>470</y>
+        <width>811</width>
+        <height>83</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_14">
+       <item row="2" column="3" colspan="2">
+        <widget class="QLineEdit" name="__beam_size"/>
+       </item>
+       <item row="2" column="6">
+        <widget class="QLineEdit" name="__length"/>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="__mestimate"/>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="__mestimate_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>m-estimate</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QComboBox" name="__deterministic_combo">
+         <item>
+          <property name="text">
+           <string>deterministic rules</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>non deterministic rules</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="__deterministic_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string> learn deterministic rules </string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="7">
+        <widget class="QLineEdit" name="__seed"/>
+       </item>
+       <item row="1" column="3" colspan="2">
+        <widget class="QLabel" name="__beam_size_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>beam size</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="7">
+        <widget class="QLabel" name="__seed_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>seed</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="10">
+        <widget class="QLabel" name="__probfoil_parameters_label">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Probfoil parameters</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QLabel" name="__length_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>length</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5">
+        <widget class="QLineEdit" name="__significance"/>
+       </item>
+       <item row="1" column="5">
+        <widget class="QLabel" name="__significance_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>significance</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="8">
+        <widget class="QPushButton" name="__probfoil_execute">
+         <property name="text">
+          <string>Execute and 
+save to file</string>
+         </property>
         </widget>
        </item>
       </layout>
