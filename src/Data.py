@@ -4,7 +4,7 @@
 from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
-from src.Distribution import Normal, Multinomial
+from src.Distribution import Normal, Multinomial, Continuous, Discrete
 from Util import get_type
 
 
@@ -86,7 +86,7 @@ class PropertyMap(dict):
     ## create a simple program from property clauses
     def to_simple_program(self, program=SimpleProgram()):
         for prop in self.values():
-            program += prop.to_atom()
+            program += prop.to_clause()
         return program
 
 
@@ -96,8 +96,22 @@ class Property:
         self.__name = name
         self.__distribution = distribution
 
-    ## create a list of clauses from property
-    def to_atom(self):
+    ## create a clause from property and his distribution
+    def to_clause(self):
+        if issubclass(type(self.__distribution), Continuous):
+            return self.__to_fact()
+        elif issubclass(type(self.__distribution), Discrete):
+            return self.__to_annotated_disjunction()
+        else:
+            raise Exception
+
+    ## create a fact with a continuous distribuction as probability
+    def __to_fact(self):
+        distribuction = Term(str(type(self.__distribution)))(*self.__distribution.get_parameters())
+        return Term(self.__name, p=distribuction)
+
+    ## create an annoteted disjunction from property
+    def __to_annotated_disjunction(self):
         prop = Term('prop')
         true = Term('true')
         name = get_type(self.__name)
