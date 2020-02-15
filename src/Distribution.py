@@ -103,7 +103,7 @@ class Multinomial(Discrete):
     ## adds an occurence of a value to the counts
     # @param: value: the value occurred
     def add(self, value):
-        if self._counts.get(value) is None:
+        if value not in self._counts.keys():
             self._counts[value] = 1
         else:
             self._counts[value] = self._counts[value] + 1
