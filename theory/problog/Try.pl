@@ -1,0 +1,2 @@
+0.222222222222222::prop(ind,brand,"ford"); 0.222222222222222::prop(ind,brand,seat); 0.222222222222222::prop(ind,brand,suzuki); 0.222222222222222::prop(ind,brand,audi); 0.111111111111111::prop(ind,brand,fiat) :- true.
+query(prop(ind, brand, X)).
