@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>885</width>
+    <width>886</width>
     <height>635</height>
    </rect>
   </property>
@@ -52,7 +52,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Select parse method</string>
+          <string>Select query type (n,m nodes)</string>
          </property>
         </widget>
        </item>
@@ -84,37 +84,37 @@
         <widget class="QComboBox" name="__parse_method_combo">
          <item>
           <property name="text">
-           <string>parse_props_array</string>
+           <string>return ID(n), n.prop1,... n.propN </string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>parse_node</string>
+           <string>return n</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>parse_property_map</string>
+           <string>return ID(n), properties(N)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>parse_node_rels_with_props</string>
+           <string>return n, TYPE(r), m</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>parse_node_rels_with_props_map</string>
+           <string>return ID(n), properties(n), TYPE(r), ID(m), properties(m)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>parse_node_rels</string>
+           <string>return ID(n), TYPE(r), ID(m)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>parse_node_rels_with_props_array</string>
+           <string>return size(keys(n)), ID(n), n.prop1, ..., TYPE(r), size(keys(m)), ID(m), m.prop1, ...</string>
           </property>
          </item>
         </widget>
@@ -989,7 +989,7 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="__problog_instructions_label">
+        <widget class="QLabel" name="__problog_caluses_label">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -1011,7 +1011,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QTableWidget" name="__problog_instructions_table">
+        <widget class="QTableWidget" name="__problog_clauses_table">
          <attribute name="horizontalHeaderCascadingSectionResizes">
           <bool>false</bool>
          </attribute>

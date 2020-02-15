@@ -28,7 +28,7 @@ class UiMainWindow(object):
         self.__examples = []
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(885, 635)
+        MainWindow.resize(886, 635)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.__tabs = QtWidgets.QTabWidget(self.centralwidget)
@@ -243,7 +243,8 @@ class UiMainWindow(object):
         self.__triples_table.horizontalHeader().setDefaultSectionSize(119)
         self.gridLayout_7.addWidget(self.__triples_table, 1, 0, 1, 1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal,
+                       QtGui.QIcon.Off)
         self.__tabs.addTab(self.graph_db, icon, "")
         self.sparql = QtWidgets.QWidget()
         self.sparql.setObjectName("sparql")
@@ -496,20 +497,19 @@ class UiMainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.__examples_table.setHorizontalHeaderItem(1, item)
         self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 1)
-        self.__problog_clauses_label = QtWidgets.QLabel(self.layoutWidget8)
+        self.__problog_caluses_label = QtWidgets.QLabel(self.layoutWidget8)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.__problog_clauses_label.setFont(font)
-        self.__problog_clauses_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__problog_clauses_label.setObjectName("__problog_clauses_label")
-        self.gridLayout_11.addWidget(self.__problog_clauses_label, 0, 0, 1, 1)
+        self.__problog_caluses_label.setFont(font)
+        self.__problog_caluses_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__problog_caluses_label.setObjectName("__problog_caluses_label")
+        self.gridLayout_11.addWidget(self.__problog_caluses_label, 0, 0, 1, 1)
         self.__execute_program = QtWidgets.QPushButton(self.layoutWidget8)
         self.__execute_program.setObjectName("__execute_program")
         self.gridLayout_11.addWidget(self.__execute_program, 4, 0, 1, 1)
         self.__problog_clauses_table = QtWidgets.QTableWidget(self.layoutWidget8)
-        self.__problog_clauses_table.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.__problog_clauses_table.setObjectName("__problog_clauses_table")
-        self.__problog_clauses_table.setColumnCount(1)
+        self.__problog_clauses_table.setColumnCount(2)
         self.__problog_clauses_table.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.__problog_clauses_table.setHorizontalHeaderItem(0, item)
@@ -642,25 +642,27 @@ class UiMainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.__retranslate_ui(MainWindow)
+        self.retranslateUi(MainWindow)
         self.__tabs.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     ## define label text, table headers and other GUI parameters
     # @param: main_window: main_window of the application
-    def __retranslate_ui(self, MainWindow):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.__parse_method_label.setText(_translate("MainWindow", "Select parse method"))
+        self.__parse_method_label.setText(_translate("MainWindow", "Select query type (n,m nodes)"))
         self.__execute_user_query.setText(_translate("MainWindow", "Execute"))
         self.__user_query_label.setText(_translate("MainWindow", "Query"))
-        self.__parse_method_combo.setItemText(0, _translate("MainWindow", "parse_props_array"))
-        self.__parse_method_combo.setItemText(1, _translate("MainWindow", "parse_node"))
-        self.__parse_method_combo.setItemText(2, _translate("MainWindow", "parse_property_map"))
-        self.__parse_method_combo.setItemText(3, _translate("MainWindow", "parse_node_rels_with_props"))
-        self.__parse_method_combo.setItemText(4, _translate("MainWindow", "parse_node_rels_with_props_map"))
-        self.__parse_method_combo.setItemText(5, _translate("MainWindow", "parse_node_rels"))
-        self.__parse_method_combo.setItemText(6, _translate("MainWindow", "parse_node_rels_with_props_array"))
+        self.__parse_method_combo.setItemText(0, _translate("MainWindow", "return ID(n), n.prop1,... n.propN "))
+        self.__parse_method_combo.setItemText(1, _translate("MainWindow", "return n"))
+        self.__parse_method_combo.setItemText(2, _translate("MainWindow", "return ID(n), properties(N)"))
+        self.__parse_method_combo.setItemText(3, _translate("MainWindow", "return n, TYPE(r), m"))
+        self.__parse_method_combo.setItemText(4, _translate("MainWindow",
+                                                            "return ID(n), properties(n), TYPE(r), ID(m), properties(m)"))
+        self.__parse_method_combo.setItemText(5, _translate("MainWindow", "return ID(n), TYPE(r), ID(m)"))
+        self.__parse_method_combo.setItemText(6, _translate("MainWindow",
+                                                            "return size(keys(n)), ID(n), n.prop1, ..., TYPE(r), size(keys(m)), ID(m), m.prop1, ..."))
         self.__nodes_and_relationships.setText(_translate("MainWindow", "Get all nodes and relationship"))
         self.__relationships_without_properties.setText(
             _translate("MainWindow", "Get all nodes\' relationship without node properties"))
@@ -739,9 +741,11 @@ class UiMainWindow(object):
         item.setText(_translate("MainWindow", "Property"))
         item = self.__examples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Truth"))
-        self.__problog_clauses_label.setText(_translate("MainWindow", "Problog clauses"))
+        self.__problog_caluses_label.setText(_translate("MainWindow", "Problog instructions"))
         self.__execute_program.setText(_translate("MainWindow", "Execute program"))
         item = self.__problog_clauses_table.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Probability"))
+        item = self.__problog_clauses_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Clause"))
         self.__examples_label.setText(_translate("MainWindow", "Examples"))
         self.__background_knowledge_label.setText(_translate("MainWindow", "Background knowledge"))
@@ -807,7 +811,7 @@ class UiMainWindow(object):
     ## define method to call when buttons are clicked
     def setup_signals(self):
         self.__execute_user_query.clicked.connect(
-            lambda: self.execute_user_query())
+            lambda: self.execute_user_dbmsquery())
 
         self.__add_filter.clicked.connect(
             lambda: self.add_filter(self.__property_filters_table))
@@ -878,7 +882,8 @@ class UiMainWindow(object):
 
     ## method related to __bgk_file, add file clauses as background knowledge
     def bgk_file(self):
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
         problog_program = PrologFile(file_name)
         self.write_clauses(problog_program)
@@ -896,7 +901,8 @@ class UiMainWindow(object):
 
     ## method related to __evidence_file, add file with evidence clauses as training examples
     def evidence_file(self):
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
         examples = list(read_examples(file_name))
         self.write_examples(examples)
@@ -917,7 +923,8 @@ class UiMainWindow(object):
             else:
                 distr_obj = Multinomial()
 
-            property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
+            property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = Property(
+                self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
 
         property_map = self.__cypher_data.learn_distributions(property_map)
         problog_program = property_map.to_simple_program()
@@ -925,8 +932,15 @@ class UiMainWindow(object):
         programs_merge(self.__problog_program, problog_program)
 
     ## method related to __execute_user_query button
-    def execute_user_query(self):
-        dbms_query = DbmsQuery(self.__user_query.text(), self.__parse_method_combo.currentText())
+    def execute_user_dbmsquery(self):
+        function = {0: "parse_props_array",
+                    1: "parse_node",
+                    2: "parse_property_map",
+                    3: "parse_node_rels_with_props",
+                    4: "parse_node_rels_with_props_map",
+                    5: "parse_node_rels",
+                    6: "parse_node_rels_with_props_array"}[self.__parse_method_combo.currentIndex()]
+        dbms_query = DbmsQuery(self.__user_query.text(), function)
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
@@ -1017,8 +1031,12 @@ class UiMainWindow(object):
         query_where = " AND ".join(
             [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                (str(self.__property_filters_table.cellWidget(i, 1).text())
-                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
-              if self.__property_filters_table.cellWidget(i, 0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
+                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
+                                                                                                      "'" + self.__property_filters_table.cellWidget(
+                                                                                                  i, 1).text()) + "'"))
+              if self.__property_filters_table.cellWidget(i,
+                                                          0).text() != "" and self.__property_filters_table.cellWidget(
+                i, 1).text() != "" else '')
              for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1050,7 +1068,9 @@ class UiMainWindow(object):
         query_where = " . ".join(
             [("?subject " + self.__sparql_property_filters_table.cellWidget(i, 0).text() + " " + str(
                 self.__sparql_property_filters_table.cellWidget(i, 1).text())
-              if self.__sparql_property_filters_table.cellWidget(i, 0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
+              if self.__sparql_property_filters_table.cellWidget(i,
+                                                                 0).text() != "" and self.__sparql_property_filters_table.cellWidget(
+                i, 1).text() != "" else '')
              for i in range(0, self.__sparql_property_filters_table.rowCount())])
 
         if query_where != "":
