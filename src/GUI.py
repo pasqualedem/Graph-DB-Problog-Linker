@@ -10,7 +10,7 @@ from problog.learning.lfi import read_examples
 from problog.program import SimpleProgram
 from problog.program import PrologFile
 
-from Data import PropertyMap
+from Data import PropertyMap, Property
 from src.Query import DbmsQuery
 from src.Query import CloudQuery
 from Distribution import *
@@ -868,11 +868,13 @@ class UiMainWindow(object):
         self.__distr_learning.clicked.connect(
             lambda: self.distr_learning())
 
+    ## method related to __bgk_sparql, add sparql query results as background knowledge
     def bgk_sparql(self):
         problog_program = self.__sparql_data.parse()
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
+    ## method related to __bgk_cypher, add cypher query results as background knowledge
     def bgk_cypher(self):
         problog_program = self.__cypher_data.parse()
 
@@ -880,6 +882,7 @@ class UiMainWindow(object):
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
+    ## method related to __bgk_file, add file instructions as background knowledge
     def bgk_file(self):
         file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
@@ -887,16 +890,19 @@ class UiMainWindow(object):
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
+    ## method related to __evidence_cypher, add cypher query results as training examples
     def evidence_cypher(self):
         examples = self.__cypher_data.to_examples()
         self.write_examples(examples)
         self.__examples.extend(examples)
 
+    ## method related to __evidence_sparql, add sparql query results as training examples
     def evidence_sparql(self):
         examples = self.__sparql_data.to_examples()
         self.write_examples(examples)
         self.__examples.extend(examples)
 
+    ## method related to __evidence_file, add file with evidence clauses as training examples
     def evidence_file(self):
         file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
@@ -904,6 +910,7 @@ class UiMainWindow(object):
         self.write_examples(examples)
         self.__examples.extend(examples)
 
+    ## method related to __distr_learning, learn proeprty values distributions and use annotated clauses as background knowkledge
     def distr_learning(self):
         property_map = PropertyMap()
 
@@ -916,7 +923,7 @@ class UiMainWindow(object):
             else:
                 distr_obj = Multinomial()
 
-            property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = distr_obj
+            property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
 
         property_map = self.__cypher_data.learn_distributions(property_map)
         print("debug")
