@@ -23,12 +23,12 @@ class Data:
         self.__data = triples
 
     ## Get the triples of Data object
-    # @returns: triples
+    # @returns triples
     def get_data(self):
         return self.__data
 
     ## Create examples from triples
-    # @returns: list of examples
+    # @returns list of examples
     def to_examples(self, examples=[]):
         term_dict = {}
         prop = Term('prop')
@@ -45,7 +45,7 @@ class Data:
 
     ## Learn the property distribution for each property in properties
     # @param: properties: dictionary of properties
-    # @return: properties: dictionary of properties with their distributions
+    # @return properties: dictionary of properties with their distributions
     def learn_distributions(self, properties=dict()):
 
         for possible_world in self.__data:
@@ -68,7 +68,7 @@ class Data:
         return properties
 
     ## Parse a list of triples into a SimpleProgram
-    # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
+    # @return program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
     def parse(self, program=SimpleProgram()):
         prop = Term('prop')
         const_dict = dict()
@@ -91,7 +91,7 @@ class Data:
 class PropertyMap(dict):
 
     ## Create a simple program from property clauses
-    # @return: program
+    # @return program
     def to_simple_program(self, program=SimpleProgram()):
         for prop in self.values():
             program += prop.to_atom()
@@ -106,7 +106,7 @@ class Property:
         self.__distribution = distribution
 
     ## Create a list of clauses from property
-    # @return: annotated disjunction of the clauses
+    # @return annotated disjunction of the clauses
     def to_atom(self):
         prop = Term('prop')
         I = Var('I')
@@ -119,7 +119,7 @@ class Property:
 
         return AnnotatedDisjunction(clauses, True)
 
-    # Get the distribution of the property
-    # @return: distribution
+    ## Get the distribution of the property
+    # @return distribution
     def get_distribution(self):
         return self.__distribution
