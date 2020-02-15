@@ -496,27 +496,28 @@ class UiMainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.__examples_table.setHorizontalHeaderItem(1, item)
         self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 1)
-        self.__problog_instructions_label = QtWidgets.QLabel(self.layoutWidget8)
+        self.__problog_clauses_label = QtWidgets.QLabel(self.layoutWidget8)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.__problog_instructions_label.setFont(font)
-        self.__problog_instructions_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__problog_instructions_label.setObjectName("__problog_instructions_label")
-        self.gridLayout_11.addWidget(self.__problog_instructions_label, 0, 0, 1, 1)
+        self.__problog_clauses_label.setFont(font)
+        self.__problog_clauses_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__problog_clauses_label.setObjectName("__problog_clauses_label")
+        self.gridLayout_11.addWidget(self.__problog_clauses_label, 0, 0, 1, 1)
         self.__execute_program = QtWidgets.QPushButton(self.layoutWidget8)
         self.__execute_program.setObjectName("__execute_program")
         self.gridLayout_11.addWidget(self.__execute_program, 4, 0, 1, 1)
-        self.__problog_instructions_table = QtWidgets.QTableWidget(self.layoutWidget8)
-        self.__problog_instructions_table.setObjectName("__problog_instructions_table")
-        self.__problog_instructions_table.setColumnCount(2)
-        self.__problog_instructions_table.setRowCount(0)
+        self.__problog_clauses_table = QtWidgets.QTableWidget(self.layoutWidget8)
+        self.__problog_clauses_table.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.__problog_clauses_table.setObjectName("__problog_clauses_table")
+        self.__problog_clauses_table.setColumnCount(1)
+        self.__problog_clauses_table.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
-        self.__problog_instructions_table.setHorizontalHeaderItem(0, item)
+        self.__problog_clauses_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
-        self.__problog_instructions_table.setHorizontalHeaderItem(1, item)
-        self.__problog_instructions_table.horizontalHeader().setCascadingSectionResizes(False)
-        self.__problog_instructions_table.horizontalHeader().setDefaultSectionSize(168)
-        self.gridLayout_11.addWidget(self.__problog_instructions_table, 1, 0, 1, 1)
+        self.__problog_clauses_table.setHorizontalHeaderItem(1, item)
+        self.__problog_clauses_table.horizontalHeader().setCascadingSectionResizes(False)
+        self.__problog_clauses_table.horizontalHeader().setDefaultSectionSize(168)
+        self.gridLayout_11.addWidget(self.__problog_clauses_table, 1, 0, 1, 1)
         self.__examples_label = QtWidgets.QLabel(self.layoutWidget8)
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -738,11 +739,9 @@ class UiMainWindow(object):
         item.setText(_translate("MainWindow", "Property"))
         item = self.__examples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Truth"))
-        self.__problog_instructions_label.setText(_translate("MainWindow", "Problog instructions"))
+        self.__problog_clauses_label.setText(_translate("MainWindow", "Problog clauses"))
         self.__execute_program.setText(_translate("MainWindow", "Execute program"))
-        item = self.__problog_instructions_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Probability"))
-        item = self.__problog_instructions_table.horizontalHeaderItem(1)
+        item = self.__problog_clauses_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Clause"))
         self.__examples_label.setText(_translate("MainWindow", "Examples"))
         self.__background_knowledge_label.setText(_translate("MainWindow", "Background knowledge"))
@@ -800,11 +799,10 @@ class UiMainWindow(object):
         self.__sparql_prop_distr_table.setCellWidget(0, 0, property)
         self.__sparql_prop_distr_table.setCellWidget(0, 1, distribution)
 
-        self.__problog_instructions_table.setColumnWidth(0, 80);
-        self.__problog_instructions_table.setColumnWidth(1, 257);
+        self.__problog_clauses_table.setColumnWidth(0, 340)
 
-        self.__examples_table.setColumnWidth(0, 168);
-        self.__examples_table.setColumnWidth(1, 168);
+        self.__examples_table.setColumnWidth(0, 168)
+        self.__examples_table.setColumnWidth(1, 168)
 
     ## define method to call when buttons are clicked
     def setup_signals(self):
@@ -870,19 +868,15 @@ class UiMainWindow(object):
 
     ## method related to __bgk_sparql, add sparql query results as background knowledge
     def bgk_sparql(self):
-        problog_program = self.__sparql_data.parse()
+        problog_program = self.__sparql_data.parse(self.__problog_program)
         self.write_clauses(problog_program)
-        programs_merge(self.__problog_program, problog_program)
 
     ## method related to __bgk_cypher, add cypher query results as background knowledge
     def bgk_cypher(self):
-        problog_program = self.__cypher_data.parse()
-
-        problog_program = self.__cypher_data.parse()
+        problog_program = self.__cypher_data.parse(self.__problog_program)
         self.write_clauses(problog_program)
-        programs_merge(self.__problog_program, problog_program)
 
-    ## method related to __bgk_file, add file instructions as background knowledge
+    ## method related to __bgk_file, add file clauses as background knowledge
     def bgk_file(self):
         file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
@@ -892,15 +886,13 @@ class UiMainWindow(object):
 
     ## method related to __evidence_cypher, add cypher query results as training examples
     def evidence_cypher(self):
-        examples = self.__cypher_data.to_examples()
+        examples = self.__cypher_data.to_examples(self.__examples)
         self.write_examples(examples)
-        self.__examples.extend(examples)
 
     ## method related to __evidence_sparql, add sparql query results as training examples
     def evidence_sparql(self):
-        examples = self.__sparql_data.to_examples()
+        examples = self.__sparql_data.to_examples(self.__examples)
         self.write_examples(examples)
-        self.__examples.extend(examples)
 
     ## method related to __evidence_file, add file with evidence clauses as training examples
     def evidence_file(self):
@@ -916,6 +908,8 @@ class UiMainWindow(object):
 
         for i in range(0, self.__prop_distr_table.rowCount()):
             distr = self.__prop_distr_table.cellWidget(i, 1).currentText()
+            if self.__prop_distr_table.cellWidget(i, 0).text() == "":
+                continue
             if distr == "Normal":
                 distr_obj = Normal()
             elif distr == "Interspersed":
@@ -926,9 +920,7 @@ class UiMainWindow(object):
             property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
 
         property_map = self.__cypher_data.learn_distributions(property_map)
-        print("debug")
         problog_program = property_map.to_simple_program()
-        print(problog_program)
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
@@ -1026,7 +1018,7 @@ class UiMainWindow(object):
             [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                (str(self.__property_filters_table.cellWidget(i, 1).text())
                 if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
-              if self.__property_filters_table.cellWidget(i,0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
+              if self.__property_filters_table.cellWidget(i, 0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1058,7 +1050,7 @@ class UiMainWindow(object):
         query_where = " . ".join(
             [("?subject " + self.__sparql_property_filters_table.cellWidget(i, 0).text() + " " + str(
                 self.__sparql_property_filters_table.cellWidget(i, 1).text())
-              if self.__sparql_property_filters_table.cellWidget(i,0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
+              if self.__sparql_property_filters_table.cellWidget(i, 0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__sparql_property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1069,13 +1061,14 @@ class UiMainWindow(object):
         self.__sparql_data = cloud_query.run_query()
         write_results(self.__triples_table, self.__sparql_data)
 
+    ## show problog program clauses in table
     def write_clauses(self, program):
         for clause in program:
-            row_count = self.__problog_instructions_table.rowCount()
-            self.__problog_instructions_table.insertRow(row_count)
-            self.__problog_instructions_table.setItem(row_count, 0, QTableWidgetItem(""))
-            self.__problog_instructions_table.setItem(row_count, 1, QTableWidgetItem(str(clause)))
+            row_count = self.__problog_clauses_table.rowCount()
+            self.__problog_clauses_table.insertRow(row_count)
+            self.__problog_clauses_table.setItem(row_count, 0, QTableWidgetItem(str(clause)))
 
+    ## show examples in table
     def write_examples(self, examples):
         for possible_world in examples:
             splitter = "------------------------------"
@@ -1088,6 +1081,7 @@ class UiMainWindow(object):
                 self.__examples_table.insertRow(row_count)
                 self.__examples_table.setItem(row_count, 0, QTableWidgetItem(str(example[0])))
                 self.__examples_table.setItem(row_count, 1, QTableWidgetItem(str(example[1])))
+
 
 ## function to write triples in a specified three column table
 # @param: table: in which table the triples should be added
