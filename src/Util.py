@@ -7,6 +7,9 @@ from math import floor
 # @param: right: the last index of the array
 # @param: x: the value that as to be searched
 # @returns: the index where x has been found, or where it should be inserted to keep ordering
+from problog.logic import Constant, Term
+
+
 def binary_search_rec(arr, left, right, x):
     if (right - left) < 1:
         if x <= arr[left]:
@@ -27,3 +30,8 @@ def binary_search_rec(arr, left, right, x):
 # @returns: the index where x has been found, or where it should be inserted to keep ordering
 def binary_search(arr, x):
     return binary_search_rec(arr, 0, len(arr) - 1, x)
+
+def get_type(value):
+    if type(value) is float or type(value) is int:
+        return Constant(value)
+    return Term(value)
