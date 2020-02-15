@@ -83,7 +83,7 @@ class Data:
 
 class PropertyMap(dict):
     ## create a simple program from property clauses
-    def to_simple_program(self, program=SimpleProgram):
+    def to_simple_program(self, program=SimpleProgram()):
         for prop in self.values():
             program += prop.to_atom()
         return program
@@ -106,7 +106,7 @@ class Property:
         for value in values:
             clauses.append(prop(I, self.__name, Constant(value), p=dic[value]))
 
-        return AnnotatedDisjunction(clauses)
+        return AnnotatedDisjunction(clauses, True)
 
     def get_distribution(self):
         return self.__distribution
