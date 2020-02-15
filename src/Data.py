@@ -4,7 +4,7 @@
 from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
-from src.Distribution import Distribution, Normal, Multinomial
+from src.Distribution import Normal, Multinomial
 
 
 ## Implements class for Data representation
@@ -25,10 +25,9 @@ class Data:
     def get_data(self):
         return self.__data
 
-    def to_examples(self):
+    def to_examples(self, examples=[]):
         term_dict = {}
         prop = Term('prop')
-        examples = []
         for possible_world in self.__data:
             example = []
             for triple in possible_world:
@@ -39,29 +38,31 @@ class Data:
                 example.append((prop(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
                 examples.append(example)
         return examples
+      
+    def learn_distributions(self, properties=dict()):
 
-    def learn_distributions(self, properties):
-
-        for prop_name, value in self.__data:
-            if prop_name in properties.keys():
-                prop = properties[prop_name]
-                prop.distribution.add(value)
-            else:
-                if type(value) is float:
-                    new_prop = Property(prop_name, Normal())
-                    new_prop.get_distribution().add(value)
-                    properties[prop_name] = new_prop
+        for possible_world in self.__data:
+            for triple in possible_world:
+                prop_name = triple[1]
+                value = triple[2]
+                if properties is not None and prop_name in properties.keys():
+                    prop = properties[prop_name]
+                    prop.get_distribution().add(value)
                 else:
-                    new_prop = Property(prop_name, Multinomial())
-                    new_prop.get_distribution().add(value)
-                    properties[prop_name] = new_prop
+                    if type(value) is float:
+                        new_prop = Property(prop_name, Normal())
+                        new_prop.get_distribution().add(value)
+                        properties[prop_name] = new_prop
+                    else:
+                        new_prop = Property(prop_name, Multinomial())
+                        new_prop.get_distribution().add(value)
+                        properties[prop_name] = new_prop
 
         return properties
 
     ## Parse a list of triples into a SimpleProgram
     # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
-    def parse(self):
-        program = SimpleProgram()
+    def parse(self, program=SimpleProgram()):
         prop = Term('prop')
         const_dict = dict()
         for row in self.__data:
@@ -82,10 +83,9 @@ class Data:
 
 class PropertyMap(dict):
     ## create a simple program from property clauses
-    def to_simple_program(self):
-        program = SimpleProgram()
-        for property in self.values:
-            program += property.to_atom()
+    def to_simple_program(self, program=SimpleProgram):
+        for prop in self.values():
+            program += prop.to_atom()
         return program
 
 
