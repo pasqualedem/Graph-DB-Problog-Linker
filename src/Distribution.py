@@ -35,6 +35,7 @@ class Discrete(Distribution):
 ##
 # Represents a normal distribution
 class Normal(Continuous):
+    name = "multinomial"
 
     ## Normal constructor
     def __init__(self):
@@ -82,6 +83,7 @@ class Normal(Continuous):
 ##
 # Represents the multinomial distribution
 class Multinomial(Discrete):
+    name = "multinomial"
 
     ## Multinomial constructor
     # @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts member
@@ -113,6 +115,7 @@ class Multinomial(Discrete):
 ##
 # A continuous distribution transformed into a multinomial interspersing the domain
 class Interspersed(Multinomial):
+    name = "interspersed"
 
     # # Interspersed constructor @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts
     # member @param: intervals: a list of oredered values that represents the intervals,

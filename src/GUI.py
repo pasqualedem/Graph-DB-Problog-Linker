@@ -437,16 +437,10 @@ class UiMainWindow(object):
         self.__add_distribution = QtWidgets.QPushButton(self.layoutWidget_6)
         self.__add_distribution.setObjectName("__add_distribution")
         self.gridLayout_16.addWidget(self.__add_distribution, 0, 3, 1, 1)
-        self.__prop_distr_table = QtWidgets.QTableWidget(self.layoutWidget_6)
-        self.__prop_distr_table.setRowCount(1)
-        self.__prop_distr_table.setObjectName("__prop_distr_table")
-        self.__prop_distr_table.setColumnCount(2)
-        item = QtWidgets.QTableWidgetItem()
-        self.__prop_distr_table.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.__prop_distr_table.setHorizontalHeaderItem(1, item)
-        self.__prop_distr_table.horizontalHeader().setDefaultSectionSize(218)
-        self.gridLayout_16.addWidget(self.__prop_distr_table, 1, 0, 1, 4)
+        self.__sparql_distr = QtWidgets.QRadioButton(self.layoutWidget_6)
+        self.__sparql_distr.setChecked(True)
+        self.__sparql_distr.setObjectName("__sparql_distr")
+        self.gridLayout_16.addWidget(self.__sparql_distr, 2, 0, 1, 1)
         self.__prob_bgk_label = QtWidgets.QLabel(self.layoutWidget_6)
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -457,10 +451,18 @@ class UiMainWindow(object):
         self.__cyhper_distr = QtWidgets.QRadioButton(self.layoutWidget_6)
         self.__cyhper_distr.setObjectName("__cyhper_distr")
         self.gridLayout_16.addWidget(self.__cyhper_distr, 2, 1, 1, 1)
-        self.__sparql_distr = QtWidgets.QRadioButton(self.layoutWidget_6)
-        self.__sparql_distr.setChecked(True)
-        self.__sparql_distr.setObjectName("__sparql_distr")
-        self.gridLayout_16.addWidget(self.__sparql_distr, 2, 0, 1, 1)
+        self.__prop_distr_table = QtWidgets.QTableWidget(self.layoutWidget_6)
+        self.__prop_distr_table.setRowCount(1)
+        self.__prop_distr_table.setObjectName("__prop_distr_table")
+        self.__prop_distr_table.setColumnCount(3)
+        item = QtWidgets.QTableWidgetItem()
+        self.__prop_distr_table.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__prop_distr_table.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__prop_distr_table.setHorizontalHeaderItem(2, item)
+        self.__prop_distr_table.horizontalHeader().setDefaultSectionSize(141)
+        self.gridLayout_16.addWidget(self.__prop_distr_table, 1, 0, 1, 4)
         self.layoutWidget8 = QtWidgets.QWidget(self.Problog)
         self.layoutWidget8.setGeometry(QtCore.QRect(20, 20, 341, 441))
         self.layoutWidget8.setObjectName("layoutWidget8")
@@ -733,7 +735,7 @@ class UiMainWindow(object):
         self.__relationship_type_label.setText(_translate("MainWindow", "Relationship"))
         self.__query_results_label.setText(_translate("MainWindow", "QUERY RESULTS"))
         item = self.__triples_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Individual"))
+        item.setText(_translate("MainWindow", "Subject"))
         item = self.__triples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Property"))
         item = self.__triples_table.horizontalHeaderItem(2)
@@ -742,7 +744,7 @@ class UiMainWindow(object):
         self.__sparql_user_query_label.setText(_translate("MainWindow", "Query"))
         self.__sparql_execute_user_query.setText(_translate("MainWindow", "Execute"))
         item = self.__sparql_triples_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Individual"))
+        item.setText(_translate("MainWindow", "Subject"))
         item = self.__sparql_triples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Property"))
         item = self.__sparql_triples_table.horizontalHeaderItem(2)
@@ -769,14 +771,16 @@ class UiMainWindow(object):
         self.__evidence_file.setText(_translate("MainWindow", "Load from file"))
         self.__distr_learning.setText(_translate("MainWindow", "Execute"))
         self.__add_distribution.setText(_translate("MainWindow", "Add distribution"))
-        item = self.__prop_distr_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "property"))
-        item = self.__prop_distr_table.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "distribution to learn"))
+        self.__sparql_distr.setText(_translate("MainWindow", "SPARQL"))
         self.__prob_bgk_label.setText(_translate("MainWindow", "Learn probabilities on cypher results,\n"
                                                                " and add them to the program"))
         self.__cyhper_distr.setText(_translate("MainWindow", "Cypher"))
-        self.__sparql_distr.setText(_translate("MainWindow", "SPARQL"))
+        item = self.__prop_distr_table.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "name"))
+        item = self.__prop_distr_table.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "property"))
+        item = self.__prop_distr_table.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "distribution to learn"))
         self.__problog_clauses_label.setText(_translate("MainWindow", "Problog clauses"))
         item = self.__examples_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Property"))
@@ -846,13 +850,14 @@ class UiMainWindow(object):
         self.__prefixs_table.setCellWidget(0, 1, alias)
 
         property = QtWidgets.QLineEdit(self.layoutWidget)
+        name = QtWidgets.QLineEdit(self.layoutWidget)
         distribution = QtWidgets.QComboBox(self.layoutWidget)
         distribution.addItem("Normal")
         distribution.addItem("Multinomial")
 
-        self.__prop_distr_table.setCellWidget(0, 0, property)
-        self.__prop_distr_table.setCellWidget(0, 1, distribution)
-
+        self.__prop_distr_table.setCellWidget(0, 0, name)
+        self.__prop_distr_table.setCellWidget(0, 1, property)
+        self.__prop_distr_table.setCellWidget(0, 2, distribution)
 
         self.__problog_clauses_table.setColumnWidth(0, 340)
 
@@ -982,7 +987,7 @@ class UiMainWindow(object):
         for i in range(0, self.__interspersed_table.rowCount()):
             if self.__interspersed_table.cellWidget(i, 0).text() != "":
                 for j in range(0, self.__prop_distr_table.rowCount()):
-                    self.__prop_distr_table.cellWidget(j, 1).addItem(self.__interspersed_table.cellWidget(i, 0).text())
+                    self.__prop_distr_table.cellWidget(j, 2).addItem(self.__interspersed_table.cellWidget(i, 0).text())
 
                 self.__interspersed_distributions[self.__interspersed_table.cellWidget(i, 0).text()] = (
                     self.__interspersed_table.cellWidget(i, 1).text(),
@@ -1021,7 +1026,6 @@ class UiMainWindow(object):
         file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
                                                              "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
         results = list(sample.sample(self.__problog_program, n=20, format='dict'))
-
 
         if file_name:
             with open(file_name, 'w') as f:
@@ -1090,8 +1094,8 @@ class UiMainWindow(object):
         property_map = PropertyMap()
 
         for i in range(0, self.__prop_distr_table.rowCount()):
-            distr = self.__prop_distr_table.cellWidget(i, 1).currentText()
-            if self.__prop_distr_table.cellWidget(i, 0).text() != "":
+            distr = self.__prop_distr_table.cellWidget(i, 2).currentText()
+            if self.__prop_distr_table.cellWidget(i, 1).text() != "":
                 if distr == "Normal":
                     distr_obj = Normal()
                 elif distr == "Multinomial":
@@ -1113,9 +1117,10 @@ class UiMainWindow(object):
 
                         distr_obj = Interspersed(intervals)
 
-
-                property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = \
-                    Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
+                property_map[self.__prop_distr_table.cellWidget(i, 1).text()] = \
+                    Property(self.__prop_distr_table.cellWidget(i, 0).text(),
+                             distr_obj,
+                             self.__prop_distr_table.cellWidget(i, 1).text())
 
         if self.__sparql_distr.isChecked():
             property_map = self.__sparql_data.learn_distributions(property_map)
@@ -1157,14 +1162,16 @@ class UiMainWindow(object):
         row_count = table.rowCount()
         table.insertRow(row_count)
 
+        name = QtWidgets.QLineEdit(self.layoutWidget)
         property = QtWidgets.QLineEdit(self.layoutWidget)
         distribution = QtWidgets.QComboBox(self.layoutWidget)
         distribution.addItem("Normal")
         distribution.addItem("Multinomial")
         distribution.addItem("Interspersed")
 
-        table.setCellWidget(row_count, 0, property)
-        table.setCellWidget(row_count, 1, distribution)
+        table.setCellWidget(row_count, 0, name)
+        table.setCellWidget(row_count, 1, property)
+        table.setCellWidget(row_count, 2, distribution)
 
     ## method related to __nodes_and_relationships, execute cypher query that retrieves all nodes (with properties) and relationships between them
     def nodes_and_relationships(self):
