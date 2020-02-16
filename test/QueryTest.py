@@ -1,6 +1,7 @@
 import unittest
 from src.Query import CloudQuery, DbmsQuery
 
+
 class DbmsQueryTest(unittest.TestCase):
     def test_parse_props_array(self):
         test = DbmsQuery("MATCH (n:Person) RETURN ID(n), n.name AS name, n.age AS age",
@@ -68,15 +69,13 @@ class CloudQueryTest(unittest.TestCase):
 
         dataset = "http://dbpedia.org/sparql"
         test = CloudQuery(query, dataset)
-        expected = [
-            ('http://dbpedia.org/resource/Casín_cheese', 'label-es', 'Queso Casín'),
-            ('http://dbpedia.org/resource/Casín_cheese', 'label-en', 'Casín cheese'),
-            ('http://dbpedia.org/resource/Gamonéu_cheese', 'label-es', 'Queso de Gamonéu'),
-            ('http://dbpedia.org/resource/Gamonéu_cheese', 'label-it', 'Queso de Gamonéu'),
-            ('http://dbpedia.org/resource/Gamonéu_cheese', 'label-en', 'Gamonéu cheese')
-        ]
-
-        self.assertEqual(test.run_query().get_triples(), expected)
+        expected = [[('http___dbpedia_org_resource_Casín_cheese', 'label_es', 'Queso Casín')],
+                    [('http___dbpedia_org_resource_Casín_cheese', 'label_en', 'Casín cheese')],
+                    [('http___dbpedia_org_resource_Gamonéu_cheese', 'label_es', 'Queso de Gamonéu')],
+                    [('http___dbpedia_org_resource_Gamonéu_cheese', 'label_it', 'Queso de Gamonéu')],
+                    [('http___dbpedia_org_resource_Gamonéu_cheese', 'label_en', 'Gamonéu cheese')]]
+        result = test.run_query().get_data()
+        self.assertEqual(result, expected)
 
     def test_run_query_2(self):
         query = "PREFIX dbo: <http://dbpedia.org/ontology/> " \
@@ -96,70 +95,85 @@ class CloudQueryTest(unittest.TestCase):
         dataset = "http://dbpedia.org/sparql"
         test = CloudQuery(query, dataset)
 
-        expected = [
-            ('http://dbpedia.org/resource/Annot_(artist)', 'name-en', '"Annot" (Annot Jacobi)'),
-            ('http://dbpedia.org/resource/Annot_(artist)', 'birth', '1894-12-27'),
-            ('http://dbpedia.org/resource/Annot_(artist)', 'death', '1981-10-20'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'name-en', '()'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'birth', '1811-10-29'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'death', '1873-06-06'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'name-en', '()'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'birth', '1811-10-29'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'death', '1873-6-6'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'name-en', '(Henry William Adalbert)'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'birth', '1811-10-29'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'death', '1873-06-06'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'name-en', '(Henry William Adalbert)'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'birth', '1811-10-29'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'death', '1873-6-6'),
-            ('http://dbpedia.org/resource/Abraham_Mendelssohn_Bartholdy', 'name-en', 'Abraham Mendelssohn Bartholdy'),
-            ('http://dbpedia.org/resource/Abraham_Mendelssohn_Bartholdy', 'birth', '1776-12-10'),
-            ('http://dbpedia.org/resource/Abraham_Mendelssohn_Bartholdy', 'death', '1835-11-19'),
-            ('http://dbpedia.org/resource/Ludwig_Achim_von_Arnim', 'name-en', 'Achim von Arnim'),
-            ('http://dbpedia.org/resource/Ludwig_Achim_von_Arnim', 'birth', '1781-01-26'),
-            ('http://dbpedia.org/resource/Ludwig_Achim_von_Arnim', 'death', '1831-1-21'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'name-en', 'Adalbert of Prussia'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'birth', '1811-10-29'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'death', '1873-06-06'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'name-en', 'Adalbert of Prussia'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'birth', '1811-10-29'),
-            ('http://dbpedia.org/resource/Prince_Adalbert_of_Prussia_(1811–1873)', 'death', '1873-6-6'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'name-en', 'Adam Müller'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'birth', '1779-06-30'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'death', '1829-01-17'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'name-en', 'Adam Müller'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'birth', '1779-06-30'),
-            ('http://dbpedia.org/resource/Adam_Müller', 'death', '1829-1-17'), 
-            ('http://dbpedia.org/resource/Adolf_Brand', 'name-en', 'Adolf Brand'),
-            ('http://dbpedia.org/resource/Adolf_Brand', 'birth', '1874-11-14'),
-            ('http://dbpedia.org/resource/Adolf_Brand', 'death', '1945-2-2'),
-            ('http://dbpedia.org/resource/Adolf_Christen', 'name-en', 'Adolf Christen'),
-            ('http://dbpedia.org/resource/Adolf_Christen', 'birth', '1811-08-07'),
-            ('http://dbpedia.org/resource/Adolf_Christen', 'death', '1883-07-13'),
-            ('http://dbpedia.org/resource/Adolf_Christen', 'name-en', 'Adolf Christen'),
-            ('http://dbpedia.org/resource/Adolf_Christen', 'birth', '1811-08-07'),
-            ('http://dbpedia.org/resource/Adolf_Christen', 'death', '1883-7-13'),
-            ('http://dbpedia.org/resource/Adolf_Damaschke', 'name-en', 'Adolf Damaschke'),
-            ('http://dbpedia.org/resource/Adolf_Damaschke', 'birth', '1865-11-24'),
-            ('http://dbpedia.org/resource/Adolf_Damaschke', 'death', '1935-7-30'),
-            ('http://dbpedia.org/resource/Adolf_Erman', 'name-en', 'Adolf Erman'),
-            ('http://dbpedia.org/resource/Adolf_Erman', 'birth', '1854-10-31'),
-            ('http://dbpedia.org/resource/Adolf_Erman', 'death', '1937-6-26'),
-            ('http://dbpedia.org/resource/Adolf_Gärtner', 'name-en', 'Adolf Gärtner'),
-            ('http://dbpedia.org/resource/Adolf_Gärtner', 'birth', '1879-03-24'),
-            ('http://dbpedia.org/resource/Adolf_Gärtner', 'death', '1958-01-09'),
-            ('http://dbpedia.org/resource/Adolf_Gärtner', 'name-en', 'Adolf Gärtner'),
-            ('http://dbpedia.org/resource/Adolf_Gärtner', 'birth', '1879-03-24'),
-            ('http://dbpedia.org/resource/Adolf_Gärtner', 'death', '1958-1-9'),
-            ('http://dbpedia.org/resource/Adolf_Heinrich_von_Arnim-Boitzenburg', 'name-en', 'Adolf Heinrich von Arnim-Boitzenburg'),
-            ('http://dbpedia.org/resource/Adolf_Heinrich_von_Arnim-Boitzenburg', 'birth', '1803-04-10'),
-            ('http://dbpedia.org/resource/Adolf_Heinrich_von_Arnim-Boitzenburg', 'death', '1868-01-08'),
-            ('http://dbpedia.org/resource/Adolf_Heinrich_von_Arnim-Boitzenburg', 'name-en', 'Adolf Heinrich von Arnim-Boitzenburg'),
-            ('http://dbpedia.org/resource/Adolf_Heinrich_von_Arnim-Boitzenburg', 'birth', '1803-04-10'),
-            ('http://dbpedia.org/resource/Adolf_Heinrich_von_Arnim-Boitzenburg', 'death', '1868-1-8')
-        ]
-        
-        self.assertEquals(test.run_query().get_triples(), expected)
+        expected = [[('http___dbpedia_org_resource_Annot__artist_', 'name_en', '"Annot" _Annot Jacobi_'),
+                     ('http___dbpedia_org_resource_Annot__artist_', 'birth', '1894_12_27'),
+                     ('http___dbpedia_org_resource_Annot__artist_', 'death', '1981_10_20')],
+                    [('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'name_en', '__'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'birth', '1811_10_29'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'death', '1873_06_06')],
+                    [('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'name_en', '__'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'birth', '1811_10_29'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'death', '1873_6_6')],
+                    [('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'name_en',
+                      '_Henry William Adalbert_'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'birth', '1811_10_29'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'death', '1873_06_06')],
+                    [('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'name_en',
+                      '_Henry William Adalbert_'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'birth', '1811_10_29'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'death', '1873_6_6')],
+                    [('http___dbpedia_org_resource_Abraham_Mendelssohn_Bartholdy', 'name_en',
+                      'Abraham Mendelssohn Bartholdy'),
+                     ('http___dbpedia_org_resource_Abraham_Mendelssohn_Bartholdy', 'birth', '1776_12_10'),
+                     ('http___dbpedia_org_resource_Abraham_Mendelssohn_Bartholdy', 'death', '1835_11_19')],
+                    [('http___dbpedia_org_resource_Ludwig_Achim_von_Arnim', 'name_en', 'Achim von Arnim'),
+                     ('http___dbpedia_org_resource_Ludwig_Achim_von_Arnim', 'birth', '1781_01_26'),
+                     ('http___dbpedia_org_resource_Ludwig_Achim_von_Arnim', 'death', '1831_1_21')],
+                    [('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'name_en',
+                      'Adalbert of Prussia'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'birth', '1811_10_29'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'death', '1873_06_06')],
+                    [('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'name_en',
+                      'Adalbert of Prussia'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'birth', '1811_10_29'),
+                     ('http___dbpedia_org_resource_Prince_Adalbert_of_Prussia__1811–1873_', 'death', '1873_6_6')],
+                    [('http___dbpedia_org_resource_Adam_Müller', 'name_en', 'Adam Müller'),
+                     ('http___dbpedia_org_resource_Adam_Müller', 'birth', '1779_06_30'),
+                     ('http___dbpedia_org_resource_Adam_Müller', 'death', '1829_01_17')],
+                    [('http___dbpedia_org_resource_Adam_Müller', 'name_en', 'Adam Müller'),
+                     ('http___dbpedia_org_resource_Adam_Müller', 'birth', '1779_06_30'),
+                     ('http___dbpedia_org_resource_Adam_Müller', 'death', '1829_1_17')],
+                    [('http___dbpedia_org_resource_Adolf_Brand', 'name_en', 'Adolf Brand'),
+                     ('http___dbpedia_org_resource_Adolf_Brand', 'birth', '1874_11_14'),
+                     ('http___dbpedia_org_resource_Adolf_Brand', 'death', '1945_2_2')],
+                    [('http___dbpedia_org_resource_Adolf_Christen', 'name_en', 'Adolf Christen'),
+                     ('http___dbpedia_org_resource_Adolf_Christen', 'birth', '1811_08_07'),
+                     ('http___dbpedia_org_resource_Adolf_Christen', 'death', '1883_07_13')],
+                    [('http___dbpedia_org_resource_Adolf_Christen', 'name_en', 'Adolf Christen'),
+                     ('http___dbpedia_org_resource_Adolf_Christen', 'birth', '1811_08_07'),
+                     ('http___dbpedia_org_resource_Adolf_Christen', 'death', '1883_7_13')],
+                    [('http___dbpedia_org_resource_Adolf_Damaschke', 'name_en', 'Adolf Damaschke'),
+                     ('http___dbpedia_org_resource_Adolf_Damaschke', 'birth', '1865_11_24'),
+                     ('http___dbpedia_org_resource_Adolf_Damaschke', 'death', '1935_7_30')],
+                    [('http___dbpedia_org_resource_Adolf_Erman', 'name_en', 'Adolf Erman'),
+                     ('http___dbpedia_org_resource_Adolf_Erman', 'birth', '1854_10_31'),
+                     ('http___dbpedia_org_resource_Adolf_Erman', 'death', '1937_6_26')],
+                    [('http___dbpedia_org_resource_Adolf_Gärtner', 'name_en', 'Adolf Gärtner'),
+                     ('http___dbpedia_org_resource_Adolf_Gärtner', 'birth', '1879_03_24'),
+                     ('http___dbpedia_org_resource_Adolf_Gärtner', 'death', '1958_01_09')],
+                    [('http___dbpedia_org_resource_Adolf_Gärtner', 'name_en', 'Adolf Gärtner'),
+                     ('http___dbpedia_org_resource_Adolf_Gärtner', 'birth', '1879_03_24'),
+                     ('http___dbpedia_org_resource_Adolf_Gärtner', 'death', '1958_1_9')],
+                    [(
+                        'http___dbpedia_org_resource_Adolf_Heinrich_von_Arnim_Boitzenburg',
+                        'name_en',
+                        'Adolf Heinrich von Arnim_Boitzenburg'),
+                        (
+                            'http___dbpedia_org_resource_Adolf_Heinrich_von_Arnim_Boitzenburg',
+                            'birth', '1803_04_10'), (
+                        'http___dbpedia_org_resource_Adolf_Heinrich_von_Arnim_Boitzenburg',
+                        'death', '1868_01_08')],
+                    [('http___dbpedia_org_resource_Adolf_Heinrich_von_Arnim_Boitzenburg',
+                      'name_en',
+                      'Adolf Heinrich von Arnim_Boitzenburg'),
+                     ('http___dbpedia_org_resource_Adolf_Heinrich_von_Arnim_Boitzenburg',
+                         'birth',
+                         '1803_04_10'),
+                     ('http___dbpedia_org_resource_Adolf_Heinrich_von_Arnim_Boitzenburg',
+                         'death',
+                         '1868_1_8')]]
+        result = test.run_query().get_data()
+        self.assertEquals(result, expected)
 
 
 if __name__ == '__main__':
