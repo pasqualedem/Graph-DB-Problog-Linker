@@ -290,8 +290,12 @@ class CloudQuery(IGraphDBQuery):
         self.__query = query
         self.__sparql.setQuery(query)
 
+    ## Get query of the CloudQuery object
+    # @return query
     def get_query(self):
         return self.__query
 
+    ## Get dataset of the CloudQuery object
+    # @return dataset
     def get_dataset(self):
         return self.__dataset

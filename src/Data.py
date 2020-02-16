@@ -8,7 +8,8 @@ from Distribution import Normal, Multinomial, Continuous, Discrete
 from Util import get_type, ClauseBuilder
 
 
-## Implements class for Data representation
+##
+# Class that implements the data representation
 class Data:
 
     ## The constructor
@@ -25,9 +26,13 @@ class Data:
     def set_triples(self, triples):
         self.__data = triples
 
+    ## Get the triples of Data object
+    # @returns triples
     def get_data(self):
         return self.__data
 
+    ## Create examples from triples
+    # @returns list of examples
     def to_examples(self, examples=[]):
         cb = ClauseBuilder(self.__triple_mode)
         term_dict = {}
@@ -43,6 +48,9 @@ class Data:
                 examples.append(example)
         return examples
 
+    ## Learn the property distribution for each property in properties
+    # @param: properties: dictionary of properties
+    # @return properties: dictionary of properties with their distributions
     def learn_distributions(self, properties=dict()):
 
         for possible_world in self.__data:
@@ -85,22 +93,30 @@ class Data:
         return program
 
 
+##
+# Implements class for simple program creation
 class PropertyMap(dict):
-    ## create a simple program from property clauses
+
+    ## Create a simple program from property clauses
+    # @return program
     def to_simple_program(self, program=SimpleProgram()):
         for prop in self.values():
             program += prop.to_clause()
         return program
 
 
+##
+# Represents a property with the related distribution probability
 class Property:
 
+    ## The constructor
     def __init__(self, name, distribution):
         self.__name = name
         self.__distribution = distribution
 
     ## create a clause from property and his distribution
     # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
+    # @return annotated disjunction of the clauses or a fact if distributions is Continuous
     def to_clause(self, triple_mode=True):
         if issubclass(type(self.__distribution), Continuous):
             return self.__to_fact()
@@ -129,5 +145,7 @@ class Property:
 
         return AnnotatedDisjunction(clauses, true)
 
+    ## Get the distribution of the property
+    # @return distribution
     def get_distribution(self):
         return self.__distribution

@@ -32,13 +32,21 @@ def binary_search(arr, x):
     return binary_search_rec(arr, 0, len(arr) - 1, x)
 
 
+## Finds and appropriated Problog class for a value
+# @param: value: the value to be checked
+# @returns: an object of type Constant if value is numeric else an object of type Term
 def get_type(value):
     if type(value) is float or type(value) is int:
         return Constant(value)
     return Term(value)
 
 
+##
+# Builds a clause from a triple (subj, pred, obj) in prop(subj, pred, obj) format or pred(subj, obj) format
 class ClauseBuilder:
+
+    ## ClauseBuilder constructor
+    # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
     def __init__(self, triple_mode=True):
         if triple_mode:
             self.__prop = Term('prop')
@@ -46,6 +54,10 @@ class ClauseBuilder:
         else:
             self.get_clause = self.get_pred_clause
 
+    ## builds a clause in pred(subj, obj) format
+    # @param: subj: the subject of the predicate
+    # @param: obj: the object of the predicate
+    # @param: prob: the probability of the clause
     def get_pred_clause(self, subj, pred, obj=None, prob=None):
         if type(pred) is not Term:
             if type(pred) is Constant:
@@ -56,6 +68,11 @@ class ClauseBuilder:
             return pred(subj)
         return pred(subj, obj, p=prob)
 
+    ## builds a clause in prop(subj, pred, obj) format
+    # @param: subj: the subject of the predicate
+    # @param: pred: the predicate
+    # @param: obj: the object of the predicate
+    # @param: prob: the probability of the clause
     def get_prop_clause(self, subj, pred, obj=None, prob=None):
         if obj is None:
             return self.__prop(subj, pred, p=prob)
