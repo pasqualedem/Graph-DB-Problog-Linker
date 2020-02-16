@@ -1170,14 +1170,14 @@ class UiMainWindow(object):
     ## method related to __nodes_and_relationships, execute cypher query that retrieves all nodes (with properties) and relationships between them
     def nodes_and_relationships(self):
         dbms_query = DbmsQuery(
-            "MATCH (n) OPTIONAL MATCH (n)-[r]-(m) RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
+            "MATCH (n) OPTIONAL MATCH (n)-[r]->(m) RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
             "parse_node_rels_with_props_map")
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
     ## method related to __relationships_without_properties, execute cypher query that retrieves all relationships between nodes
     def relationships_without_properties(self):
-        dbms_query = DbmsQuery("MATCH (n)-[r]-(m) RETURN ID(n), TYPE(r), ID(m)", "parse_node_rels")
+        dbms_query = DbmsQuery("MATCH (n)-[r]->(m) RETURN ID(n), TYPE(r), ID(m)", "parse_node_rels")
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
@@ -1203,7 +1203,7 @@ class UiMainWindow(object):
     def relationships_between_with_properties(self):
         first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
         dbms_query = DbmsQuery(
-            "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]-(m" + second_node_label_text + ") RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
+            "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]->(m" + second_node_label_text + ") RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
             "parse_node_rels_with_props_map")
 
         self.__cypher_data = dbms_query.run_query()
@@ -1215,7 +1215,7 @@ class UiMainWindow(object):
         first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
 
         dbms_query = DbmsQuery(
-            "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]-(m" + second_node_label_text + ") RETURN ID(n), TYPE(r), ID(m)",
+            "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]->(m" + second_node_label_text + ") RETURN ID(n), TYPE(r), ID(m)",
             "parse_node_rels")
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
@@ -1227,12 +1227,8 @@ class UiMainWindow(object):
         query_where = " AND ".join(
             [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                (str(self.__property_filters_table.cellWidget(i, 1).text())
-                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
-                                                                                                  "'" + self.__property_filters_table.cellWidget(
-                                                                                              i, 1).text()) + "'"))
-              if self.__property_filters_table.cellWidget(i,
-                                                          0).text() != "" and self.__property_filters_table.cellWidget(
-                i, 1).text() != "" else '')
+                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
+              if self.__property_filters_table.cellWidget(i, 0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1254,19 +1250,15 @@ class UiMainWindow(object):
     ## if a prefix is used in a property name or a property value that prefix should be specified in the prefix table
     def sparql_execute_property_filters_query(self):
         query = "\n".join(
-            [("PREFIX " + self.__prefixs_table.cellWidget(i, 1).text() + ': <' + self.__prefixs_table.cellWidget(i,
-                                                                                                                 0).text() + '>'
-              if self.__prefixs_table.cellWidget(i, 0).text() != "" and self.__prefixs_table.cellWidget(i,
-                                                                                                        1).text() != "" else '')
+            [("PREFIX " + self.__prefixs_table.cellWidget(i, 1).text() + ': <' + self.__prefixs_table.cellWidget(i, 0).text() + '>'
+              if self.__prefixs_table.cellWidget(i, 0).text() != "" and self.__prefixs_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__prefixs_table.rowCount())])
 
         query += "\nSELECT * "
         query_where = " . ".join(
             [("?subject " + self.__sparql_property_filters_table.cellWidget(i, 0).text() + " " + str(
                 self.__sparql_property_filters_table.cellWidget(i, 1).text())
-              if self.__sparql_property_filters_table.cellWidget(i,
-                                                                 0).text() != "" and self.__sparql_property_filters_table.cellWidget(
-                i, 1).text() != "" else '')
+              if self.__sparql_property_filters_table.cellWidget(i, 0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
              for i in range(0, self.__sparql_property_filters_table.rowCount())])
 
         if query_where != "":
