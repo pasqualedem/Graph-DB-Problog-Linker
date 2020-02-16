@@ -1,6 +1,5 @@
 from math import floor
 
-
 ## implements recursive binary search for an array list
 # @param: arr: the array where to search x
 # @param: left: the first index of the array
@@ -24,6 +23,7 @@ def binary_search_rec(arr, left, right, x):
             right = mid - 1
         return binary_search_rec(arr, left, right, x)
 
+
 ## implements binary search for an array list
 # @param: arr: the array where to search x
 # @param: x: the value that as to be searched
@@ -31,7 +31,28 @@ def binary_search_rec(arr, left, right, x):
 def binary_search(arr, x):
     return binary_search_rec(arr, 0, len(arr) - 1, x)
 
+
 def get_type(value):
     if type(value) is float or type(value) is int:
         return Constant(value)
     return Term(value)
+
+
+class ClauseBuilder:
+    def __init__(self, triple_mode=True):
+        if triple_mode:
+            self.__prop = Term('prop')
+            self.get_clause = self.get_prop_clause
+        else:
+            self.get_clause = self.get_pred_clause
+
+    def get_pred_clause(self, subj, pred, obj, prob=None):
+        if type(pred) is not Term:
+            if type(pred) is Constant:
+                pred = Term(pred.functor())
+            else:
+                raise Exception
+        return pred(subj, obj, p=prob)
+
+    def get_prop_clause(self, subj, pred, obj, prob=None):
+        return self.__prop(subj, pred, obj, p=prob)

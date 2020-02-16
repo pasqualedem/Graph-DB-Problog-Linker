@@ -6,7 +6,7 @@ from Data import Data, PropertyMap, Property
 from problog import get_evaluatable
 from problog.logic import Term, Var, Constant
 
-from Distribution import Multinomial
+from Distribution import Multinomial, Discrete
 
 
 class MyTestCase(unittest.TestCase):
@@ -104,7 +104,10 @@ class MyTestCase(unittest.TestCase):
         property_map = PropertyMap()
         property_map["brand"] = Property("brand", Multinomial())
 
+        print(issubclass(type(property_map['brand'].get_distribution()), Discrete))
+
         property_map = data.learn_distributions(property_map)
+        print(issubclass(type(property_map['brand'].get_distribution()), Discrete))
         s = property_map.to_simple_program()
         s += list(PrologString("query(prop(_generic_individual_, brand, X)).").__iter__())[0]
 
