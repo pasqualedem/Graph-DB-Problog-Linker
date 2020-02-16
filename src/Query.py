@@ -77,7 +77,7 @@ def parse_property_map(query_result):
             length += 1
         data.append(triples)
 
-    return triples, length
+    return data, length
 
 
 # parse to triples result of a query with return like RETURN n, TYPE(r), m
