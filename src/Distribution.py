@@ -114,9 +114,9 @@ class Multinomial(Discrete):
 # A continuous distribution transformed into a multinomial interspersing the domain
 class Interspersed(Multinomial):
 
-    ## Interspersed constructor
-    # @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts member
-    # @param: intervals: a list of oredered values that represents the intervals
+    # # Interspersed constructor @param: pseudocounts: a dictionary that contains pseudocounts and initialize counts
+    # member @param: intervals: a list of oredered values that represents the intervals,
+    # [x1, x2, ..., xn] means (x1,x2],(x2,x3],...(xn-1,xn)
     def __init__(self, intervals: list = None, pseudocounts: dict = None):
         super(Interspersed, self).__init__(pseudocounts)
         self.__intervals = intervals
@@ -126,7 +126,7 @@ class Interspersed(Multinomial):
     # @param: end: the ending interval right extreme
     # @param: num: the number of intervals
     # @param: infinite: tells to add the intervals (-inf,start] and [end,inf)
-    def __lin_intervals(self, start, end, num, infinite=True):
+    def lin_intervals(self, start, end, num, infinite=True):
         self.__intervals = list(linspace(start=start, stop=end, num=num))
         if infinite:
             self.__intervals = [-inf] + self.__intervals + [inf]
@@ -136,7 +136,7 @@ class Interspersed(Multinomial):
     # @param: end: the ending interval right extreme
     # @param: num: the number of intervals
     # @param: infinite: tells to add the intervals (-inf,start] and [end,inf)
-    def __log_intervals(self, start, end, num, infinite=True):
+    def log_intervals(self, start, end, num, infinite=True):
         self.__intervals = list(logspace(start=start, stop=end, num=num))
         if infinite:
             self.__intervals = [-inf] + self.__intervals + [inf]

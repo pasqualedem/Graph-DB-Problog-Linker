@@ -20,7 +20,6 @@ class StructureLearnerTest(unittest.TestCase):
         for name, value in structure_learner.get_statistics():
             print('%20s:\t%s' % (name, value))
         print('          Total time:\t%.4fs' % time_total)
-        self.assertTrue(True)
 
     def test_learning_with_logfile(self):
         structure_learner = StructureLearner(PrologFile('surfing.data'), log_file="log.txt")
@@ -36,7 +35,6 @@ class StructureLearnerTest(unittest.TestCase):
         for name, value in structure_learner.get_statistics():
             print('%20s:\t%s' % (name, value))
         print('          Total time:\t%.4fs' % time_total)
-        self.assertTrue(True)
 
 
 if __name__ == '__main__':
