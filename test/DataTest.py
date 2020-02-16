@@ -21,7 +21,6 @@ class DataTest(unittest.TestCase):
         data = Data(data_triples, 12, True)
         examples = data.to_examples()
         print(examples)
-        self.assertTrue(True)
 
     def test_parse(self):
         l = list()
@@ -40,7 +39,6 @@ class DataTest(unittest.TestCase):
         pr += query(prop(marco, papa, x))
         r = get_evaluatable().create_from(pr).evaluate()
         print(r)
-        assert True
 
 
 class PropertyTest(unittest.TestCase):
@@ -107,10 +105,7 @@ class PropertyTest(unittest.TestCase):
         property_map = PropertyMap()
         property_map["brand"] = Property("brand", Multinomial())
 
-        print(issubclass(type(property_map['brand'].get_distribution()), Discrete))
-
         property_map = data.learn_distributions(property_map)
-        print(issubclass(type(property_map['brand'].get_distribution()), Discrete))
         s = property_map.to_simple_program()
         s += list(PrologString("query(prop(_generic_individual_, brand, X)).").__iter__())[0]
 
