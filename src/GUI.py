@@ -6,15 +6,17 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QTableWidgetItem
+from problog import get_evaluatable
+from problog.learning import lfi
 from problog.learning.lfi import read_examples
-from problog.program import SimpleProgram
+from problog.program import SimpleProgram, PrologString
 from problog.program import PrologFile
+from problog.tasks import sample
 
 from Data import PropertyMap, Property
 from src.Query import DbmsQuery
 from src.Query import CloudQuery
 from Distribution import *
-
 
 ##
 # Implements a class for GUI representation and operations' execution
@@ -243,8 +245,7 @@ class UiMainWindow(object):
         self.__triples_table.horizontalHeader().setDefaultSectionSize(119)
         self.gridLayout_7.addWidget(self.__triples_table, 1, 0, 1, 1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.graph_db, icon, "")
         self.sparql = QtWidgets.QWidget()
         self.sparql.setObjectName("sparql")
@@ -488,6 +489,28 @@ class UiMainWindow(object):
         self.gridLayout_11 = QtWidgets.QGridLayout(self.layoutWidget8)
         self.gridLayout_11.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_11.setObjectName("gridLayout_11")
+        self.__inference = QtWidgets.QPushButton(self.layoutWidget8)
+        self.__inference.setObjectName("__inference")
+        self.gridLayout_11.addWidget(self.__inference, 4, 0, 1, 1)
+        self.__problog_clauses_label = QtWidgets.QLabel(self.layoutWidget8)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__problog_clauses_label.setFont(font)
+        self.__problog_clauses_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__problog_clauses_label.setObjectName("__problog_clauses_label")
+        self.gridLayout_11.addWidget(self.__problog_clauses_label, 0, 0, 1, 3)
+        self.__sampling = QtWidgets.QPushButton(self.layoutWidget8)
+        self.__sampling.setObjectName("__sampling")
+        self.gridLayout_11.addWidget(self.__sampling, 4, 2, 1, 1)
+        self.__problog_clauses_table = QtWidgets.QTableWidget(self.layoutWidget8)
+        self.__problog_clauses_table.setObjectName("__problog_clauses_table")
+        self.__problog_clauses_table.setColumnCount(1)
+        self.__problog_clauses_table.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.__problog_clauses_table.setHorizontalHeaderItem(0, item)
+        self.__problog_clauses_table.horizontalHeader().setCascadingSectionResizes(False)
+        self.__problog_clauses_table.horizontalHeader().setDefaultSectionSize(168)
+        self.gridLayout_11.addWidget(self.__problog_clauses_table, 1, 0, 1, 3)
         self.__examples_table = QtWidgets.QTableWidget(self.layoutWidget8)
         self.__examples_table.setObjectName("__examples_table")
         self.__examples_table.setColumnCount(2)
@@ -496,35 +519,17 @@ class UiMainWindow(object):
         self.__examples_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.__examples_table.setHorizontalHeaderItem(1, item)
-        self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 1)
-        self.__problog_caluses_label = QtWidgets.QLabel(self.layoutWidget8)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__problog_caluses_label.setFont(font)
-        self.__problog_caluses_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__problog_caluses_label.setObjectName("__problog_caluses_label")
-        self.gridLayout_11.addWidget(self.__problog_caluses_label, 0, 0, 1, 1)
-        self.__execute_program = QtWidgets.QPushButton(self.layoutWidget8)
-        self.__execute_program.setObjectName("__execute_program")
-        self.gridLayout_11.addWidget(self.__execute_program, 4, 0, 1, 1)
-        self.__problog_clauses_table = QtWidgets.QTableWidget(self.layoutWidget8)
-        self.__problog_clauses_table.setObjectName("__problog_clauses_table")
-        self.__problog_clauses_table.setColumnCount(2)
-        self.__problog_clauses_table.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        self.__problog_clauses_table.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.__problog_clauses_table.setHorizontalHeaderItem(1, item)
-        self.__problog_clauses_table.horizontalHeader().setCascadingSectionResizes(False)
-        self.__problog_clauses_table.horizontalHeader().setDefaultSectionSize(168)
-        self.gridLayout_11.addWidget(self.__problog_clauses_table, 1, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 3)
         self.__examples_label = QtWidgets.QLabel(self.layoutWidget8)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.__examples_label.setFont(font)
         self.__examples_label.setAlignment(QtCore.Qt.AlignCenter)
         self.__examples_label.setObjectName("__examples_label")
-        self.gridLayout_11.addWidget(self.__examples_label, 2, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.__examples_label, 2, 0, 1, 3)
+        self.__lfi = QtWidgets.QPushButton(self.layoutWidget8)
+        self.__lfi.setObjectName("__lfi")
+        self.gridLayout_11.addWidget(self.__lfi, 4, 1, 1, 1)
         self.layoutWidget9 = QtWidgets.QWidget(self.Problog)
         self.layoutWidget9.setGeometry(QtCore.QRect(390, 20, 211, 105))
         self.layoutWidget9.setObjectName("layoutWidget9")
@@ -737,17 +742,17 @@ class UiMainWindow(object):
         item.setText(_translate("MainWindow", "distribution to learn"))
         self.__distr_learning.setText(_translate("MainWindow", "Execute"))
         self.__add_distribution.setText(_translate("MainWindow", "Add distribution"))
+        self.__inference.setText(_translate("MainWindow", "Inference"))
+        self.__problog_clauses_label.setText(_translate("MainWindow", "Problog clauses"))
+        self.__sampling.setText(_translate("MainWindow", "Sampling"))
+        item = self.__problog_clauses_table.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Clause"))
         item = self.__examples_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Property"))
         item = self.__examples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Truth"))
-        self.__problog_caluses_label.setText(_translate("MainWindow", "Problog instructions"))
-        self.__execute_program.setText(_translate("MainWindow", "Execute program"))
-        item = self.__problog_clauses_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Probability"))
-        item = self.__problog_clauses_table.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Clause"))
         self.__examples_label.setText(_translate("MainWindow", "Examples"))
+        self.__lfi.setText(_translate("MainWindow", "Learning LFI"))
         self.__background_knowledge_label.setText(_translate("MainWindow", "Background knowledge"))
         self.__bgk_cypher.setText(_translate("MainWindow", "Add cypher result "))
         self.__bgk_sparql.setText(_translate("MainWindow", "Add SPARQL result "))
@@ -870,6 +875,46 @@ class UiMainWindow(object):
         self.__distr_learning.clicked.connect(
             lambda: self.distr_learning())
 
+        self.__sparql_distr_learning.clicked.connect(
+            lambda: self.distr_learning())
+
+        self.__inference.clicked.connect(
+            lambda: self.inference())
+
+        self.__lfi.clicked.connect(
+            lambda: self.learning_from_interpretation())
+
+        self.__sampling.clicked.connect(
+            lambda: self.sampling())
+
+    ## method related to __sampling, execute problong sampling operation based on given clauses
+    def sampling(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        results = list(sample.sample(self.__problog_program, n=20, format='dict'))
+
+        print(results)
+
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(results, file=f)
+
+    ## method related to __lfi, execute problog leraning from interpretation to learn probabilities which value is t()
+    def learning_from_interpretation(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        score, weights, atoms, iteration, lfi_problem = lfi.run_lfi(self.__problog_program, self.__examples)
+
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(lfi_problem.get_model(), file=f)
+
+    ## method related to __inference, answer given queries
+    def inference(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        results = get_evaluatable().create_from(self.__problog_program).evaluate()
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(results, file=f)
+
     ## method related to __bgk_sparql, add sparql query results as background knowledge
     def bgk_sparql(self):
         problog_program = self.__sparql_data.parse(self.__problog_program)
@@ -908,8 +953,30 @@ class UiMainWindow(object):
         self.write_examples(examples)
         self.__examples.extend(examples)
 
-    ## method related to __distr_learning, learn proeprty values distributions and use annotated clauses as background knowkledge
+    ## method related to __distr_learning, learn property values distributions and use annotated clauses as background knowkledge
     def distr_learning(self):
+        property_map = PropertyMap()
+
+        for i in range(0, self.__prop_distr_table.rowCount()):
+            distr = self.__prop_distr_table.cellWidget(i, 1).currentText()
+            if self.__prop_distr_table.cellWidget(i, 0).text() != "":
+                if distr == "Normal":
+                    distr_obj = Normal()
+                elif distr == "Interspersed":
+                    distr_obj = Interspersed()
+                else:
+                    distr_obj = Multinomial()
+
+                property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = \
+                    Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
+
+        property_map = self.__cypher_data.learn_distributions(property_map)
+        problog_program = property_map.to_simple_program()
+        self.write_clauses(problog_program)
+        programs_merge(self.__problog_program, problog_program)
+
+    ## method related to __sparql_distr_learning, learn property values distributions and use annotated clauses as background knowkledge
+    def sparql_distr_learning(self):
         property_map = PropertyMap()
 
         for i in range(0, self.__prop_distr_table.rowCount()):
@@ -926,7 +993,7 @@ class UiMainWindow(object):
             property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = Property(
                 self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
 
-        property_map = self.__cypher_data.learn_distributions(property_map)
+        property_map = self.__sparql_data.learn_distributions(property_map)
         problog_program = property_map.to_simple_program()
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
