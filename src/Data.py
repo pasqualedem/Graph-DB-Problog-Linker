@@ -8,7 +8,8 @@ from Distribution import Normal, Multinomial, Continuous, Discrete
 from Util import get_type, ClauseBuilder
 
 
-## Implements class for data representation
+##
+# Class that implements the data representation
 class Data:
 
     ## The constructor
@@ -92,7 +93,8 @@ class Data:
         return program
 
 
-## Implements class for simple program creation
+##
+# Implements class for simple program creation
 class PropertyMap(dict):
 
     ## Create a simple program from property clauses
@@ -103,7 +105,8 @@ class PropertyMap(dict):
         return program
 
 
-## Implements class for property representation
+##
+# Represents a property with the related distribution probability
 class Property:
 
     ## The constructor
