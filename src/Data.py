@@ -125,7 +125,7 @@ class Property:
         values = dic.keys()
         for value in values:
             t_value = get_type(value)
-            clauses.append(cb.get_clause(sub, name, t_value, p=dic[value]))
+            clauses.append(cb.get_clause(sub, name, t_value, prob=dic[value]))
 
         return AnnotatedDisjunction(clauses, true)
 

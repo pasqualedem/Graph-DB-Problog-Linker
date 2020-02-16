@@ -46,13 +46,17 @@ class ClauseBuilder:
         else:
             self.get_clause = self.get_pred_clause
 
-    def get_pred_clause(self, subj, pred, obj, prob=None):
+    def get_pred_clause(self, subj, pred, obj=None, prob=None):
         if type(pred) is not Term:
             if type(pred) is Constant:
                 pred = Term(pred.functor())
             else:
                 raise Exception
+        if obj is None:
+            return pred(subj)
         return pred(subj, obj, p=prob)
 
-    def get_prop_clause(self, subj, pred, obj, prob=None):
+    def get_prop_clause(self, subj, pred, obj=None, prob=None):
+        if obj is None:
+            return self.__prop(subj, pred, p=prob)
         return self.__prop(subj, pred, obj, p=prob)
