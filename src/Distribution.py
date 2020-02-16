@@ -145,5 +145,9 @@ class Interspersed(Multinomial):
     # @param: value: the value occurred
     def add(self, value: float):
         index = binary_search(self.__intervals, value)
-        interval = '[' + str(self.__intervals[index-1]) + ', ' + str(self.__intervals[index]) + ']'
+        interval = '(' + str(self.__intervals[index-1]) + ', ' + str(self.__intervals[index])
+        if index == len(self.__intervals)-1:
+            interval += ')'
+        else:
+            interval += ']'
         super(Interspersed, self).add(interval)

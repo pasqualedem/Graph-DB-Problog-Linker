@@ -14,11 +14,12 @@ class MyTestCase(unittest.TestCase):
             mult.add(num)
 
         result = mult.get_parameters()
-        self.assertAlmostEqual(expected, result)
+        for key in expected.keys():
+            self.assertAlmostEqual(expected[key], result[key])
 
     def test_interspersed(self):
         data = [12, 43, 41, 32, 34, 12, 43, 24, 21, 45, 34, 32, 10, 1, 2, 4, 49, 27, 11, 23]
-        expected = {'[10, 20]': 0.15, '[40, 50]': 0.25, '[30, 40]': 0.2, '[20, 30]': 0.2, '[0, 10]': 0.2}
+        expected = {'(10, 20]': 0.15, '(40, 50)': 0.25, '(30, 40]': 0.2, '(20, 30]': 0.2, '(0, 10]': 0.2}
         intervals = [0, 10, 20, 30, 40, 50]
         inter = Interspersed(intervals)
 
@@ -27,7 +28,8 @@ class MyTestCase(unittest.TestCase):
 
         result = inter.get_parameters()
         print(result)
-        self.assertAlmostEqual(expected, result)
+        for key in expected.keys():
+            self.assertAlmostEqual(expected[key], result[key])
 
     def test_continuous(self):
         data = [12, 43, 41, 32, 34, 12, 43, 24, 21, 45, 34, 32, 10, 1, 2, 4, 49, 27, 11, 23]

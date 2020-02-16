@@ -6,11 +6,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QTableWidgetItem
+from problog import get_evaluatable
+from problog.learning import lfi
 from problog.learning.lfi import read_examples
-from problog.program import SimpleProgram
+from problog.program import SimpleProgram, PrologString
 from problog.program import PrologFile
+from problog.tasks import sample
 
 from Data import PropertyMap, Property
+from StructureLearning import StructureLearner
 from src.Query import DbmsQuery
 from src.Query import CloudQuery
 from Distribution import *
@@ -26,13 +30,14 @@ class UiMainWindow(object):
         self.__sparql_data = None
         self.__problog_program = SimpleProgram()
         self.__examples = []
+        self.__interspersed_distributions = dict()
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(885, 635)
+        MainWindow.resize(891, 900)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.__tabs = QtWidgets.QTabWidget(self.centralwidget)
-        self.__tabs.setGeometry(QtCore.QRect(20, 20, 851, 591))
+        self.__tabs.setGeometry(QtCore.QRect(20, 20, 861, 861))
         self.__tabs.setObjectName("__tabs")
         self.graph_db = QtWidgets.QWidget()
         self.graph_db.setObjectName("graph_db")
@@ -86,7 +91,7 @@ class UiMainWindow(object):
         self.__relationships_without_properties.setObjectName("__relationships_without_properties")
         self.gridLayout_2.addWidget(self.__relationships_without_properties, 0, 1, 1, 1)
         self.layoutWidget2 = QtWidgets.QWidget(self.graph_db)
-        self.layoutWidget2.setGeometry(QtCore.QRect(20, 292, 391, 251))
+        self.layoutWidget2.setGeometry(QtCore.QRect(20, 292, 391, 521))
         self.layoutWidget2.setObjectName("layoutWidget2")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.layoutWidget2)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -136,7 +141,7 @@ class UiMainWindow(object):
         self.__line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.__line_3.setObjectName("__line_3")
         self.__line_4 = QtWidgets.QFrame(self.graph_db)
-        self.__line_4.setGeometry(QtCore.QRect(425, 270, 20, 291))
+        self.__line_4.setGeometry(QtCore.QRect(425, 270, 20, 581))
         self.__line_4.setFrameShape(QtWidgets.QFrame.VLine)
         self.__line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.__line_4.setObjectName("__line_4")
@@ -215,7 +220,7 @@ class UiMainWindow(object):
         self.__relationship_type_label.setObjectName("__relationship_type_label")
         self.gridLayout_3.addWidget(self.__relationship_type_label, 0, 5, 1, 1)
         self.layoutWidget3 = QtWidgets.QWidget(self.graph_db)
-        self.layoutWidget3.setGeometry(QtCore.QRect(460, 290, 361, 251))
+        self.layoutWidget3.setGeometry(QtCore.QRect(460, 290, 361, 521))
         self.layoutWidget3.setObjectName("layoutWidget3")
         self.gridLayout_7 = QtWidgets.QGridLayout(self.layoutWidget3)
         self.gridLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -269,7 +274,7 @@ class UiMainWindow(object):
         self.__sparql_execute_user_query.setObjectName("__sparql_execute_user_query")
         self.gridLayout_5.addWidget(self.__sparql_execute_user_query, 0, 2, 1, 1)
         self.layoutWidget_3 = QtWidgets.QWidget(self.sparql)
-        self.layoutWidget_3.setGeometry(QtCore.QRect(20, 340, 801, 211))
+        self.layoutWidget_3.setGeometry(QtCore.QRect(20, 450, 801, 361))
         self.layoutWidget_3.setObjectName("layoutWidget_3")
         self.gridLayout_8 = QtWidgets.QGridLayout(self.layoutWidget_3)
         self.gridLayout_8.setContentsMargins(0, 0, 0, 0)
@@ -302,7 +307,7 @@ class UiMainWindow(object):
         self.__line_5.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.__line_5.setObjectName("__line_5")
         self.__line_6 = QtWidgets.QFrame(self.sparql)
-        self.__line_6.setGeometry(QtCore.QRect(-10, 310, 891, 20))
+        self.__line_6.setGeometry(QtCore.QRect(-20, 420, 891, 20))
         self.__line_6.setFrameShape(QtWidgets.QFrame.HLine)
         self.__line_6.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.__line_6.setObjectName("__line_6")
@@ -322,7 +327,7 @@ class UiMainWindow(object):
         self.__sparql_endpoint_label.setObjectName("__sparql_endpoint_label")
         self.gridLayout_9.addWidget(self.__sparql_endpoint_label, 0, 0, 1, 1)
         self.layoutWidget6 = QtWidgets.QWidget(self.sparql)
-        self.layoutWidget6.setGeometry(QtCore.QRect(21, 131, 391, 171))
+        self.layoutWidget6.setGeometry(QtCore.QRect(21, 131, 391, 281))
         self.layoutWidget6.setObjectName("layoutWidget6")
         self.gridLayout_6 = QtWidgets.QGridLayout(self.layoutWidget6)
         self.gridLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -348,7 +353,7 @@ class UiMainWindow(object):
         self.__prefixs_table.horizontalHeader().setDefaultSectionSize(193)
         self.gridLayout_6.addWidget(self.__prefixs_table, 1, 0, 1, 2)
         self.layoutWidget7 = QtWidgets.QWidget(self.sparql)
-        self.layoutWidget7.setGeometry(QtCore.QRect(430, 130, 391, 171))
+        self.layoutWidget7.setGeometry(QtCore.QRect(430, 130, 391, 281))
         self.layoutWidget7.setObjectName("layoutWidget7")
         self.gridLayout_10 = QtWidgets.QGridLayout(self.layoutWidget7)
         self.gridLayout_10.setContentsMargins(0, 0, 0, 0)
@@ -417,51 +422,21 @@ class UiMainWindow(object):
         self.__evidence_file.setFont(font)
         self.__evidence_file.setObjectName("__evidence_file")
         self.gridLayout_13.addWidget(self.__evidence_file, 3, 0, 1, 2)
-        self.layoutWidget_5 = QtWidgets.QWidget(self.Problog)
-        self.layoutWidget_5.setGeometry(QtCore.QRect(390, 310, 441, 151))
-        self.layoutWidget_5.setObjectName("layoutWidget_5")
-        self.gridLayout_15 = QtWidgets.QGridLayout(self.layoutWidget_5)
-        self.gridLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout_15.setObjectName("gridLayout_15")
-        self.__sparql_prob_bgk_label = QtWidgets.QLabel(self.layoutWidget_5)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__sparql_prob_bgk_label.setFont(font)
-        self.__sparql_prob_bgk_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__sparql_prob_bgk_label.setObjectName("__sparql_prob_bgk_label")
-        self.gridLayout_15.addWidget(self.__sparql_prob_bgk_label, 0, 0, 1, 1)
-        self.__sparql_add_distribution = QtWidgets.QPushButton(self.layoutWidget_5)
-        self.__sparql_add_distribution.setObjectName("__sparql_add_distribution")
-        self.gridLayout_15.addWidget(self.__sparql_add_distribution, 0, 1, 1, 1)
-        self.__sparql_prop_distr_table = QtWidgets.QTableWidget(self.layoutWidget_5)
-        self.__sparql_prop_distr_table.setRowCount(1)
-        self.__sparql_prop_distr_table.setObjectName("__sparql_prop_distr_table")
-        self.__sparql_prop_distr_table.setColumnCount(2)
-        item = QtWidgets.QTableWidgetItem()
-        self.__sparql_prop_distr_table.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.__sparql_prop_distr_table.setHorizontalHeaderItem(1, item)
-        self.__sparql_prop_distr_table.horizontalHeader().setDefaultSectionSize(218)
-        self.gridLayout_15.addWidget(self.__sparql_prop_distr_table, 1, 0, 1, 2)
-        self.__sparql_distr_learning = QtWidgets.QPushButton(self.layoutWidget_5)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__sparql_distr_learning.setFont(font)
-        self.__sparql_distr_learning.setObjectName("__sparql_distr_learning")
-        self.gridLayout_15.addWidget(self.__sparql_distr_learning, 2, 0, 1, 2)
         self.layoutWidget_6 = QtWidgets.QWidget(self.Problog)
-        self.layoutWidget_6.setGeometry(QtCore.QRect(390, 140, 441, 151))
+        self.layoutWidget_6.setGeometry(QtCore.QRect(390, 150, 441, 311))
         self.layoutWidget_6.setObjectName("layoutWidget_6")
         self.gridLayout_16 = QtWidgets.QGridLayout(self.layoutWidget_6)
         self.gridLayout_16.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_16.setObjectName("gridLayout_16")
-        self.__prob_bgk_label = QtWidgets.QLabel(self.layoutWidget_6)
+        self.__distr_learning = QtWidgets.QPushButton(self.layoutWidget_6)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.__prob_bgk_label.setFont(font)
-        self.__prob_bgk_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__prob_bgk_label.setObjectName("__prob_bgk_label")
-        self.gridLayout_16.addWidget(self.__prob_bgk_label, 0, 0, 1, 1)
+        self.__distr_learning.setFont(font)
+        self.__distr_learning.setObjectName("__distr_learning")
+        self.gridLayout_16.addWidget(self.__distr_learning, 2, 2, 1, 2)
+        self.__add_distribution = QtWidgets.QPushButton(self.layoutWidget_6)
+        self.__add_distribution.setObjectName("__add_distribution")
+        self.gridLayout_16.addWidget(self.__add_distribution, 0, 3, 1, 1)
         self.__prop_distr_table = QtWidgets.QTableWidget(self.layoutWidget_6)
         self.__prop_distr_table.setRowCount(1)
         self.__prop_distr_table.setObjectName("__prop_distr_table")
@@ -471,22 +446,34 @@ class UiMainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.__prop_distr_table.setHorizontalHeaderItem(1, item)
         self.__prop_distr_table.horizontalHeader().setDefaultSectionSize(218)
-        self.gridLayout_16.addWidget(self.__prop_distr_table, 1, 0, 1, 2)
-        self.__distr_learning = QtWidgets.QPushButton(self.layoutWidget_6)
+        self.gridLayout_16.addWidget(self.__prop_distr_table, 1, 0, 1, 4)
+        self.__prob_bgk_label = QtWidgets.QLabel(self.layoutWidget_6)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.__distr_learning.setFont(font)
-        self.__distr_learning.setObjectName("__distr_learning")
-        self.gridLayout_16.addWidget(self.__distr_learning, 2, 0, 1, 2)
-        self.__add_distribution = QtWidgets.QPushButton(self.layoutWidget_6)
-        self.__add_distribution.setObjectName("__add_distribution")
-        self.gridLayout_16.addWidget(self.__add_distribution, 0, 1, 1, 1)
+        self.__prob_bgk_label.setFont(font)
+        self.__prob_bgk_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__prob_bgk_label.setObjectName("__prob_bgk_label")
+        self.gridLayout_16.addWidget(self.__prob_bgk_label, 0, 0, 1, 3)
+        self.__cyhper_distr = QtWidgets.QRadioButton(self.layoutWidget_6)
+        self.__cyhper_distr.setObjectName("__cyhper_distr")
+        self.gridLayout_16.addWidget(self.__cyhper_distr, 2, 1, 1, 1)
+        self.__sparql_distr = QtWidgets.QRadioButton(self.layoutWidget_6)
+        self.__sparql_distr.setChecked(True)
+        self.__sparql_distr.setObjectName("__sparql_distr")
+        self.gridLayout_16.addWidget(self.__sparql_distr, 2, 0, 1, 1)
         self.layoutWidget8 = QtWidgets.QWidget(self.Problog)
         self.layoutWidget8.setGeometry(QtCore.QRect(20, 20, 341, 441))
         self.layoutWidget8.setObjectName("layoutWidget8")
         self.gridLayout_11 = QtWidgets.QGridLayout(self.layoutWidget8)
         self.gridLayout_11.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_11.setObjectName("gridLayout_11")
+        self.__problog_clauses_label = QtWidgets.QLabel(self.layoutWidget8)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__problog_clauses_label.setFont(font)
+        self.__problog_clauses_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__problog_clauses_label.setObjectName("__problog_clauses_label")
+        self.gridLayout_11.addWidget(self.__problog_clauses_label, 0, 0, 1, 2)
         self.__examples_table = QtWidgets.QTableWidget(self.layoutWidget8)
         self.__examples_table.setObjectName("__examples_table")
         self.__examples_table.setColumnCount(2)
@@ -495,144 +482,204 @@ class UiMainWindow(object):
         self.__examples_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.__examples_table.setHorizontalHeaderItem(1, item)
-        self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 1)
-        self.__problog_instructions_label = QtWidgets.QLabel(self.layoutWidget8)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__problog_instructions_label.setFont(font)
-        self.__problog_instructions_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__problog_instructions_label.setObjectName("__problog_instructions_label")
-        self.gridLayout_11.addWidget(self.__problog_instructions_label, 0, 0, 1, 1)
-        self.__execute_program = QtWidgets.QPushButton(self.layoutWidget8)
-        self.__execute_program.setObjectName("__execute_program")
-        self.gridLayout_11.addWidget(self.__execute_program, 4, 0, 1, 1)
-        self.__problog_instructions_table = QtWidgets.QTableWidget(self.layoutWidget8)
-        self.__problog_instructions_table.setObjectName("__problog_instructions_table")
-        self.__problog_instructions_table.setColumnCount(2)
-        self.__problog_instructions_table.setRowCount(0)
+        self.gridLayout_11.addWidget(self.__examples_table, 3, 0, 1, 2)
+        self.__problog_clauses_table = QtWidgets.QTableWidget(self.layoutWidget8)
+        self.__problog_clauses_table.setObjectName("__problog_clauses_table")
+        self.__problog_clauses_table.setColumnCount(1)
+        self.__problog_clauses_table.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
-        self.__problog_instructions_table.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.__problog_instructions_table.setHorizontalHeaderItem(1, item)
-        self.__problog_instructions_table.horizontalHeader().setCascadingSectionResizes(False)
-        self.__problog_instructions_table.horizontalHeader().setDefaultSectionSize(168)
-        self.gridLayout_11.addWidget(self.__problog_instructions_table, 1, 0, 1, 1)
+        self.__problog_clauses_table.setHorizontalHeaderItem(0, item)
+        self.__problog_clauses_table.horizontalHeader().setCascadingSectionResizes(False)
+        self.__problog_clauses_table.horizontalHeader().setDefaultSectionSize(168)
+        self.gridLayout_11.addWidget(self.__problog_clauses_table, 1, 0, 1, 2)
         self.__examples_label = QtWidgets.QLabel(self.layoutWidget8)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.__examples_label.setFont(font)
         self.__examples_label.setAlignment(QtCore.Qt.AlignCenter)
         self.__examples_label.setObjectName("__examples_label")
-        self.gridLayout_11.addWidget(self.__examples_label, 2, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.__examples_label, 2, 0, 1, 2)
         self.layoutWidget9 = QtWidgets.QWidget(self.Problog)
-        self.layoutWidget9.setGeometry(QtCore.QRect(390, 20, 211, 105))
+        self.layoutWidget9.setGeometry(QtCore.QRect(390, 20, 221, 106))
         self.layoutWidget9.setObjectName("layoutWidget9")
         self.gridLayout_12 = QtWidgets.QGridLayout(self.layoutWidget9)
         self.gridLayout_12.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_12.setObjectName("gridLayout_12")
-        self.__background_knowledge_label = QtWidgets.QLabel(self.layoutWidget9)
+        self._prop = QtWidgets.QRadioButton(self.layoutWidget9)
+        self._prop.setChecked(True)
+        self._prop.setObjectName("_prop")
+        self.gridLayout_12.addWidget(self._prop, 0, 2, 1, 1)
+        self.__add_clauses_label = QtWidgets.QLabel(self.layoutWidget9)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.__background_knowledge_label.setFont(font)
-        self.__background_knowledge_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__background_knowledge_label.setObjectName("__background_knowledge_label")
-        self.gridLayout_12.addWidget(self.__background_knowledge_label, 0, 0, 1, 2)
+        self.__add_clauses_label.setFont(font)
+        self.__add_clauses_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__add_clauses_label.setObjectName("__add_clauses_label")
+        self.gridLayout_12.addWidget(self.__add_clauses_label, 0, 0, 1, 2)
+        self.__pred = QtWidgets.QRadioButton(self.layoutWidget9)
+        self.__pred.setObjectName("__pred")
+        self.gridLayout_12.addWidget(self.__pred, 0, 3, 1, 1)
         self.__bgk_cypher = QtWidgets.QPushButton(self.layoutWidget9)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.__bgk_cypher.setFont(font)
         self.__bgk_cypher.setObjectName("__bgk_cypher")
-        self.gridLayout_12.addWidget(self.__bgk_cypher, 1, 0, 1, 2)
+        self.gridLayout_12.addWidget(self.__bgk_cypher, 1, 0, 1, 4)
         self.__bgk_sparql = QtWidgets.QPushButton(self.layoutWidget9)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.__bgk_sparql.setFont(font)
         self.__bgk_sparql.setObjectName("__bgk_sparql")
-        self.gridLayout_12.addWidget(self.__bgk_sparql, 2, 0, 1, 2)
+        self.gridLayout_12.addWidget(self.__bgk_sparql, 2, 0, 1, 4)
         self.__bgk_file = QtWidgets.QPushButton(self.layoutWidget9)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.__bgk_file.setFont(font)
         self.__bgk_file.setObjectName("__bgk_file")
-        self.gridLayout_12.addWidget(self.__bgk_file, 3, 0, 1, 2)
+        self.gridLayout_12.addWidget(self.__bgk_file, 3, 0, 1, 4)
         self.layoutWidget10 = QtWidgets.QWidget(self.Problog)
-        self.layoutWidget10.setGeometry(QtCore.QRect(20, 470, 811, 83))
+        self.layoutWidget10.setGeometry(QtCore.QRect(20, 690, 811, 134))
         self.layoutWidget10.setObjectName("layoutWidget10")
         self.gridLayout_14 = QtWidgets.QGridLayout(self.layoutWidget10)
         self.gridLayout_14.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_14.setObjectName("gridLayout_14")
-        self.__beam_size = QtWidgets.QLineEdit(self.layoutWidget10)
-        self.__beam_size.setObjectName("__beam_size")
-        self.gridLayout_14.addWidget(self.__beam_size, 2, 3, 1, 2)
-        self.__length = QtWidgets.QLineEdit(self.layoutWidget10)
-        self.__length.setObjectName("__length")
-        self.gridLayout_14.addWidget(self.__length, 2, 6, 1, 1)
-        self.__mestimate = QtWidgets.QLineEdit(self.layoutWidget10)
-        self.__mestimate.setObjectName("__mestimate")
-        self.gridLayout_14.addWidget(self.__mestimate, 2, 2, 1, 1)
-        self.__mestimate_label = QtWidgets.QLabel(self.layoutWidget10)
+        self.__probfoil_parameters_label = QtWidgets.QLabel(self.layoutWidget10)
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.__mestimate_label.setFont(font)
-        self.__mestimate_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__mestimate_label.setObjectName("__mestimate_label")
-        self.gridLayout_14.addWidget(self.__mestimate_label, 1, 2, 1, 1)
-        self.__deterministic_combo = QtWidgets.QComboBox(self.layoutWidget10)
-        self.__deterministic_combo.setObjectName("__deterministic_combo")
-        self.__deterministic_combo.addItem("")
-        self.__deterministic_combo.addItem("")
-        self.gridLayout_14.addWidget(self.__deterministic_combo, 2, 0, 1, 2)
+        self.__probfoil_parameters_label.setFont(font)
+        self.__probfoil_parameters_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__probfoil_parameters_label.setObjectName("__probfoil_parameters_label")
+        self.gridLayout_14.addWidget(self.__probfoil_parameters_label, 2, 0, 1, 10)
         self.__deterministic_label = QtWidgets.QLabel(self.layoutWidget10)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.__deterministic_label.setFont(font)
         self.__deterministic_label.setAlignment(QtCore.Qt.AlignCenter)
         self.__deterministic_label.setObjectName("__deterministic_label")
-        self.gridLayout_14.addWidget(self.__deterministic_label, 1, 0, 1, 2)
-        self.__seed = QtWidgets.QLineEdit(self.layoutWidget10)
-        self.__seed.setObjectName("__seed")
-        self.gridLayout_14.addWidget(self.__seed, 2, 7, 1, 1)
+        self.gridLayout_14.addWidget(self.__deterministic_label, 3, 0, 1, 2)
+        self.__sampling = QtWidgets.QPushButton(self.layoutWidget10)
+        self.__sampling.setObjectName("__sampling")
+        self.gridLayout_14.addWidget(self.__sampling, 1, 7, 1, 3)
+        self.__execution_label = QtWidgets.QLabel(self.layoutWidget10)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.__execution_label.setFont(font)
+        self.__execution_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__execution_label.setObjectName("__execution_label")
+        self.gridLayout_14.addWidget(self.__execution_label, 0, 0, 1, 10)
+        self.__beam_size = QtWidgets.QLineEdit(self.layoutWidget10)
+        self.__beam_size.setObjectName("__beam_size")
+        self.gridLayout_14.addWidget(self.__beam_size, 4, 3, 1, 2)
+        self.__deterministic_combo = QtWidgets.QComboBox(self.layoutWidget10)
+        self.__deterministic_combo.setObjectName("__deterministic_combo")
+        self.__deterministic_combo.addItem("")
+        self.__deterministic_combo.addItem("")
+        self.gridLayout_14.addWidget(self.__deterministic_combo, 4, 0, 1, 2)
+        self.__lfi = QtWidgets.QPushButton(self.layoutWidget10)
+        self.__lfi.setObjectName("__lfi")
+        self.gridLayout_14.addWidget(self.__lfi, 1, 5, 1, 2)
+        self.__probfoil_execute = QtWidgets.QPushButton(self.layoutWidget10)
+        self.__probfoil_execute.setObjectName("__probfoil_execute")
+        self.gridLayout_14.addWidget(self.__probfoil_execute, 4, 9, 1, 1)
         self.__beam_size_label = QtWidgets.QLabel(self.layoutWidget10)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.__beam_size_label.setFont(font)
         self.__beam_size_label.setAlignment(QtCore.Qt.AlignCenter)
         self.__beam_size_label.setObjectName("__beam_size_label")
-        self.gridLayout_14.addWidget(self.__beam_size_label, 1, 3, 1, 2)
-        self.__seed_label = QtWidgets.QLabel(self.layoutWidget10)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__seed_label.setFont(font)
-        self.__seed_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__seed_label.setObjectName("__seed_label")
-        self.gridLayout_14.addWidget(self.__seed_label, 1, 7, 1, 1)
-        self.__probfoil_parameters_label = QtWidgets.QLabel(self.layoutWidget10)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.__probfoil_parameters_label.setFont(font)
-        self.__probfoil_parameters_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__probfoil_parameters_label.setObjectName("__probfoil_parameters_label")
-        self.gridLayout_14.addWidget(self.__probfoil_parameters_label, 0, 0, 1, 10)
-        self.__length_label = QtWidgets.QLabel(self.layoutWidget10)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__length_label.setFont(font)
-        self.__length_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.__length_label.setObjectName("__length_label")
-        self.gridLayout_14.addWidget(self.__length_label, 1, 6, 1, 1)
+        self.gridLayout_14.addWidget(self.__beam_size_label, 3, 3, 1, 2)
         self.__significance = QtWidgets.QLineEdit(self.layoutWidget10)
         self.__significance.setObjectName("__significance")
-        self.gridLayout_14.addWidget(self.__significance, 2, 5, 1, 1)
+        self.gridLayout_14.addWidget(self.__significance, 4, 5, 1, 1)
+        self.__mestimate_label = QtWidgets.QLabel(self.layoutWidget10)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__mestimate_label.setFont(font)
+        self.__mestimate_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__mestimate_label.setObjectName("__mestimate_label")
+        self.gridLayout_14.addWidget(self.__mestimate_label, 3, 2, 1, 1)
         self.__significance_label = QtWidgets.QLabel(self.layoutWidget10)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.__significance_label.setFont(font)
         self.__significance_label.setAlignment(QtCore.Qt.AlignCenter)
         self.__significance_label.setObjectName("__significance_label")
-        self.gridLayout_14.addWidget(self.__significance_label, 1, 5, 1, 1)
-        self.__probfoil_execute = QtWidgets.QPushButton(self.layoutWidget10)
-        self.__probfoil_execute.setObjectName("__probfoil_execute")
-        self.gridLayout_14.addWidget(self.__probfoil_execute, 2, 8, 1, 1)
+        self.gridLayout_14.addWidget(self.__significance_label, 3, 5, 1, 1)
+        self.__length = QtWidgets.QLineEdit(self.layoutWidget10)
+        self.__length.setObjectName("__length")
+        self.gridLayout_14.addWidget(self.__length, 4, 6, 1, 1)
+        self.__seed = QtWidgets.QLineEdit(self.layoutWidget10)
+        self.__seed.setObjectName("__seed")
+        self.gridLayout_14.addWidget(self.__seed, 4, 7, 1, 1)
+        self.__length_label = QtWidgets.QLabel(self.layoutWidget10)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__length_label.setFont(font)
+        self.__length_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__length_label.setObjectName("__length_label")
+        self.gridLayout_14.addWidget(self.__length_label, 3, 6, 1, 1)
+        self.__inference = QtWidgets.QPushButton(self.layoutWidget10)
+        self.__inference.setObjectName("__inference")
+        self.gridLayout_14.addWidget(self.__inference, 1, 2, 1, 3)
+        self.__problog_execution_label = QtWidgets.QLabel(self.layoutWidget10)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__problog_execution_label.setFont(font)
+        self.__problog_execution_label.setObjectName("__problog_execution_label")
+        self.gridLayout_14.addWidget(self.__problog_execution_label, 1, 0, 1, 2)
+        self.__mestimate = QtWidgets.QLineEdit(self.layoutWidget10)
+        self.__mestimate.setObjectName("__mestimate")
+        self.gridLayout_14.addWidget(self.__mestimate, 4, 2, 1, 1)
+        self.__seed_label = QtWidgets.QLabel(self.layoutWidget10)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__seed_label.setFont(font)
+        self.__seed_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__seed_label.setObjectName("__seed_label")
+        self.gridLayout_14.addWidget(self.__seed_label, 3, 7, 1, 1)
+        self.__log_file = QtWidgets.QLineEdit(self.layoutWidget10)
+        self.__log_file.setObjectName("__log_file")
+        self.gridLayout_14.addWidget(self.__log_file, 4, 8, 1, 1)
+        self.__log_file_label = QtWidgets.QLabel(self.layoutWidget10)
+        self.__log_file_label.setObjectName("__log_file_label")
+        self.gridLayout_14.addWidget(self.__log_file_label, 3, 8, 1, 1)
+        self.layoutWidget11 = QtWidgets.QWidget(self.Problog)
+        self.layoutWidget11.setGeometry(QtCore.QRect(20, 480, 811, 201))
+        self.layoutWidget11.setObjectName("layoutWidget11")
+        self.gridLayout_17 = QtWidgets.QGridLayout(self.layoutWidget11)
+        self.gridLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_17.setObjectName("gridLayout_17")
+        self.__interspersed_table = QtWidgets.QTableWidget(self.layoutWidget11)
+        self.__interspersed_table.setRowCount(1)
+        self.__interspersed_table.setObjectName("__interspersed_table")
+        self.__interspersed_table.setColumnCount(6)
+        item = QtWidgets.QTableWidgetItem()
+        self.__interspersed_table.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__interspersed_table.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__interspersed_table.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__interspersed_table.setHorizontalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__interspersed_table.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.__interspersed_table.setHorizontalHeaderItem(5, item)
+        self.__interspersed_table.horizontalHeader().setDefaultSectionSize(134)
+        self.gridLayout_17.addWidget(self.__interspersed_table, 1, 0, 1, 4)
+        self.__add_interspersed = QtWidgets.QPushButton(self.layoutWidget11)
+        self.__add_interspersed.setObjectName("__add_interspersed")
+        self.gridLayout_17.addWidget(self.__add_interspersed, 0, 3, 1, 1)
+        self.__confirm = QtWidgets.QPushButton(self.layoutWidget11)
+        self.__confirm.setObjectName("__confirm")
+        self.gridLayout_17.addWidget(self.__confirm, 0, 2, 1, 1)
+        self.__interspersed_label = QtWidgets.QLabel(self.layoutWidget11)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__interspersed_label.setFont(font)
+        self.__interspersed_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.__interspersed_label.setObjectName("__interspersed_label")
+        self.gridLayout_17.addWidget(self.__interspersed_label, 0, 0, 1, 2)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("e6302100-9781-11e9-9e2d-f0b2848a9ad9.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.Problog, icon2, "")
@@ -641,25 +688,27 @@ class UiMainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.__retranslate_ui(MainWindow)
+        self.retranslateUi(MainWindow)
         self.__tabs.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     ## define label text, table headers and other GUI parameters
     # @param: main_window: main_window of the application
-    def __retranslate_ui(self, MainWindow):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.__parse_method_label.setText(_translate("MainWindow", "Select parse method"))
+        self.__parse_method_label.setText(_translate("MainWindow", "Select query type (n,m nodes)"))
         self.__execute_user_query.setText(_translate("MainWindow", "Execute"))
         self.__user_query_label.setText(_translate("MainWindow", "Query"))
-        self.__parse_method_combo.setItemText(0, _translate("MainWindow", "parse_props_array"))
-        self.__parse_method_combo.setItemText(1, _translate("MainWindow", "parse_node"))
-        self.__parse_method_combo.setItemText(2, _translate("MainWindow", "parse_property_map"))
-        self.__parse_method_combo.setItemText(3, _translate("MainWindow", "parse_node_rels_with_props"))
-        self.__parse_method_combo.setItemText(4, _translate("MainWindow", "parse_node_rels_with_props_map"))
-        self.__parse_method_combo.setItemText(5, _translate("MainWindow", "parse_node_rels"))
-        self.__parse_method_combo.setItemText(6, _translate("MainWindow", "parse_node_rels_with_props_array"))
+        self.__parse_method_combo.setItemText(0, _translate("MainWindow", "return ID(n), n.prop1,... n.propN "))
+        self.__parse_method_combo.setItemText(1, _translate("MainWindow", "return n"))
+        self.__parse_method_combo.setItemText(2, _translate("MainWindow", "return ID(n), properties(N)"))
+        self.__parse_method_combo.setItemText(3, _translate("MainWindow", "return n, TYPE(r), m"))
+        self.__parse_method_combo.setItemText(4, _translate("MainWindow",
+                                                            "return ID(n), properties(n), TYPE(r), ID(m), properties(m)"))
+        self.__parse_method_combo.setItemText(5, _translate("MainWindow", "return ID(n), TYPE(r), ID(m)"))
+        self.__parse_method_combo.setItemText(6, _translate("MainWindow",
+                                                            "return size(keys(n)), ID(n), n.prop1, ..., TYPE(r), size(keys(m)), ID(m), m.prop1, ..."))
         self.__nodes_and_relationships.setText(_translate("MainWindow", "Get all nodes and relationship"))
         self.__relationships_without_properties.setText(
             _translate("MainWindow", "Get all nodes\' relationship without node properties"))
@@ -718,48 +767,62 @@ class UiMainWindow(object):
         self.__evidence_cypher.setText(_translate("MainWindow", "Add cypher result "))
         self.__evidence_sparql.setText(_translate("MainWindow", "Add SPARQL result "))
         self.__evidence_file.setText(_translate("MainWindow", "Load from file"))
-        self.__sparql_prob_bgk_label.setText(_translate("MainWindow", "Learn probabilities on SPARQL results,\n"
-                                                                      " and use them as background knowledge"))
-        self.__sparql_add_distribution.setText(_translate("MainWindow", "Add distribution"))
-        item = self.__sparql_prop_distr_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "property"))
-        item = self.__sparql_prop_distr_table.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "distribution to learn"))
-        self.__sparql_distr_learning.setText(_translate("MainWindow", "Execute"))
-        self.__prob_bgk_label.setText(_translate("MainWindow", "Learn probabilities on cypher results,\n"
-                                                               " and use them as background knowledge"))
+        self.__distr_learning.setText(_translate("MainWindow", "Execute"))
+        self.__add_distribution.setText(_translate("MainWindow", "Add distribution"))
         item = self.__prop_distr_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "property"))
         item = self.__prop_distr_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "distribution to learn"))
-        self.__distr_learning.setText(_translate("MainWindow", "Execute"))
-        self.__add_distribution.setText(_translate("MainWindow", "Add distribution"))
+        self.__prob_bgk_label.setText(_translate("MainWindow", "Learn probabilities on cypher results,\n"
+                                                               " and add them to the program"))
+        self.__cyhper_distr.setText(_translate("MainWindow", "Cypher"))
+        self.__sparql_distr.setText(_translate("MainWindow", "SPARQL"))
+        self.__problog_clauses_label.setText(_translate("MainWindow", "Problog clauses"))
         item = self.__examples_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Property"))
         item = self.__examples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Truth"))
-        self.__problog_instructions_label.setText(_translate("MainWindow", "Problog instructions"))
-        self.__execute_program.setText(_translate("MainWindow", "Execute program"))
-        item = self.__problog_instructions_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Probability"))
-        item = self.__problog_instructions_table.horizontalHeaderItem(1)
+        item = self.__problog_clauses_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Clause"))
         self.__examples_label.setText(_translate("MainWindow", "Examples"))
-        self.__background_knowledge_label.setText(_translate("MainWindow", "Background knowledge"))
+        self._prop.setText(_translate("MainWindow", "prop(s, p, o)"))
+        self.__add_clauses_label.setText(_translate("MainWindow", "Add clauses"))
+        self.__pred.setText(_translate("MainWindow", "p(s, o)"))
         self.__bgk_cypher.setText(_translate("MainWindow", "Add cypher result "))
         self.__bgk_sparql.setText(_translate("MainWindow", "Add SPARQL result "))
         self.__bgk_file.setText(_translate("MainWindow", "Load from file"))
-        self.__mestimate_label.setText(_translate("MainWindow", "m-estimate"))
+        self.__probfoil_parameters_label.setText(_translate("MainWindow", "Probfoil "))
+        self.__deterministic_label.setText(_translate("MainWindow", " learn deterministic rules "))
+        self.__sampling.setText(_translate("MainWindow", "Sampling"))
+        self.__execution_label.setText(_translate("MainWindow", "Execution"))
         self.__deterministic_combo.setItemText(0, _translate("MainWindow", "deterministic rules"))
         self.__deterministic_combo.setItemText(1, _translate("MainWindow", "non deterministic rules"))
-        self.__deterministic_label.setText(_translate("MainWindow", " learn deterministic rules "))
-        self.__beam_size_label.setText(_translate("MainWindow", "beam size"))
-        self.__seed_label.setText(_translate("MainWindow", "seed"))
-        self.__probfoil_parameters_label.setText(_translate("MainWindow", "Probfoil parameters"))
-        self.__length_label.setText(_translate("MainWindow", "length"))
-        self.__significance_label.setText(_translate("MainWindow", "significance"))
+        self.__lfi.setText(_translate("MainWindow", "LFI"))
         self.__probfoil_execute.setText(_translate("MainWindow", "Execute and \n"
                                                                  "save to file"))
+        self.__beam_size_label.setText(_translate("MainWindow", "beam size"))
+        self.__mestimate_label.setText(_translate("MainWindow", "m-estimate"))
+        self.__significance_label.setText(_translate("MainWindow", "significance"))
+        self.__length_label.setText(_translate("MainWindow", "length"))
+        self.__inference.setText(_translate("MainWindow", "Inference"))
+        self.__problog_execution_label.setText(_translate("MainWindow", "Problog"))
+        self.__seed_label.setText(_translate("MainWindow", "seed"))
+        self.__log_file_label.setText(_translate("MainWindow", "Log file"))
+        item = self.__interspersed_table.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "name"))
+        item = self.__interspersed_table.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "start"))
+        item = self.__interspersed_table.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "end"))
+        item = self.__interspersed_table.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "number"))
+        item = self.__interspersed_table.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "lin / log"))
+        item = self.__interspersed_table.horizontalHeaderItem(5)
+        item.setText(_translate("MainWindow", "custom"))
+        self.__add_interspersed.setText(_translate("MainWindow", "Add"))
+        self.__confirm.setText(_translate("MainWindow", "Confirm"))
+        self.__interspersed_label.setText(_translate("MainWindow", "Interspersed distributions"))
         self.__tabs.setTabText(self.__tabs.indexOf(self.Problog), _translate("MainWindow", "Problog"))
 
     ## initialize (add first row, set measures) to some GUI tables
@@ -786,30 +849,37 @@ class UiMainWindow(object):
         distribution = QtWidgets.QComboBox(self.layoutWidget)
         distribution.addItem("Normal")
         distribution.addItem("Multinomial")
-        distribution.addItem("Interspersed")
 
         self.__prop_distr_table.setCellWidget(0, 0, property)
         self.__prop_distr_table.setCellWidget(0, 1, distribution)
 
-        property = QtWidgets.QLineEdit(self.layoutWidget)
-        distribution = QtWidgets.QComboBox(self.layoutWidget)
-        distribution.addItem("Normal")
-        distribution.addItem("Multinomial")
-        distribution.addItem("Interspersed")
 
-        self.__sparql_prop_distr_table.setCellWidget(0, 0, property)
-        self.__sparql_prop_distr_table.setCellWidget(0, 1, distribution)
+        self.__problog_clauses_table.setColumnWidth(0, 340)
 
-        self.__problog_instructions_table.setColumnWidth(0, 80);
-        self.__problog_instructions_table.setColumnWidth(1, 257);
+        self.__examples_table.setColumnWidth(0, 168)
+        self.__examples_table.setColumnWidth(1, 168)
 
-        self.__examples_table.setColumnWidth(0, 168);
-        self.__examples_table.setColumnWidth(1, 168);
+        name = QtWidgets.QLineEdit(self.layoutWidget)
+        start = QtWidgets.QLineEdit(self.layoutWidget)
+        end = QtWidgets.QLineEdit(self.layoutWidget)
+        number = QtWidgets.QLineEdit(self.layoutWidget)
+        lin_log = QtWidgets.QComboBox(self.layoutWidget)
+        lin_log.addItem("Linear")
+        lin_log.addItem("Logarithmic")
+        lin_log.addItem("Custom")
+        custom = QtWidgets.QLineEdit(self.layoutWidget)
+
+        self.__interspersed_table.setCellWidget(0, 0, name)
+        self.__interspersed_table.setCellWidget(0, 1, start)
+        self.__interspersed_table.setCellWidget(0, 2, end)
+        self.__interspersed_table.setCellWidget(0, 3, number)
+        self.__interspersed_table.setCellWidget(0, 4, lin_log)
+        self.__interspersed_table.setCellWidget(0, 5, custom)
 
     ## define method to call when buttons are clicked
     def setup_signals(self):
         self.__execute_user_query.clicked.connect(
-            lambda: self.execute_user_query())
+            lambda: self.execute_user_dbmsquery())
 
         self.__add_filter.clicked.connect(
             lambda: self.add_filter(self.__property_filters_table))
@@ -844,9 +914,6 @@ class UiMainWindow(object):
         self.__add_distribution.clicked.connect(
             lambda: self.add_distribution(self.__prop_distr_table))
 
-        self.__sparql_add_distribution.clicked.connect(
-            lambda: self.add_distribution(self.__sparql_prop_distr_table))
-
         self.__bgk_cypher.clicked.connect(
             lambda: self.bgk_cypher())
 
@@ -868,23 +935,133 @@ class UiMainWindow(object):
         self.__distr_learning.clicked.connect(
             lambda: self.distr_learning())
 
+        self.__inference.clicked.connect(
+            lambda: self.inference())
+
+        self.__lfi.clicked.connect(
+            lambda: self.learning_from_interpretation())
+
+        self.__sampling.clicked.connect(
+            lambda: self.sampling())
+
+        self.__add_interspersed.clicked.connect(
+            lambda: self.add_interspersed())
+
+        self.__confirm.clicked.connect(
+            lambda: self.confirm_interspersed())
+
+        self.__confirm.clicked.connect(
+            lambda: self.confirm_interspersed())
+
+        self.__probfoil_execute.clicked.connect(
+            lambda: self.probfoil_execute())
+
+    ## method related to __probfoil_execute, executes propboifl structure learning task given the parameters in the interface
+    def probfoil_execute(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+
+        structure_learner = StructureLearner(self.__problog_program)
+        if self.__log_file.text() != "":
+            structure_learner.set_log_file(self.__log_file.text())
+
+        structure_learner.learn(
+            (float(self.__significance.text()) if self.__significance.text() != "" else None),
+            (int(self.__length.text()) if self.__length.text() != "" else None),
+            (int(self.__beam_size.text()) if self.__beam_size.text() != "" else 5),
+            (int(self.__mestimate.text()) if self.__mestimate.text() != "" else 1),
+            (True if self.__deterministic_combo.currentText() == "determinitic rules" else False)
+        )
+
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(structure_learner.get_learned_rules(), file=f)
+
+    ## method related to __confirm_interspersed, add the user given distribution to possible distributsions for properties
+    def confirm_interspersed(self):
+        for i in range(0, self.__interspersed_table.rowCount()):
+            if self.__interspersed_table.cellWidget(i, 0).text() != "":
+                for j in range(0, self.__prop_distr_table.rowCount()):
+                    self.__prop_distr_table.cellWidget(j, 1).addItem(self.__interspersed_table.cellWidget(i, 0).text())
+
+                self.__interspersed_distributions[self.__interspersed_table.cellWidget(i, 0).text()] = (
+                    self.__interspersed_table.cellWidget(i, 1).text(),
+                    self.__interspersed_table.cellWidget(i, 2).text(),
+                    self.__interspersed_table.cellWidget(i, 3).text(),
+                    self.__interspersed_table.cellWidget(i, 4).currentText(),
+                    self.__interspersed_table.cellWidget(i, 5).text()
+                )
+
+    ## method related to __add_interspersed, add an interspersed distribution
+    def add_interspersed(self):
+        table = self.__interspersed_table
+
+        row_count = table.rowCount()
+        table.insertRow(row_count)
+
+        name = QtWidgets.QLineEdit(self.layoutWidget)
+        start = QtWidgets.QLineEdit(self.layoutWidget)
+        end = QtWidgets.QLineEdit(self.layoutWidget)
+        number = QtWidgets.QLineEdit(self.layoutWidget)
+        lin_log = QtWidgets.QComboBox(self.layoutWidget)
+        lin_log.addItem("Linear")
+        lin_log.addItem("Logarithmic")
+        lin_log.addItem("Custom")
+        custom = QtWidgets.QLineEdit(self.layoutWidget)
+
+        self.__interspersed_table.setCellWidget(row_count, 0, name)
+        self.__interspersed_table.setCellWidget(row_count, 1, start)
+        self.__interspersed_table.setCellWidget(row_count, 2, end)
+        self.__interspersed_table.setCellWidget(row_count, 3, number)
+        self.__interspersed_table.setCellWidget(row_count, 4, lin_log)
+        self.__interspersed_table.setCellWidget(row_count, 5, custom)
+
+    ## method related to __sampling, execute problong sampling operation based on given clauses
+    def sampling(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        results = list(sample.sample(self.__problog_program, n=20, format='dict'))
+
+
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(results, file=f)
+
+    ## method related to __lfi, execute problog leraning from interpretation to learn probabilities which value is t()
+    def learning_from_interpretation(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        score, weights, atoms, iteration, lfi_problem = lfi.run_lfi(self.__problog_program, self.__examples)
+
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(lfi_problem.get_model(), file=f)
+
+    ## method related to __inference, answer given queries
+    def inference(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        results = get_evaluatable().create_from(self.__problog_program).evaluate()
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(results, file=f)
+
     ## method related to __bgk_sparql, add sparql query results as background knowledge
     def bgk_sparql(self):
-        problog_program = self.__sparql_data.parse()
+        self.__sparql_data.set_triple_mode(self._prop.isChecked())
+        problog_program = self.__sparql_data.parse(self.__problog_program)
         self.write_clauses(problog_program)
-        programs_merge(self.__problog_program, problog_program)
 
     ## method related to __bgk_cypher, add cypher query results as background knowledge
     def bgk_cypher(self):
-        problog_program = self.__cypher_data.parse()
-
-        problog_program = self.__cypher_data.parse()
+        self.__cypher_data.set_triple_mode(self._prop.isChecked())
+        problog_program = self.__cypher_data.parse(self.__problog_program)
         self.write_clauses(problog_program)
-        programs_merge(self.__problog_program, problog_program)
 
-    ## method related to __bgk_file, add file instructions as background knowledge
+    ## method related to __bgk_file, add file clauses as background knowledge
     def bgk_file(self):
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
         problog_program = PrologFile(file_name)
         self.write_clauses(problog_program)
@@ -892,49 +1069,74 @@ class UiMainWindow(object):
 
     ## method related to __evidence_cypher, add cypher query results as training examples
     def evidence_cypher(self):
-        examples = self.__cypher_data.to_examples()
+        examples = self.__cypher_data.to_examples(self.__examples)
         self.write_examples(examples)
-        self.__examples.extend(examples)
 
     ## method related to __evidence_sparql, add sparql query results as training examples
     def evidence_sparql(self):
-        examples = self.__sparql_data.to_examples()
+        examples = self.__sparql_data.to_examples(self.__examples)
         self.write_examples(examples)
-        self.__examples.extend(examples)
 
     ## method related to __evidence_file, add file with evidence clauses as training examples
     def evidence_file(self):
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:", "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
 
         examples = list(read_examples(file_name))
         self.write_examples(examples)
         self.__examples.extend(examples)
 
-    ## method related to __distr_learning, learn proeprty values distributions and use annotated clauses as background knowkledge
+    ## method related to __distr_learning, learn property values distributions and use annotated clauses as background knowkledge
     def distr_learning(self):
         property_map = PropertyMap()
 
         for i in range(0, self.__prop_distr_table.rowCount()):
             distr = self.__prop_distr_table.cellWidget(i, 1).currentText()
-            if distr == "Normal":
-                distr_obj = Normal()
-            elif distr == "Interspersed":
-                distr_obj = Interspersed()
-            else:
-                distr_obj = Multinomial()
+            if self.__prop_distr_table.cellWidget(i, 0).text() != "":
+                if distr == "Normal":
+                    distr_obj = Normal()
+                elif distr == "Multinomial":
+                    distr_obj = Multinomial()
+                else:
+                    distr_obj = Interspersed()
+                    if self.__interspersed_distributions[distr][3] == 'Linear':
+                        distr_obj.lin_intervals(int(self.__interspersed_distributions[distr][0]),
+                                                int(self.__interspersed_distributions[distr][1]),
+                                                int(self.__interspersed_distributions[distr][2]))
+                    elif self.__interspersed_distributions[distr][3] == 'Logarithmic':
+                        distr_obj.log_intervals(int(self.__interspersed_distributions[distr][0]),
+                                                int(self.__interspersed_distributions[distr][1]),
+                                                int(self.__interspersed_distributions[distr][2]))
+                    else:
+                        intervals = self.__interspersed_distributions[distr][4].split(",")
+                        for k in range(0, len(intervals)):
+                            intervals[k] = float(intervals[k])
 
-            property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
+                        distr_obj = Interspersed(intervals)
 
-        property_map = self.__cypher_data.learn_distributions(property_map)
-        print("debug")
+
+                property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = \
+                    Property(self.__prop_distr_table.cellWidget(i, 0).text(), distr_obj)
+
+        if self.__sparql_distr.isChecked():
+            property_map = self.__sparql_data.learn_distributions(property_map)
+        else:
+            property_map = self.__cypher_data.learn_distributions(property_map)
+
         problog_program = property_map.to_simple_program()
-        print(problog_program)
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 
     ## method related to __execute_user_query button
-    def execute_user_query(self):
-        dbms_query = DbmsQuery(self.__user_query.text(), self.__parse_method_combo.currentText())
+    def execute_user_dbmsquery(self):
+        function = {0: "parse_props_array",
+                    1: "parse_node",
+                    2: "parse_property_map",
+                    3: "parse_node_rels_with_props",
+                    4: "parse_node_rels_with_props_map",
+                    5: "parse_node_rels",
+                    6: "parse_node_rels_with_props_array"}[self.__parse_method_combo.currentIndex()]
+        dbms_query = DbmsQuery(self.__user_query.text(), function)
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
@@ -1025,8 +1227,12 @@ class UiMainWindow(object):
         query_where = " AND ".join(
             [(("n." + self.__property_filters_table.cellWidget(i, 0).text() + "=" +
                (str(self.__property_filters_table.cellWidget(i, 1).text())
-                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else ("'" + self.__property_filters_table.cellWidget(i, 1).text()) + "'"))
-              if self.__property_filters_table.cellWidget(i,0).text() != "" and self.__property_filters_table.cellWidget(i, 1).text() != "" else '')
+                if self.__property_filters_table.cellWidget(i, 1).text().isdecimal() else (
+                                                                                                  "'" + self.__property_filters_table.cellWidget(
+                                                                                              i, 1).text()) + "'"))
+              if self.__property_filters_table.cellWidget(i,
+                                                          0).text() != "" and self.__property_filters_table.cellWidget(
+                i, 1).text() != "" else '')
              for i in range(0, self.__property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1058,7 +1264,9 @@ class UiMainWindow(object):
         query_where = " . ".join(
             [("?subject " + self.__sparql_property_filters_table.cellWidget(i, 0).text() + " " + str(
                 self.__sparql_property_filters_table.cellWidget(i, 1).text())
-              if self.__sparql_property_filters_table.cellWidget(i,0).text() != "" and self.__sparql_property_filters_table.cellWidget(i, 1).text() != "" else '')
+              if self.__sparql_property_filters_table.cellWidget(i,
+                                                                 0).text() != "" and self.__sparql_property_filters_table.cellWidget(
+                i, 1).text() != "" else '')
              for i in range(0, self.__sparql_property_filters_table.rowCount())])
 
         if query_where != "":
@@ -1069,13 +1277,14 @@ class UiMainWindow(object):
         self.__sparql_data = cloud_query.run_query()
         write_results(self.__triples_table, self.__sparql_data)
 
+    ## show problog program clauses in table
     def write_clauses(self, program):
         for clause in program:
-            row_count = self.__problog_instructions_table.rowCount()
-            self.__problog_instructions_table.insertRow(row_count)
-            self.__problog_instructions_table.setItem(row_count, 0, QTableWidgetItem(""))
-            self.__problog_instructions_table.setItem(row_count, 1, QTableWidgetItem(str(clause)))
+            row_count = self.__problog_clauses_table.rowCount()
+            self.__problog_clauses_table.insertRow(row_count)
+            self.__problog_clauses_table.setItem(row_count, 0, QTableWidgetItem(str(clause)))
 
+    ## show examples in table
     def write_examples(self, examples):
         for possible_world in examples:
             splitter = "------------------------------"
@@ -1088,6 +1297,7 @@ class UiMainWindow(object):
                 self.__examples_table.insertRow(row_count)
                 self.__examples_table.setItem(row_count, 0, QTableWidgetItem(str(example[0])))
                 self.__examples_table.setItem(row_count, 1, QTableWidgetItem(str(example[1])))
+
 
 ## function to write triples in a specified three column table
 # @param: table: in which table the triples should be added
