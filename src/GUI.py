@@ -461,7 +461,7 @@ class UiMainWindow(object):
         self.__prop_distr_table.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.__prop_distr_table.setHorizontalHeaderItem(2, item)
-        self.__prop_distr_table.horizontalHeader().setDefaultSectionSize(218)
+        self.__prop_distr_table.horizontalHeader().setDefaultSectionSize(141)
         self.gridLayout_16.addWidget(self.__prop_distr_table, 1, 0, 1, 4)
         self.layoutWidget8 = QtWidgets.QWidget(self.Problog)
         self.layoutWidget8.setGeometry(QtCore.QRect(20, 20, 341, 441))
@@ -735,7 +735,7 @@ class UiMainWindow(object):
         self.__relationship_type_label.setText(_translate("MainWindow", "Relationship"))
         self.__query_results_label.setText(_translate("MainWindow", "QUERY RESULTS"))
         item = self.__triples_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Individual"))
+        item.setText(_translate("MainWindow", "Subject"))
         item = self.__triples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Property"))
         item = self.__triples_table.horizontalHeaderItem(2)
@@ -744,7 +744,7 @@ class UiMainWindow(object):
         self.__sparql_user_query_label.setText(_translate("MainWindow", "Query"))
         self.__sparql_execute_user_query.setText(_translate("MainWindow", "Execute"))
         item = self.__sparql_triples_table.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Individual"))
+        item.setText(_translate("MainWindow", "Subject"))
         item = self.__sparql_triples_table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Property"))
         item = self.__sparql_triples_table.horizontalHeaderItem(2)
@@ -850,12 +850,14 @@ class UiMainWindow(object):
         self.__prefixs_table.setCellWidget(0, 1, alias)
 
         property = QtWidgets.QLineEdit(self.layoutWidget)
+        name = QtWidgets.QLineEdit(self.layoutWidget)
         distribution = QtWidgets.QComboBox(self.layoutWidget)
         distribution.addItem("Normal")
         distribution.addItem("Multinomial")
 
-        self.__prop_distr_table.setCellWidget(0, 0, property)
-        self.__prop_distr_table.setCellWidget(0, 1, distribution)
+        self.__prop_distr_table.setCellWidget(0, 0, name)
+        self.__prop_distr_table.setCellWidget(0, 1, property)
+        self.__prop_distr_table.setCellWidget(0, 2, distribution)
 
         self.__problog_clauses_table.setColumnWidth(0, 340)
 
@@ -985,7 +987,7 @@ class UiMainWindow(object):
         for i in range(0, self.__interspersed_table.rowCount()):
             if self.__interspersed_table.cellWidget(i, 0).text() != "":
                 for j in range(0, self.__prop_distr_table.rowCount()):
-                    self.__prop_distr_table.cellWidget(j, 1).addItem(self.__interspersed_table.cellWidget(i, 0).text())
+                    self.__prop_distr_table.cellWidget(j, 2).addItem(self.__interspersed_table.cellWidget(i, 0).text())
 
                 self.__interspersed_distributions[self.__interspersed_table.cellWidget(i, 0).text()] = (
                     self.__interspersed_table.cellWidget(i, 1).text(),
@@ -1093,8 +1095,8 @@ class UiMainWindow(object):
         property_map = PropertyMap()
 
         for i in range(0, self.__prop_distr_table.rowCount()):
-            distr = self.__prop_distr_table.cellWidget(i, 1).currentText()
-            if self.__prop_distr_table.cellWidget(i, 0).text() != "":
+            distr = self.__prop_distr_table.cellWidget(i, 2).currentText()
+            if self.__prop_distr_table.cellWidget(i, 1).text() != "":
                 if distr == "Normal":
                     distr_obj = Normal()
                 elif distr == "Multinomial":
@@ -1116,7 +1118,7 @@ class UiMainWindow(object):
 
                         distr_obj = Interspersed(intervals)
 
-                property_map[self.__prop_distr_table.cellWidget(i, 0).text()] = \
+                property_map[self.__prop_distr_table.cellWidget(i, 1).text()] = \
                     Property(self.__prop_distr_table.cellWidget(i, 0).text(),
                              self.__prop_distr_table.cellWidget(i, 1).text(), distr_obj)
 
@@ -1160,14 +1162,16 @@ class UiMainWindow(object):
         row_count = table.rowCount()
         table.insertRow(row_count)
 
+        name = QtWidgets.QLineEdit(self.layoutWidget)
         property = QtWidgets.QLineEdit(self.layoutWidget)
         distribution = QtWidgets.QComboBox(self.layoutWidget)
         distribution.addItem("Normal")
         distribution.addItem("Multinomial")
         distribution.addItem("Interspersed")
 
-        table.setCellWidget(row_count, 0, property)
-        table.setCellWidget(row_count, 1, distribution)
+        table.setCellWidget(row_count, 0, name)
+        table.setCellWidget(row_count, 1, property)
+        table.setCellWidget(row_count, 2, distribution)
 
     ## method related to __nodes_and_relationships, execute cypher query that retrieves all nodes (with properties) and relationships between them
     def nodes_and_relationships(self):

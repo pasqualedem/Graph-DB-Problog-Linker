@@ -66,11 +66,11 @@ class Data:
                     prop.get_distribution().add(value)
                 else:
                     if type(value) is float:
-                        new_prop = Property(prop_name, Normal())
+                        new_prop = Property(prop_name, Normal(), "__generic_individual__")
                         new_prop.get_distribution().add(value)
                         properties[prop_name] = new_prop
                     else:
-                        new_prop = Property(prop_name, Multinomial())
+                        new_prop = Property(prop_name, Multinomial(), "__generic_individual__")
                         new_prop.get_distribution().add(value)
                         properties[prop_name] = new_prop
 
