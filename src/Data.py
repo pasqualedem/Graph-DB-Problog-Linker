@@ -132,7 +132,7 @@ class Property:
     ## create a fact with a continuous distribuction as probability
     def __to_fact(self):
         mu, sigma = self.__distribution.get_parameters()
-        distribuction = Term(str(type(self.__distribution)))(Constant(mu), Constant(sigma))
+        distribuction = Term(type(self.__distribution).name)(Constant(mu), Constant(sigma))
         return Term(self.__name, p=distribuction)
 
     ## create an annoteted disjunction from property
