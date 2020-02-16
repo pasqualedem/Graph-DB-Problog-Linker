@@ -18,6 +18,7 @@ def normalize_uri(value):
     value = value.replace("-", "_")
     value = value.replace("(", "_")
     value = value.replace(")", "_")
+    value = value.replace(".", "_")
     return value
 
 
