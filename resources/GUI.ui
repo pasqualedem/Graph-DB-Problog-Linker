@@ -1074,6 +1074,21 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_14">
+       <item row="2" column="0" colspan="10">
+        <widget class="QLabel" name="__probfoil_parameters_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Probfoil </string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
        <item row="3" column="0" colspan="2">
         <widget class="QLabel" name="__deterministic_label">
          <property name="font">
@@ -1089,23 +1104,27 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="6">
-        <widget class="QLabel" name="__length_label">
+       <item row="1" column="7" colspan="3">
+        <widget class="QPushButton" name="__sampling">
+         <property name="text">
+          <string>Sampling</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="10">
+        <widget class="QLabel" name="__execution_label">
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>length</string>
+          <string>Execution</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-       </item>
-       <item row="4" column="5">
-        <widget class="QLineEdit" name="__significance"/>
        </item>
        <item row="4" column="3" colspan="2">
         <widget class="QLineEdit" name="__beam_size"/>
@@ -1124,22 +1143,14 @@
          </item>
         </widget>
        </item>
-       <item row="3" column="7">
-        <widget class="QLabel" name="__seed_label">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
+       <item row="1" column="5" colspan="2">
+        <widget class="QPushButton" name="__lfi">
          <property name="text">
-          <string>seed</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>LFI</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="8">
+       <item row="4" column="9">
         <widget class="QPushButton" name="__probfoil_execute">
          <property name="text">
           <string>Execute and 
@@ -1147,8 +1158,23 @@ save to file</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="2">
-        <widget class="QLineEdit" name="__mestimate"/>
+       <item row="3" column="3" colspan="2">
+        <widget class="QLabel" name="__beam_size_label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>beam size</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="5">
+        <widget class="QLineEdit" name="__significance"/>
        </item>
        <item row="3" column="2">
         <widget class="QLabel" name="__mestimate_label">
@@ -1164,9 +1190,6 @@ save to file</string>
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-       </item>
-       <item row="4" column="7">
-        <widget class="QLineEdit" name="__seed"/>
        </item>
        <item row="3" column="5">
         <widget class="QLabel" name="__significance_label">
@@ -1186,30 +1209,18 @@ save to file</string>
        <item row="4" column="6">
         <widget class="QLineEdit" name="__length"/>
        </item>
-       <item row="3" column="3" colspan="2">
-        <widget class="QLabel" name="__beam_size_label">
+       <item row="4" column="7">
+        <widget class="QLineEdit" name="__seed"/>
+       </item>
+       <item row="3" column="6">
+        <widget class="QLabel" name="__length_label">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>beam size</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="9">
-        <widget class="QLabel" name="__execution_label">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Execution</string>
+          <string>length</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -1220,20 +1231,6 @@ save to file</string>
         <widget class="QPushButton" name="__inference">
          <property name="text">
           <string>Inference</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="7" colspan="2">
-        <widget class="QPushButton" name="__sampling">
-         <property name="text">
-          <string>Sampling</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="5" colspan="2">
-        <widget class="QPushButton" name="__lfi">
-         <property name="text">
-          <string>LFI</string>
          </property>
         </widget>
        </item>
@@ -1249,18 +1246,31 @@ save to file</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="9">
-        <widget class="QLabel" name="__probfoil_parameters_label">
+       <item row="4" column="2">
+        <widget class="QLineEdit" name="__mestimate"/>
+       </item>
+       <item row="3" column="7">
+        <widget class="QLabel" name="__seed_label">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Probfoil </string>
+          <string>seed</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="8">
+        <widget class="QLineEdit" name="__log_file"/>
+       </item>
+       <item row="3" column="8">
+        <widget class="QLabel" name="__log_file_label">
+         <property name="text">
+          <string>Log file</string>
          </property>
         </widget>
        </item>
