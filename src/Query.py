@@ -5,7 +5,8 @@
 
 from py2neo import Graph
 from SPARQLWrapper import SPARQLWrapper, JSON  # pip install sparqlwrapper
-from src.Data import Data
+from Data import Data
+from Util import normalize_uri
 
 from abc import ABC, abstractmethod
 
@@ -274,9 +275,13 @@ class CloudQuery(IGraphDBQuery):
             keys.remove('subject')
             for key in keys:
                 if xml_lang in element[key]:
-                    triples.append((element["subject"]["value"], key + '_' + element[key][xml_lang], element[key]["value"]))
+                    triples.append((normalize_uri(element["subject"]["value"]),
+                                    normalize_uri(key) + '_' + element[key][xml_lang],
+                                    normalize_uri(element[key]["value"])))
                 else:
-                    triples.append((element["subject"]["value"], key, element[key]["value"]))
+                    triples.append((normalize_uri(element["subject"]["value"]),
+                                    normalize_uri(key),
+                                    normalize_uri(element[key]["value"])))
                 length += 1
             data.append(triples)
 
