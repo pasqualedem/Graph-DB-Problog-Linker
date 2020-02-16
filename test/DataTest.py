@@ -9,7 +9,7 @@ from problog.logic import Term, Var, Constant
 from Distribution import Multinomial, Discrete
 
 
-class MyTestCase(unittest.TestCase):
+class DataTest(unittest.TestCase):
 
     def test_to_examples(self):
         data_triples = [
@@ -41,6 +41,9 @@ class MyTestCase(unittest.TestCase):
         r = get_evaluatable().create_from(pr).evaluate()
         print(r)
         assert True
+
+
+class PropertyTest(unittest.TestCase):
 
     def test_distributions(self):
         dat = Data([[('c', 'a', 'valore1'), ('c', 'b', 'valore2'), ('c', 'b', 'valore3')],
@@ -113,6 +116,7 @@ class MyTestCase(unittest.TestCase):
 
         r = get_evaluatable().create_from(s).evaluate()
         print(r)
+
 
 if __name__ == '__main__':
     unittest.main()
