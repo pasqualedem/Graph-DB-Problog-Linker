@@ -28,7 +28,7 @@ class Data:
     def get_data(self):
         return self.__data
 
-    def __to_examples(self, examples=[]):
+    def to_examples(self, examples=[]):
         cb = ClauseBuilder(self.__triple_mode)
         term_dict = {}
         prop = Term('prop')

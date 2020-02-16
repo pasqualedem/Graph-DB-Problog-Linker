@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
             [('donato', 'smokes', True), ('giovanni', 'smokes', False), ('floriana', 'smokes', True)],
             [('donato', 'smokes', False), ('giovanni', 'smokes', True), ('floriana', 'smokes', True)],
         ]
-        data = Data(data_triples, 12)
+        data = Data(data_triples, 12, True)
         examples = data.to_examples()
         print(examples)
         self.assertTrue(True)
@@ -27,7 +27,7 @@ class MyTestCase(unittest.TestCase):
         l = list()
         l.append([('marco', 'papa', 'giovanni')])
         l.append([('gianna', 'mamma', 'giovanni')])
-        qp = Data(l, 6)
+        qp = Data(l, 6, True)
         pr = qp.parse()
         query = Term('query')
         x = Var('X')
@@ -45,7 +45,7 @@ class MyTestCase(unittest.TestCase):
     def test_distributions(self):
         dat = Data([[('c', 'a', 'valore1'), ('c', 'b', 'valore2'), ('c', 'b', 'valore3')],
                     [('c', 'c', 'valore4'), ('c', 'c', 'valore4'),
-                     ('c', 'c', 'valore4'), ('c', 'c', 'valore1')]], 6)
+                     ('c', 'c', 'valore4'), ('c', 'c', 'valore1')]], 6, True)
         triple = dat.get_data()
         print(triple)
         dic = dat.learn_distributions()
@@ -77,7 +77,7 @@ class MyTestCase(unittest.TestCase):
              [(55, 'KNOWS', 15), (55, 'name', 'Luigi'), (55, 'age', 11), (15, 'name', 'Giuseppe'), (15, 'age', 19)],
              [(55, 'KNOWS', 18), (55, 'name', 'Luigi'), (55, 'age', 11), (18, 'name', 'Roberto'), (18, 'age', 15)],
              [(56, 'KNOWS', 57), (56, 'name', 'Matteo'), (57, 'name', 'Francesco')],
-             [(57, 'KNOWS', 56), (57, 'name', 'Francesco'), (56, 'name', 'Matteo')]], 21)
+             [(57, 'KNOWS', 56), (57, 'name', 'Francesco'), (56, 'name', 'Matteo')]], 21, True)
 
         property_map = PropertyMap()
         property_map["brand"] = Property("brand", Multinomial())
@@ -99,7 +99,7 @@ class MyTestCase(unittest.TestCase):
              [(20, 'brand', 'Fiat')],
              [(21, 'brand', 'Audi')],
              [(0, 'brand', 'Ford')]
-             ], 9)
+             ], 9, True)
 
         property_map = PropertyMap()
         property_map["brand"] = Property("brand", Multinomial())
