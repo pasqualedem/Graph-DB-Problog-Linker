@@ -36,7 +36,6 @@ class Data:
     def to_examples(self, examples=[]):
         cb = ClauseBuilder(self.__triple_mode)
         term_dict = {}
-        prop = Term('prop')
         for possible_world in self.__data:
             example = []
             for triple in possible_world:
