@@ -12,11 +12,12 @@ from problog.logic import Constant, Term
 def normalize_uri(value):
     if type(value) is not str:
         return value
-    value.replace("/", "_")
-    value.replace(":", "_")
-    value.replace("-", "_")
-    value.replace("(", "_")
-    value.replace(")", "_")
+
+    value = value.replace("/", "_")
+    value = value.replace(":", "_")
+    value = value.replace("-", "_")
+    value = value.replace("(", "_")
+    value = value.replace(")", "_")
     return value
 
 
