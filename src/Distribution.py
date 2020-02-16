@@ -42,36 +42,36 @@ class Normal(Continuous):
         self.__stdev = None
         self.__values = []
 
-    ## get the parameters of the distribution (mu,sigma)
+    ## Get the parameters of the distribution (mu,sigma)
     # @param: recalculate: tells if recalculate mean and stdev from data
-    # @returns: mean and stdev
+    # @returns mean and stdev
     def get_parameters(self, recalculate=False):
         if recalculate:
             self.calculate_mean()
             self.calculate_stdev()
         return self.__mean, self.__stdev
 
-    ## add a value to the data
+    ## Add a value to the data
     # @param: value: the value to be added
     def add(self, value: float):
         self.__values.append(value)
 
-    ## calculate the mean from data
-    # @returns: mean
+    ## Calculate the mean from data
+    # @returns mean
     def calculate_mean(self):
         self.__mean = mean(self.__values)
         return self.__mean
 
-    ## calculate the stdev from data
-    # @returns: stdev
+    ## Calculate the stdev from data
+    # @returns stdev
     def calculate_stdev(self):
         self.__stdev = stdev(self.__values)
         return self.__stdev
 
-    ## calculate the probability from normal fdp
+    ## Calculate the probability from normal fdp
     # @param: x: the value in R input of the fdp
     # @param: recalculate: tells if recalculate mean and stdev from data
-    # @returns: the probability calculated
+    # @returns the probability calculated
     def pdf(self, x, recalculate=False):
         if recalculate:
             self.calculate_mean()
@@ -93,14 +93,14 @@ class Multinomial(Discrete):
             self._counts = dict()
             self._total = 0
 
-    ## returns the dictionary key:probability
+    ## returns the dictionary key: probability
     def get_parameters(self):
         param = dict()
         for couple in self._counts.items():
             param[couple[0]] = couple[1] / self._total
         return param
 
-    ## adds an occurence of a value to the counts
+    ## Adds an occurence of a value to the counts
     # @param: value: the value occurred
     def add(self, value):
         if value not in self._counts.keys():
@@ -121,7 +121,7 @@ class Interspersed(Multinomial):
         super(Interspersed, self).__init__(pseudocounts)
         self.__intervals = intervals
 
-    # Generate linear intervals
+    ## Generate linear intervals
     # @param: start: the starting interval left extreme
     # @param: end: the ending interval right extreme
     # @param: num: the number of intervals
@@ -131,7 +131,7 @@ class Interspersed(Multinomial):
         if infinite:
             self.__intervals = [-inf] + self.__intervals + [inf]
 
-    # Generate logarithmic intervals
+    ## Generate logarithmic intervals
     # @param: start: the starting interval left extreme
     # @param: end: the ending interval right extreme
     # @param: num: the number of intervals
