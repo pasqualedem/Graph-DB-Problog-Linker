@@ -91,7 +91,7 @@ class PropertyTest(unittest.TestCase):
         r = get_evaluatable().create_from(s).evaluate()
         print(r)
 
-    def test_inference(self):
+    def test_basic_query(self):
         data = Data(
             [[(0, 'brand', 'Ford')],
              [(1, 'brand', 'Seat')],
@@ -113,6 +113,22 @@ class PropertyTest(unittest.TestCase):
         print(issubclass(type(property_map['brand'].get_distribution()), Discrete))
         s = property_map.to_simple_program()
         s += list(PrologString("query(prop(_generic_individual_, brand, X)).").__iter__())[0]
+
+        r = get_evaluatable().create_from(s).evaluate()
+        print(r)
+
+    def test_inference_pred_format(self):
+        data = Data(
+            [[('donato', 'father', 'annalisa')],
+             [('michelangelo', 'father', 'corrado')],
+             [('annalisa', 'mother', 'corrado')]
+             ], 9, triple_mode=False)
+
+        s = data.parse()
+
+        s += list(PrologString("child(A,B) :- father(B,A).").__iter__())[0]
+        s += list(PrologString("child(A,B) :- mother(B,A).").__iter__())[0]
+        s += list(PrologString("query(child(A,annalisa)).").__iter__())[0]
 
         r = get_evaluatable().create_from(s).evaluate()
         print(r)
