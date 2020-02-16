@@ -114,7 +114,8 @@ class PropertyMap(dict):
 class Property:
 
     ## The constructor
-    def __init__(self, name, distribution):
+    def __init__(self, name, distribution, subj_name="__generic_individual__"):
+        self.__subj_name = subj_name
         self.__name = name
         self.__distribution = distribution
 
@@ -141,7 +142,7 @@ class Property:
         true = Term('true')
         name = get_type(self.__name)
         clauses = []
-        sub = Term('_generic_individual_')
+        sub = get_type(self.__subj_name)
         dic = self.__distribution.get_parameters()
         values = dic.keys()
         for value in values:
