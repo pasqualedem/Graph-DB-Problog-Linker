@@ -26,6 +26,11 @@ class Data:
     def set_triples(self, triples):
         self.__data = triples
 
+    ## Set the triple mode truthness of Data object
+    # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
+    def set_triple_mode(self, triple_mode):
+        self.__triple_mode = triple_mode
+
     ## Get the triples of Data object
     # @returns triples
     def get_data(self):
