@@ -1,0 +1,1 @@
+query(prop(ind, brand, X)).

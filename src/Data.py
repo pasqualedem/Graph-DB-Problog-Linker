@@ -4,7 +4,8 @@
 from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
-from src.Distribution import Normal, Multinomial
+from Distribution import Normal, Multinomial, Continuous, Discrete
+from Util import get_type, ClauseBuilder
 
 
 ## Implements class for data representation
@@ -13,7 +14,9 @@ class Data:
     ## The constructor
     # @param: triples: list of list of (subject - predicate - object) tuples
     # @param: length: number of tuples in triples
-    def __init__(self, data: [[tuple]], length):
+    # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
+    def __init__(self, data: [[tuple]], length, triple_mode=True):
+        self.__triple_mode = triple_mode
         self.__data = data
         self.__length = length
 
@@ -30,16 +33,17 @@ class Data:
     ## Create examples from triples
     # @returns list of examples
     def to_examples(self, examples=[]):
+        cb = ClauseBuilder(self.__triple_mode)
         term_dict = {}
         prop = Term('prop')
         for possible_world in self.__data:
             example = []
             for triple in possible_world:
                 if term_dict.get(triple[1]) is None:
-                    term_dict[triple[1]] = Constant(triple[1])
+                    term_dict[triple[1]] = get_type(triple[1])
                 if term_dict.get(triple[0]) is None:
-                    term_dict[triple[0]] = Constant(triple[0])
-                example.append((prop(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
+                    term_dict[triple[0]] = get_type(triple[0])
+                example.append((cb.get_clause(term_dict[triple[0]], term_dict[triple[1]]), triple[2]))
                 examples.append(example)
         return examples
 
@@ -68,22 +72,22 @@ class Data:
         return properties
 
     ## Parse a list of triples into a SimpleProgram
-    # @return program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj)
+    # @return: program: a SimpleProgram that contains a list of clauses prop(subj, pred, obj) or pred(subj, obj)
     def parse(self, program=SimpleProgram()):
-        prop = Term('prop')
-        const_dict = dict()
+        cb = ClauseBuilder(self.__triple_mode)
+        term_dict = dict()
         for row in self.__data:
             for triple in row:
-                if const_dict.get(triple[1]) is None:
-                    const_dict[triple[1]] = Constant(triple[1])
-                if const_dict.get(triple[0]) is None:
-                    const_dict[triple[0]] = Constant(triple[0])
-                if const_dict.get(triple[2]) is None:
-                    const_dict[triple[2]] = Constant(triple[2])
-                pred = const_dict[triple[1]]
-                subj = const_dict[triple[0]]
-                obj = const_dict[triple[2]]
-                program += prop(subj, pred, obj)
+                if term_dict.get(triple[1]) is None:
+                    term_dict[triple[1]] = get_type(triple[1])
+                if term_dict.get(triple[0]) is None:
+                    term_dict[triple[0]] = get_type(triple[0])
+                if term_dict.get(triple[2]) is None:
+                    term_dict[triple[2]] = get_type(triple[2])
+                pred = term_dict[triple[1]]
+                subj = term_dict[triple[0]]
+                obj = term_dict[triple[2]]
+                program += cb.get_clause(subj, pred, obj)
 
         return program
 
@@ -95,7 +99,7 @@ class PropertyMap(dict):
     # @return program
     def to_simple_program(self, program=SimpleProgram()):
         for prop in self.values():
-            program += prop.to_atom()
+            program += prop.to_clause()
         return program
 
 
@@ -107,19 +111,36 @@ class Property:
         self.__name = name
         self.__distribution = distribution
 
-    ## Create a list of clauses from property
-    # @return annotated disjunction of the clauses
-    def to_atom(self):
-        prop = Term('prop')
-        I = Var('I')
-        clauses = []
+    ## create a clause from property and his distribution
+    # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
+    # @return annotated disjunction of the clauses or a fact if distributions is Continuous
+    def to_clause(self, triple_mode=True):
+        if issubclass(type(self.__distribution), Continuous):
+            return self.__to_fact()
+        elif issubclass(type(self.__distribution), Discrete):
+            return self.__to_annotated_disjunction(triple_mode)
+        else:
+            raise Exception
 
+    ## create a fact with a continuous distribuction as probability
+    def __to_fact(self):
+        distribuction = Term(str(type(self.__distribution)))(*self.__distribution.get_parameters())
+        return Term(self.__name, p=distribuction)
+
+    ## create an annoteted disjunction from property
+    def __to_annotated_disjunction(self, triple_mode):
+        cb = ClauseBuilder(triple_mode)
+        true = Term('true')
+        name = get_type(self.__name)
+        clauses = []
+        sub = Term('_generic_individual_')
         dic = self.__distribution.get_parameters()
         values = dic.keys()
         for value in values:
-            clauses.append(prop(I, self.__name, Constant(value), p=dic[value]))
+            t_value = get_type(value)
+            clauses.append(cb.get_clause(sub, name, t_value, prob=dic[value]))
 
-        return AnnotatedDisjunction(clauses, True)
+        return AnnotatedDisjunction(clauses, true)
 
     ## Get the distribution of the property
     # @return distribution
