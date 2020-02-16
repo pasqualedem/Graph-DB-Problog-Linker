@@ -1120,7 +1120,8 @@ class UiMainWindow(object):
 
                 property_map[self.__prop_distr_table.cellWidget(i, 1).text()] = \
                     Property(self.__prop_distr_table.cellWidget(i, 0).text(),
-                             self.__prop_distr_table.cellWidget(i, 1).text(), distr_obj)
+                             distr_obj,
+                             self.__prop_distr_table.cellWidget(i, 1).text())
 
         if self.__sparql_distr.isChecked():
             property_map = self.__sparql_data.learn_distributions(property_map)

@@ -66,11 +66,11 @@ class Data:
                     prop.get_distribution().add(value)
                 else:
                     if type(value) is float:
-                        new_prop = Property(prop_name, Normal(), "__generic_individual__")
+                        new_prop = Property(prop_name, Normal())
                         new_prop.get_distribution().add(value)
                         properties[prop_name] = new_prop
                     else:
-                        new_prop = Property(prop_name, Multinomial(), "__generic_individual__")
+                        new_prop = Property(prop_name, Multinomial())
                         new_prop.get_distribution().add(value)
                         properties[prop_name] = new_prop
 
@@ -114,7 +114,7 @@ class PropertyMap(dict):
 class Property:
 
     ## The constructor
-    def __init__(self, subj_name, name, distribution):
+    def __init__(self, name, distribution, subj_name="__generic_individual__"):
         self.__subj_name = subj_name
         self.__name = name
         self.__distribution = distribution
