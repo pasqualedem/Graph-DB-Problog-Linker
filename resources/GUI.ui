@@ -857,25 +857,14 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="4">
-        <widget class="QTableWidget" name="__prop_distr_table">
-         <property name="rowCount">
-          <number>1</number>
+       <item row="2" column="0">
+        <widget class="QRadioButton" name="__sparql_distr">
+         <property name="text">
+          <string>SPARQL</string>
          </property>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>218</number>
-         </attribute>
-         <row/>
-         <column>
-          <property name="text">
-           <string>property</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>distribution to learn</string>
-          </property>
-         </column>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="0" column="0" colspan="3">
@@ -901,14 +890,30 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QRadioButton" name="__sparql_distr">
-         <property name="text">
-          <string>SPARQL</string>
+       <item row="1" column="0" colspan="4">
+        <widget class="QTableWidget" name="__prop_distr_table">
+         <property name="rowCount">
+          <number>1</number>
          </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>218</number>
+         </attribute>
+         <row/>
+         <column>
+          <property name="text">
+           <string>name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>property</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>distribution to learn</string>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>
