@@ -9,6 +9,16 @@ from math import floor
 from problog.logic import Constant, Term
 
 
+def normalize_uri(value):
+    if type(value) is not str:
+        return value
+    value.replace('/', '_')
+    value.replace(':', '_')
+    value.replace('-', '_')
+    value.replace('(', '_')
+    value.replace(')', '_')
+
+
 def binary_search_rec(arr, left, right, x):
     if (right - left) < 1:
         if x <= arr[left]:
