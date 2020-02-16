@@ -1062,7 +1062,6 @@ class UiMainWindow(object):
     def bgk_file(self):
         file_name, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', "D:",
                                                              "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
-
         problog_program = PrologFile(file_name)
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
