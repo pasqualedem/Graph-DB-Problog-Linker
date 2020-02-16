@@ -14,6 +14,7 @@ from problog.program import PrologFile
 from problog.tasks import sample
 
 from Data import PropertyMap, Property
+from StructureLearning import StructureLearner
 from src.Query import DbmsQuery
 from src.Query import CloudQuery
 from Distribution import *
@@ -247,7 +248,7 @@ class UiMainWindow(object):
         self.__triples_table.horizontalHeader().setDefaultSectionSize(119)
         self.gridLayout_7.addWidget(self.__triples_table, 1, 0, 1, 1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../resources/neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.graph_db, icon, "")
         self.sparql = QtWidgets.QWidget()
         self.sparql.setObjectName("sparql")
@@ -386,7 +387,7 @@ class UiMainWindow(object):
         self.__sparql_property_filters_table.horizontalHeader().setDefaultSectionSize(193)
         self.gridLayout_10.addWidget(self.__sparql_property_filters_table, 1, 0, 1, 2)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("sparql-blog-1-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../resources/sparql-blog-1-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.sparql, icon1, "")
         self.Problog = QtWidgets.QWidget()
         self.Problog.setObjectName("Problog")
@@ -674,7 +675,7 @@ class UiMainWindow(object):
         self.__interspersed_label.setObjectName("__interspersed_label")
         self.gridLayout_17.addWidget(self.__interspersed_label, 0, 0, 1, 2)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("e6302100-9781-11e9-9e2d-f0b2848a9ad9.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("../resources/e6302100-9781-11e9-9e2d-f0b2848a9ad9.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.Problog, icon2, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -942,6 +943,29 @@ class UiMainWindow(object):
         self.__confirm.clicked.connect(
             lambda: self.confirm_interspersed())
 
+        self.__confirm.clicked.connect(
+            lambda: self.confirm_interspersed())
+
+        self.__probfoil_execute.clicked.connect(
+            lambda: self.probfoil_execute())
+
+    def probfoil_execute(self):
+        file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
+                                                             "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
+
+        structure_learner = StructureLearner(self.__problog_program)
+        structure_learner.learn(
+            (float(self.__significance.text()) if self.__significance.text() != "" else None),
+            (int(self.__length.text()) if self.__length.text() != "" else None),
+            (int(self.__beam_size.text()) if self.__beam_size.text() != "" else 5),
+            (int(self.__mestimate.text()) if self.__mestimate.text() != "" else 1),
+            (True if self.__deterministic_combo.currentText() == "determinitic rules" else False)
+        )
+
+        if file_name:
+            with open(file_name, 'w') as f:
+                print(structure_learner.get_learned_rules(), file=f)
+
     def confirm_interspersed(self):
         for i in range(0, self.__interspersed_table.rowCount()):
             if self.__interspersed_table.cellWidget(i, 0).text() != "":
@@ -985,7 +1009,6 @@ class UiMainWindow(object):
                                                              "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
         results = list(sample.sample(self.__problog_program, n=20, format='dict'))
 
-        print(results)
 
         if file_name:
             with open(file_name, 'w') as f:
