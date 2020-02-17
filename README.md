@@ -25,6 +25,7 @@ Nella cartella [examples](https://github.com/pasqualedem/Progetto-ICon1920/tree/
 - [Game (Inference / Sampling)](https://github.com/pasqualedem/Progetto-ICon1920/blob/master/examples/GameExample.md)
 - [Burglary (LFI)](https://github.com/pasqualedem/Progetto-ICon1920/blob/master/examples/BurglaryExample.md)
 - [Elevation (Sampling)](https://github.com/pasqualedem/Progetto-ICon1920/blob/master/examples/CityElevationExample.md)
+- [Musicisti (Inference)](https://github.com/pasqualedem/Progetto-ICon1920/blob/master/examples/MusicalArtistsExample.md)
 
 ### Documentazione
 
