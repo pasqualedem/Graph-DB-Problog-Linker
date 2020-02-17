@@ -25,7 +25,7 @@ Passando al tab problog, si utilizza l'operazione di calcolo delle distribuzioni
 
 ![](./img/elevation_distribution.PNG)
 
-Si ottiene una clausola annotata da probabilità espressa come parametri di uan distribuzione normale
+Si ottiene una clausola annotata da probabilità espressa come parametri di una distribuzione normale
 
 ![](./img/elevation_clause.PNG)
 
