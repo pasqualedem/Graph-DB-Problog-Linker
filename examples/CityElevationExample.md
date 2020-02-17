@@ -1,6 +1,6 @@
 # Calcolo delle distribuzione dell'elevazione delle città e campionamento
 
-In questo esempio, tramite endpoint sparql, è stata eseguita la seguente query:
+In questo esempio, tramite l'endpoint sparql https://dbpedia.org/sparql , è stata eseguita la seguente query:
 
 ```
 PREFIX dbo: <http://dbpedia.org/ontology/>
