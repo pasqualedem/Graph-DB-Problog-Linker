@@ -16,6 +16,10 @@ eseguire funzioni di Problog come:
 
 GDBPL può anche calcolare le distribuzioni contenute nei dati e trasformarle in clausole logiche.
 
+Per eseguire il file, si deve eseguire da terminale, mentre si è nella cartella src, il comando:
+
+``` python gui.py ```
+
 Nella cartella [examples](https://github.com/pasqualedem/Progetto-ICon1920/tree/master/examples) è possibile consultare alcuni esempi d'uso effettuati:
 
 - [Game (Inference / Sampling)](https://github.com/pasqualedem/Progetto-ICon1920/blob/master/examples/GameExample.md)
