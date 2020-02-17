@@ -13,3 +13,5 @@ eseguire funzioni di Problog come:
 - apprendimento della struttura con ProbFOIL.
 
 GDBPL può anche calcolare le distribuzioni contenute nei dati e trasformarle in clausole logiche.
+
+Visitare la cartella [examples](https://github.com/pasqualedem/Progetto-ICon1920/tree/master/examples) per comprenderne l'uso
