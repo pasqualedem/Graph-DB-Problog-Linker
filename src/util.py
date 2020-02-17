@@ -13,10 +13,10 @@ def normalize_result(value):
     if type(value) is not str:
         return value
 
-    if value.isNumeric():
+    if value.isnumeric():
         return float(value)
 
-    if ':' in value and '/' in value:
+    if ':' in value and '/' or '(' or ')' in value:
         value = value.replace("/", "_")
         value = value.replace(":", "_")
         value = value.replace("-", "_")

@@ -81,11 +81,11 @@ class PropertyTest(unittest.TestCase):
              [(57, 'KNOWS', 56), (57, 'name', 'Francesco'), (56, 'name', 'Matteo')]], 21, True)
 
         property_map = PropertyMap()
-        property_map["brand"] = Property("brand", Multinomial())
+        property_map["brand"] = Property("brand", Multinomial(), "car")
 
         property_map = data.learn_distributions(property_map)
-        s = property_map.to_simple_program()
-        s += list(PrologString("query(prop(_generic_individual_, brand, X)).").__iter__())[0]
+        s = property_map.to_simple_program(triple_mode=True)
+        s += list(PrologString("query(prop(car, brand, X)).").__iter__())[0]
         r = get_evaluatable().create_from(s).evaluate()
         print(r)
 
@@ -106,7 +106,7 @@ class PropertyTest(unittest.TestCase):
         property_map["brand"] = Property("brand", Multinomial())
 
         property_map = data.learn_distributions(property_map)
-        s = property_map.to_simple_program()
+        s = property_map.to_simple_program(triple_mode=True)
         s += list(PrologString("query(prop(_generic_individual_, brand, X)).").__iter__())[0]
 
         r = get_evaluatable().create_from(s).evaluate()
