@@ -5,7 +5,7 @@ from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
 from Distribution import Normal, Multinomial, Continuous, Discrete
-from Util import get_type, ClauseBuilder
+from util import get_type, ClauseBuilder
 
 
 ##
@@ -16,7 +16,7 @@ class Data:
     # @param: triples: list of list of (subject - predicate - object) tuples
     # @param: length: number of tuples in triples
     # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
-    def __init__(self, data: [[tuple]], length, triple_mode=True):
+    def __init__(self, data: [[tuple]], length, triple_mode=False):
         self.__triple_mode = triple_mode
         self.__data = data
         self.__length = length
@@ -30,6 +30,10 @@ class Data:
     # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
     def set_triple_mode(self, triple_mode):
         self.__triple_mode = triple_mode
+
+    ## Get the triple mode truthness of Data object
+    def get_triple_mode(self):
+        return self.__triple_mode
 
     ## Get the triples of Data object
     # @returns triples
@@ -103,9 +107,9 @@ class PropertyMap(dict):
 
     ## Create a simple program from property clauses
     # @return program
-    def to_simple_program(self, program=SimpleProgram()):
+    def to_simple_program(self, program=SimpleProgram(), triple_mode=False):
         for prop in self.values():
-            program += prop.to_clause()
+            program += prop.to_clause(triple_mode)
         return program
 
 
@@ -122,7 +126,7 @@ class Property:
     ## create a clause from property and his distribution
     # @param: triple_mode: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj)
     # @return annotated disjunction of the clauses or a fact if distributions is Continuous
-    def to_clause(self, triple_mode=True):
+    def to_clause(self, triple_mode=False):
         if issubclass(type(self.__distribution), Continuous):
             return self.__to_fact()
         elif issubclass(type(self.__distribution), Discrete):

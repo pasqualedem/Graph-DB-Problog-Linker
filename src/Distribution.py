@@ -1,7 +1,7 @@
 from abc import ABC
 from math import *
 from statistics import mean, stdev
-from src.Util import binary_search
+from src.util import binary_search
 from numpy import linspace, logspace
 from scipy.stats import norm
 import random

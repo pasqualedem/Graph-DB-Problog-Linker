@@ -29,6 +29,7 @@ class StructureLearner:
             self.__log_file = open(log_file, 'w')
         else:
             self.__log_file = None
+        self._log = None
 
         if seed:
             self.__seed = seed
@@ -56,8 +57,8 @@ class StructureLearner:
     def learn(self, significance=None, max_rule_length=None, beam_size=5, m_estimator=1, deterministic=False):
         log_name = 'structure_learner'
         if self.__log_file is not None:
-            log = init_logger(verbose=True, name=log_name, out=self.__log_file)
-            log.info('Random seed: %s' % self.__seed)
+            self.__log = init_logger(verbose=True, name=log_name, out=self.__log_file)
+            self.__log.info('Random seed: %s' % self.__seed)
 
         if deterministic:
             learn_class = ProbFOIL
@@ -74,7 +75,14 @@ class StructureLearner:
         # First rule is failing rule: don't consider it if there are other rules.
         if len(self.__rules) > 1:
             del self.__rules[0]
-        return time.time() - time_start
+        time_total = time.time() - time_start
+        if self.__log is not None:
+            self.__log.info('ACCURACY: %f' % self.accuracy())
+            self.__log.info('PRECISION: %f' % self.precision())
+            self.__log.info('RECALL: %f' % self.recall())
+            self.__log.info('ACCURACY: %f' % self.accuracy())
+            self.__log.info('Total time:\t%.4fs' % time_start)
+        return time_total
 
     def get_learned_rules(self):
         return self.__rules

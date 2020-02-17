@@ -2,7 +2,7 @@ import unittest
 
 from problog.program import PrologFile
 
-from src.StructureLearning import StructureLearner
+from src.structure_learning import StructureLearner
 
 
 class StructureLearnerTest(unittest.TestCase):
