@@ -1,15 +1,15 @@
 Graph DB - Problog Linker (GDBPL)
 
-## Presentation
+## Presentazione
 
-GDBPL is a software that links a Graph DB like Neo4j to [Problog](https://github.com/ML-KULeuven/problog) and [ProbFOIL](https://bitbucket.org/problog/prob2foil/src/master/).
+GDBPL è un software che collega database grafici come Neo4j a [Problog](https://github.com/ML-KULeuven/problog) e [ProbFOIL](https://bitbucket.org/problog/prob2foil/src/master/).
 
-GDBPL fetch data from the DB and parse it to a format undearstandable from Problog and ProbFOIL,
-running multiple queries it can build a logic program and integrating from files it is possible 
-to execute the functions of Problog like 
-- reasoning;
-- LFI (learning from interpretations) for learning probabilities;
-- sampling;
-- Structure Learning with ProbFOIL.
+GDBPL ricava dati da un database grafico e li trasforma in un formato comprensibile da Problog e ProbFOIL,
+eseguendo interrogazioni multiple può costritire un programma logico anche annotato da probabilità e integrando da altre sorgenti come file è possibile:
+eseguire funzioni di Problog come:
+- ragionamento;
+- LFI (learning from interpretations) per imparare probabilità;
+- campionamento;
+- apprendimento della struttura con ProbFOIL.
 
-GDBPL can also calculate the distribution of the data and convert it to logic clauses.
+GDBPL può anche calcolare le distribuzioni contenute nei dati e trasformarle in clausole logiche.
