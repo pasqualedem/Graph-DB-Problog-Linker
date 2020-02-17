@@ -16,3 +16,7 @@ LIMIT 100
 Tale query, eseguita attraverso questo software viene convertita nella rappresentazione a triple
 
 ![](./img/musicians_triple.PNG)
+
+Utilizzando la sezione problog, si caricano tali risultati come clausole rappresentanti fatti:
+
+![](./img/add_musician_facts)
