@@ -17,7 +17,7 @@ from data import PropertyMap, Property
 from structure_learning import StructureLearner
 from query import DbmsQuery
 from query import CloudQuery
-from Distribution import *
+from distribution import *
 
 
 ##

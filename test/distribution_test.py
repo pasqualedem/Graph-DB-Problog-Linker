@@ -1,5 +1,5 @@
 import unittest
-from Distribution import Multinomial, Normal, Interspersed
+from distribution import Multinomial, Normal, Interspersed
 
 
 class MyTestCase(unittest.TestCase):

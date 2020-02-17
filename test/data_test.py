@@ -6,7 +6,7 @@ from data import Data, PropertyMap, Property
 from problog import get_evaluatable
 from problog.logic import Term, Var, Constant
 
-from Distribution import Multinomial, Discrete
+from distribution import Multinomial, Discrete
 
 
 class DataTest(unittest.TestCase):
