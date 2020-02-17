@@ -15,8 +15,8 @@ from problog.tasks import sample
 
 from Data import PropertyMap, Property
 from StructureLearning import StructureLearner
-from src.Query import DbmsQuery
-from src.Query import CloudQuery
+from Query import DbmsQuery
+from Query import CloudQuery
 from Distribution import *
 
 
@@ -559,9 +559,6 @@ class UiMainWindow(object):
         self.__deterministic_label.setAlignment(QtCore.Qt.AlignCenter)
         self.__deterministic_label.setObjectName("__deterministic_label")
         self.gridLayout_14.addWidget(self.__deterministic_label, 3, 0, 1, 2)
-        self.__sampling = QtWidgets.QPushButton(self.layoutWidget10)
-        self.__sampling.setObjectName("__sampling")
-        self.gridLayout_14.addWidget(self.__sampling, 1, 7, 1, 3)
         self.__execution_label = QtWidgets.QLabel(self.layoutWidget10)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -645,6 +642,12 @@ class UiMainWindow(object):
         self.__log_file_label = QtWidgets.QLabel(self.layoutWidget10)
         self.__log_file_label.setObjectName("__log_file_label")
         self.gridLayout_14.addWidget(self.__log_file_label, 3, 8, 1, 1)
+        self.__sampling = QtWidgets.QPushButton(self.layoutWidget10)
+        self.__sampling.setObjectName("__sampling")
+        self.gridLayout_14.addWidget(self.__sampling, 1, 7, 1, 2)
+        self.__sample_len = QtWidgets.QLineEdit(self.layoutWidget10)
+        self.__sample_len.setObjectName("__sample_len")
+        self.gridLayout_14.addWidget(self.__sample_len, 1, 9, 1, 1)
         self.layoutWidget11 = QtWidgets.QWidget(self.Problog)
         self.layoutWidget11.setGeometry(QtCore.QRect(20, 480, 811, 201))
         self.layoutWidget11.setObjectName("layoutWidget11")
@@ -797,13 +800,11 @@ class UiMainWindow(object):
         self.__bgk_file.setText(_translate("MainWindow", "Load from file"))
         self.__probfoil_parameters_label.setText(_translate("MainWindow", "Probfoil "))
         self.__deterministic_label.setText(_translate("MainWindow", " learn deterministic rules "))
-        self.__sampling.setText(_translate("MainWindow", "Sampling"))
         self.__execution_label.setText(_translate("MainWindow", "Execution"))
         self.__deterministic_combo.setItemText(0, _translate("MainWindow", "deterministic rules"))
         self.__deterministic_combo.setItemText(1, _translate("MainWindow", "non deterministic rules"))
         self.__lfi.setText(_translate("MainWindow", "LFI"))
-        self.__probfoil_execute.setText(_translate("MainWindow", "Execute and \n"
-                                                                 "save to file"))
+        self.__probfoil_execute.setText(_translate("MainWindow", "Learning"))
         self.__beam_size_label.setText(_translate("MainWindow", "beam size"))
         self.__mestimate_label.setText(_translate("MainWindow", "m-estimate"))
         self.__significance_label.setText(_translate("MainWindow", "significance"))
@@ -812,6 +813,8 @@ class UiMainWindow(object):
         self.__problog_execution_label.setText(_translate("MainWindow", "Problog"))
         self.__seed_label.setText(_translate("MainWindow", "seed"))
         self.__log_file_label.setText(_translate("MainWindow", "Log file"))
+        self.__sampling.setText(_translate("MainWindow", "Sampling"))
+        self.__sample_len.setText(_translate("MainWindow", "10"))
         item = self.__interspersed_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "name"))
         item = self.__interspersed_table.horizontalHeaderItem(1)
@@ -1025,7 +1028,7 @@ class UiMainWindow(object):
     def sampling(self):
         file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
                                                              "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
-        results = list(sample.sample(self.__problog_program, n=20, format='dict'))
+        results = list(sample.sample(self.__problog_program, n=int(self._sample_len.text()), format='dict', distributions={'normal' : normal_sampling}))
 
         if file_name:
             with open(file_name, 'w') as f:
@@ -1117,18 +1120,24 @@ class UiMainWindow(object):
                             intervals[k] = float(intervals[k])
 
                         distr_obj = Interspersed(intervals)
+                prop = self.__prop_distr_table.cellWidget(i, 1).text()
+                name = self.__prop_distr_table.cellWidget(i, 0).text()
 
-                property_map[self.__prop_distr_table.cellWidget(i, 1).text()] = \
-                    Property(self.__prop_distr_table.cellWidget(i, 0).text(),
+                property_map[prop] = \
+                    Property(prop,
                              distr_obj,
-                             self.__prop_distr_table.cellWidget(i, 1).text())
+                             name)
+
+        triple_mode = self._prop.isChecked()
 
         if self.__sparql_distr.isChecked():
             property_map = self.__sparql_data.learn_distributions(property_map)
+            self.__sparql_data.set_triple_mode(triple_mode)
         else:
             property_map = self.__cypher_data.learn_distributions(property_map)
+            self.__cypher_data.set_triple_mode(triple_mode)
 
-        problog_program = property_map.to_simple_program()
+        problog_program = property_map.to_simple_program(triple_mode=triple_mode)
         self.write_clauses(problog_program)
         programs_merge(self.__problog_program, problog_program)
 

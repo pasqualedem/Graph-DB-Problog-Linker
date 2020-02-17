@@ -1109,13 +1109,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="7" colspan="3">
-        <widget class="QPushButton" name="__sampling">
-         <property name="text">
-          <string>Sampling</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0" colspan="10">
         <widget class="QLabel" name="__execution_label">
          <property name="font">
@@ -1158,8 +1151,7 @@
        <item row="4" column="9">
         <widget class="QPushButton" name="__probfoil_execute">
          <property name="text">
-          <string>Execute and 
-save to file</string>
+          <string>Learning</string>
          </property>
         </widget>
        </item>
@@ -1276,6 +1268,20 @@ save to file</string>
         <widget class="QLabel" name="__log_file_label">
          <property name="text">
           <string>Log file</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="7" colspan="2">
+        <widget class="QPushButton" name="__sampling">
+         <property name="text">
+          <string>Sampling</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="9">
+        <widget class="QLineEdit" name="__sample_len">
+         <property name="text">
+          <string>10</string>
          </property>
         </widget>
        </item>
