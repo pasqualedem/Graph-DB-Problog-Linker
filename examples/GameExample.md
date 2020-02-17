@@ -23,6 +23,9 @@ Queste possono essere trasformate in fatti logici nella forma prop(idgiocata, nu
 
 Passando al tab "Problog" inseriamo il soggetto relativo, il nome e il tipo di distribuzioni che vogliamo calcolare:
 
+Il software è in grado di calcolare distribuzioni normali e multinomiali, il calcolo è effettutato tramite gli stimatori di massima verosimiglianza. <br>
+Inoltre è possibile suddividere il dominio di una distribuzione normale in classi, in modo tale da discretizzare la distribuzione e renderla multinomiale.
+
 ![](./img/game_inference_distributions.JPG)
 
 Eseguendo dovrebbe aver aggiunto le relative clausole Problog.
