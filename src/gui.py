@@ -976,9 +976,6 @@ class UiMainWindow(object):
         self.__confirm.clicked.connect(
             lambda: self.confirm_interspersed())
 
-        self.__confirm.clicked.connect(
-            lambda: self.confirm_interspersed())
-
         self.__probfoil_execute.clicked.connect(
             lambda: self.probfoil_execute())
 

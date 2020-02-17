@@ -16,7 +16,7 @@ def normalize_result(value):
     if value.isnumeric():
         return float(value)
 
-    if ':' in value and '/' or '(' or ')' in value:
+    if ':' in value and '/' in value or '(' in value or ')' in value:
         value = value.replace("/", "_")
         value = value.replace(":", "_")
         value = value.replace("-", "_")

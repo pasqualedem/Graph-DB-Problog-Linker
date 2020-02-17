@@ -8,32 +8,32 @@ class DbmsQueryTest(unittest.TestCase):
                          "parse_props_array",
                          "test")
         expected = [
-            (15, 'name', 'Giuseppe'), (15, 'age', 19),
-            (16, 'name', 'Pasquale'), (16, 'age', 17),
-            (17, 'name', 'Sergio'), (17, 'age', 18),
-            (18, 'name', 'Roberto'), (18, 'age', 15),
-            (55, 'name', 'Luigi'), (55, 'age', 11),
-            (56, 'name', 'Matteo'),
-            (57, 'name', 'Francesco')
+            [(15, 'name', 'Giuseppe'), (15, 'age', 19)],
+            [(16, 'name', 'Pasquale'), (16, 'age', 17)],
+            [(17, 'name', 'Sergio'), (17, 'age', 18)],
+            [(18, 'name', 'Roberto'), (18, 'age', 15)],
+            [(55, 'name', 'Luigi'), (55, 'age', 11)],
+            [(56, 'name', 'Matteo')],
+            [(57, 'name', 'Francesco')]
         ]
 
-        self.assertEqual(test.run_query().get_triples(), expected)
+        self.assertEqual(test.run_query().get_data(), expected)
 
     def test_parse_property_map(self):
         test = DbmsQuery("MATCH (n:Person) RETURN ID(n), properties(n)",
                          "parse_property_map",
                          "test")
         expected = [
-            (15, 'name', 'Giuseppe'), (15, 'age', 19),
-            (16, 'name', 'Pasquale'), (16, 'age', 17),
-            (17, 'name', 'Sergio'), (17, 'age', 18),
-            (18, 'name', 'Roberto'), (18, 'age', 15),
-            (55, 'name', 'Luigi'), (55, 'age', 11),
-            (56, 'name', 'Matteo'),
-            (57, 'name', 'Francesco')
+            [(15, 'name', 'Giuseppe'), (15, 'age', 19)],
+            [(16, 'name', 'Pasquale'), (16, 'age', 17)],
+            [(17, 'name', 'Sergio'), (17, 'age', 18)],
+            [(18, 'name', 'Roberto'), (18, 'age', 15)],
+            [(55, 'name', 'Luigi'), (55, 'age', 11)],
+            [(56, 'name', 'Matteo')],
+            [(57, 'name', 'Francesco')]
         ]
 
-        self.assertEqual(test.run_query().get_triples(), expected)
+        self.assertEqual(test.run_query().get_data(), expected)
 
     def test_parse_node_rels_with_props(self):
         test = DbmsQuery("MATCH(n:Person) OPTIONAL MATCH (n:Person)-[r]->(c:Car) RETURN n, TYPE(r), c",
@@ -41,19 +41,19 @@ class DbmsQueryTest(unittest.TestCase):
                          "test")
 
         expected = [
-            (15, 'OWNS', 19), (15, 'name', 'Giuseppe'), (15, 'age', 19),
-            (19, 'brand', 'Suzuki'), (19, 'targa', '143'),
-            (16, 'OWNS', 21), (16, 'name', 'Pasquale'), (16, 'age', 17),
-            (21, 'brand', 'Audi'), (21, 'targa', '127'),
-            (17, 'OWNS', 1), (17, 'name', 'Sergio'), (17, 'age', 18),
-            (1, 'brand', 'Seat'), (1, 'targa', '124'),
-            (18, 'name', 'Roberto'), (18, 'age', 15),
-            (55, 'OWNS', 0), (55, 'name', 'Luigi'), (55, 'age', 11),
-            (0, 'brand', 'Ford'), (0, 'targa', '123'),
-            (56, 'name', 'Matteo'), (57, 'name', 'Francesco')
+            [(15, 'OWNS', 19), (15, 'name', 'Giuseppe'), (15, 'age', 19),
+             (19, 'brand', 'Suzuki'), (19, 'targa', '143')],
+            [(16, 'OWNS', 21), (16, 'name', 'Pasquale'), (16, 'age', 17),
+             (21, 'brand', 'Audi'), (21, 'targa', '127')],
+            [(17, 'OWNS', 1), (17, 'name', 'Sergio'), (17, 'age', 18),
+             (1, 'brand', 'Seat'), (1, 'targa', '124')],
+            [(18, 'name', 'Roberto'), (18, 'age', 15)],
+            [(55, 'OWNS', 0), (55, 'name', 'Luigi'), (55, 'age', 11),
+             (0, 'brand', 'Ford'), (0, 'targa', '123')],
+            [(56, 'name', 'Matteo')], [(57, 'name', 'Francesco')]
         ]
 
-        self.assertEqual(test.run_query().get_triples(), expected)
+        self.assertEqual(test.run_query().get_data(), expected)
 
 
 class CloudQueryTest(unittest.TestCase):

@@ -146,8 +146,8 @@ class Interspersed(Multinomial):
 
     ## adds an occurence of a value to the counts
     # @param: value: the value occurred
-    def add(self, value: float):
-        index = binary_search(self.__intervals, value)
+    def add(self, value):
+        index = binary_search(self.__intervals, float(value))
         interval = '(' + str(self.__intervals[index-1]) + ', ' + str(self.__intervals[index])
         if index == len(self.__intervals)-1:
             interval += ')'
