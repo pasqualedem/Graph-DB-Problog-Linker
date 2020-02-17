@@ -1,0 +1,91 @@
+\hypertarget{classutil_1_1_clause_builder}{}\doxysection{util.\+Clause\+Builder Class Reference}
+\label{classutil_1_1_clause_builder}\index{util.ClauseBuilder@{util.ClauseBuilder}}
+
+
+Builds a clause from a triple (subj, pred, obj) in prop(subj, pred, obj) format or pred(subj, obj) format.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classutil_1_1_clause_builder_a388c014895dc933c1e10931d9e204971}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, triple\+\_\+mode=True)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classutil_1_1_clause_builder}{Clause\+Builder}} constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classutil_1_1_clause_builder_a83f04011a9f98f70bcad4e658cc59160}{get\+\_\+pred\+\_\+clause}} (self, subj, pred, obj=None, prob=None)
+\begin{DoxyCompactList}\small\item\em builds a clause in pred(subj, obj) format \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classutil_1_1_clause_builder_aa0f7c432e8b402f356366f3d2044980d}{get\+\_\+prop\+\_\+clause}} (self, subj, pred, obj=None, prob=None)
+\begin{DoxyCompactList}\small\item\em builds a clause in prop(subj, pred, obj) format \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classutil_1_1_clause_builder_a1a4aba68e41eae21aaf2141d8aae77c5}\label{classutil_1_1_clause_builder_a1a4aba68e41eae21aaf2141d8aae77c5}} 
+{\bfseries get\+\_\+clause}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Builds a clause from a triple (subj, pred, obj) in prop(subj, pred, obj) format or pred(subj, obj) format. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classutil_1_1_clause_builder_a388c014895dc933c1e10931d9e204971}\label{classutil_1_1_clause_builder_a388c014895dc933c1e10931d9e204971}} 
+\index{util.ClauseBuilder@{util.ClauseBuilder}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!util.ClauseBuilder@{util.ClauseBuilder}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def util.\+Clause\+Builder.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{triple\+\_\+mode = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{classutil_1_1_clause_builder}{Clause\+Builder}} constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triple\+\_\+mode\+: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classutil_1_1_clause_builder_a83f04011a9f98f70bcad4e658cc59160}\label{classutil_1_1_clause_builder_a83f04011a9f98f70bcad4e658cc59160}} 
+\index{util.ClauseBuilder@{util.ClauseBuilder}!get\_pred\_clause@{get\_pred\_clause}}
+\index{get\_pred\_clause@{get\_pred\_clause}!util.ClauseBuilder@{util.ClauseBuilder}}
+\doxysubsubsection{\texorpdfstring{get\_pred\_clause()}{get\_pred\_clause()}}
+{\footnotesize\ttfamily def util.\+Clause\+Builder.\+get\+\_\+pred\+\_\+clause (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{subj,  }\item[{}]{pred,  }\item[{}]{obj = {\ttfamily None},  }\item[{}]{prob = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+builds a clause in pred(subj, obj) format 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & subj\+: the subject of the predicate \\
+\hline
+{\em } & obj\+: the object of the predicate \\
+\hline
+{\em } & prob\+: the probability of the clause \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classutil_1_1_clause_builder_aa0f7c432e8b402f356366f3d2044980d}\label{classutil_1_1_clause_builder_aa0f7c432e8b402f356366f3d2044980d}} 
+\index{util.ClauseBuilder@{util.ClauseBuilder}!get\_prop\_clause@{get\_prop\_clause}}
+\index{get\_prop\_clause@{get\_prop\_clause}!util.ClauseBuilder@{util.ClauseBuilder}}
+\doxysubsubsection{\texorpdfstring{get\_prop\_clause()}{get\_prop\_clause()}}
+{\footnotesize\ttfamily def util.\+Clause\+Builder.\+get\+\_\+prop\+\_\+clause (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{subj,  }\item[{}]{pred,  }\item[{}]{obj = {\ttfamily None},  }\item[{}]{prob = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+builds a clause in prop(subj, pred, obj) format 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & subj\+: the subject of the predicate \\
+\hline
+{\em } & pred\+: the predicate \\
+\hline
+{\em } & obj\+: the object of the predicate \\
+\hline
+{\em } & prob\+: the probability of the clause \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/util.\+py\end{DoxyCompactItemize}

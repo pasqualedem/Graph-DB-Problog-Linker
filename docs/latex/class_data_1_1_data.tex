@@ -1,0 +1,86 @@
+\hypertarget{class_data_1_1_data}{}\doxysection{Data.\+Data Class Reference}
+\label{class_data_1_1_data}\index{Data.Data@{Data.Data}}
+
+
+Implements class for \mbox{\hyperlink{class_data_1_1_data}{Data}} representation.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{class_data_1_1_data_a117ec41835812b0fbe40673538ce1b35}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{[}\mbox{[}tuple\mbox{]}\mbox{]} data, length, triple\+\_\+mode=True)
+\begin{DoxyCompactList}\small\item\em The constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_data_1_1_data_a30e20ad070437136b7af70bdf71bfabd}{set\+\_\+triples}} (self, triples)
+\begin{DoxyCompactList}\small\item\em Set the triples of \mbox{\hyperlink{class_data_1_1_data}{Data}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_data_1_1_data_a5137326c8f867823c3ca0a4181c17406}\label{class_data_1_1_data_a5137326c8f867823c3ca0a4181c17406}} 
+def {\bfseries get\+\_\+data} (self)
+\item 
+\mbox{\Hypertarget{class_data_1_1_data_add1320e3a92eddf00cb71435491f178f}\label{class_data_1_1_data_add1320e3a92eddf00cb71435491f178f}} 
+def {\bfseries to\+\_\+examples} (self, examples=\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_data_1_1_data_a6b808cca9a33352a6fd5ac808f1cefa2}\label{class_data_1_1_data_a6b808cca9a33352a6fd5ac808f1cefa2}} 
+def {\bfseries learn\+\_\+distributions} (self, properties=dict())
+\item 
+def \mbox{\hyperlink{class_data_1_1_data_abbff1f5929b1de4de830090a79a21253}{parse}} (self, program=Simple\+Program())
+\begin{DoxyCompactList}\small\item\em Parse a list of triples into a Simple\+Program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implements class for \mbox{\hyperlink{class_data_1_1_data}{Data}} representation. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_data_1_1_data_a117ec41835812b0fbe40673538ce1b35}\label{class_data_1_1_data_a117ec41835812b0fbe40673538ce1b35}} 
+\index{Data.Data@{Data.Data}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!Data.Data@{Data.Data}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Data.\+Data.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{[}\mbox{[}tuple\mbox{]}\mbox{]}}]{data,  }\item[{}]{length,  }\item[{}]{triple\+\_\+mode = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+The constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triples\+: list of list of (subject -\/ predicate -\/ object) tuples \\
+\hline
+{\em } & length\+: number of tuples in triples \\
+\hline
+{\em } & triple\+\_\+mode\+: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_data_1_1_data_abbff1f5929b1de4de830090a79a21253}\label{class_data_1_1_data_abbff1f5929b1de4de830090a79a21253}} 
+\index{Data.Data@{Data.Data}!parse@{parse}}
+\index{parse@{parse}!Data.Data@{Data.Data}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily def Data.\+Data.\+parse (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{program = {\ttfamily SimpleProgram()} }\end{DoxyParamCaption})}
+
+
+
+Parse a list of triples into a Simple\+Program. 
+
+\begin{DoxyReturn}{Returns}
+\+: program\+: a Simple\+Program that contains a list of clauses prop(subj, pred, obj) or pred(subj, obj) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_data_1_1_data_a30e20ad070437136b7af70bdf71bfabd}\label{class_data_1_1_data_a30e20ad070437136b7af70bdf71bfabd}} 
+\index{Data.Data@{Data.Data}!set\_triples@{set\_triples}}
+\index{set\_triples@{set\_triples}!Data.Data@{Data.Data}}
+\doxysubsubsection{\texorpdfstring{set\_triples()}{set\_triples()}}
+{\footnotesize\ttfamily def Data.\+Data.\+set\+\_\+triples (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{triples }\end{DoxyParamCaption})}
+
+
+
+Set the triples of \mbox{\hyperlink{class_data_1_1_data}{Data}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triples\+: list of subject -\/ predicate -\/ object tuples \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/Data.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,59 @@
+\hypertarget{classdata_1_1_property}{}\doxysection{data.\+Property Class Reference}
+\label{classdata_1_1_property}\index{data.Property@{data.Property}}
+
+
+Represents a property with the related distribution probability.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdata_1_1_property_ab1d5bd115cea271ea8828e089d1d5dfe}\label{classdata_1_1_property_ab1d5bd115cea271ea8828e089d1d5dfe}} 
+def \mbox{\hyperlink{classdata_1_1_property_ab1d5bd115cea271ea8828e089d1d5dfe}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, name, distribution, subj\+\_\+name=\char`\"{}\+\_\+\+\_\+generic\+\_\+individual\+\_\+\+\_\+\char`\"{})
+\begin{DoxyCompactList}\small\item\em The constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_property_acb1e183f679a6ba2ccb0bc47c30579d0}{to\+\_\+clause}} (self, triple\+\_\+mode=False)
+\begin{DoxyCompactList}\small\item\em create a clause from property and his distribution \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_property_a20f3278b9b2450773fc7de763b0f6eba}{get\+\_\+distribution}} (self)
+\begin{DoxyCompactList}\small\item\em Get the distribution of the property. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a property with the related distribution probability. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdata_1_1_property_a20f3278b9b2450773fc7de763b0f6eba}\label{classdata_1_1_property_a20f3278b9b2450773fc7de763b0f6eba}} 
+\index{data.Property@{data.Property}!get\_distribution@{get\_distribution}}
+\index{get\_distribution@{get\_distribution}!data.Property@{data.Property}}
+\doxysubsubsection{\texorpdfstring{get\_distribution()}{get\_distribution()}}
+{\footnotesize\ttfamily def data.\+Property.\+get\+\_\+distribution (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Get the distribution of the property. 
+
+\begin{DoxyReturn}{Returns}
+distribution 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdata_1_1_property_acb1e183f679a6ba2ccb0bc47c30579d0}\label{classdata_1_1_property_acb1e183f679a6ba2ccb0bc47c30579d0}} 
+\index{data.Property@{data.Property}!to\_clause@{to\_clause}}
+\index{to\_clause@{to\_clause}!data.Property@{data.Property}}
+\doxysubsubsection{\texorpdfstring{to\_clause()}{to\_clause()}}
+{\footnotesize\ttfamily def data.\+Property.\+to\+\_\+clause (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{triple\+\_\+mode = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+create a clause from property and his distribution 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triple\+\_\+mode\+: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+annotated disjunction of the clauses or a fact if distributions is Continuous 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/data.\+py\end{DoxyCompactItemize}

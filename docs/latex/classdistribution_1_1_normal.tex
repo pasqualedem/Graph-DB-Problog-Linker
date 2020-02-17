@@ -1,0 +1,129 @@
+\hypertarget{classdistribution_1_1_normal}{}\doxysection{distribution.\+Normal Class Reference}
+\label{classdistribution_1_1_normal}\index{distribution.Normal@{distribution.Normal}}
+
+
+Represents a normal distribution.  
+
+
+Inheritance diagram for distribution.\+Normal\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classdistribution_1_1_normal}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdistribution_1_1_normal_a2faf35ce835a521553edc55786c9173b}\label{classdistribution_1_1_normal_a2faf35ce835a521553edc55786c9173b}} 
+def \mbox{\hyperlink{classdistribution_1_1_normal_a2faf35ce835a521553edc55786c9173b}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classdistribution_1_1_normal}{Normal}} constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_normal_a8bc035aa2eb7837781f50239bc0c3c38}{get\+\_\+parameters}} (self, recalculate=False)
+\begin{DoxyCompactList}\small\item\em Get the parameters of the distribution (mu,sigma) \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_normal_a9c838790716947b82dfc130ce33a666d}{add}} (self, value)
+\begin{DoxyCompactList}\small\item\em Add a value to the data. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_normal_a5d0fe11c301ae81137ca1b1af9ab6e8d}{calculate\+\_\+mean}} (self)
+\begin{DoxyCompactList}\small\item\em Calculate the mean from data. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_normal_ad312eec83aaa5007765761f02201b5eb}{calculate\+\_\+stdev}} (self)
+\begin{DoxyCompactList}\small\item\em Calculate the stdev from data. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_normal_af41f5276279c1f0fa8b3b2a5a455306a}{pdf}} (self, x, recalculate=False)
+\begin{DoxyCompactList}\small\item\em Calculate the probability from normal fdp. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdistribution_1_1_normal_ad1c0076e3133eddaa703541b54545fa5}\label{classdistribution_1_1_normal_ad1c0076e3133eddaa703541b54545fa5}} 
+string {\bfseries name} = \char`\"{}normal\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a normal distribution. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdistribution_1_1_normal_a9c838790716947b82dfc130ce33a666d}\label{classdistribution_1_1_normal_a9c838790716947b82dfc130ce33a666d}} 
+\index{distribution.Normal@{distribution.Normal}!add@{add}}
+\index{add@{add}!distribution.Normal@{distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily def distribution.\+Normal.\+add (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{value }\end{DoxyParamCaption})}
+
+
+
+Add a value to the data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & value\+: the value to be added \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classdistribution_1_1_distribution}{distribution.\+Distribution}}.
+
+\mbox{\Hypertarget{classdistribution_1_1_normal_a5d0fe11c301ae81137ca1b1af9ab6e8d}\label{classdistribution_1_1_normal_a5d0fe11c301ae81137ca1b1af9ab6e8d}} 
+\index{distribution.Normal@{distribution.Normal}!calculate\_mean@{calculate\_mean}}
+\index{calculate\_mean@{calculate\_mean}!distribution.Normal@{distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{calculate\_mean()}{calculate\_mean()}}
+{\footnotesize\ttfamily def distribution.\+Normal.\+calculate\+\_\+mean (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Calculate the mean from data. 
+
+\begin{DoxyReturn}{Returns}
+mean 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdistribution_1_1_normal_ad312eec83aaa5007765761f02201b5eb}\label{classdistribution_1_1_normal_ad312eec83aaa5007765761f02201b5eb}} 
+\index{distribution.Normal@{distribution.Normal}!calculate\_stdev@{calculate\_stdev}}
+\index{calculate\_stdev@{calculate\_stdev}!distribution.Normal@{distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{calculate\_stdev()}{calculate\_stdev()}}
+{\footnotesize\ttfamily def distribution.\+Normal.\+calculate\+\_\+stdev (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Calculate the stdev from data. 
+
+\begin{DoxyReturn}{Returns}
+stdev 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdistribution_1_1_normal_a8bc035aa2eb7837781f50239bc0c3c38}\label{classdistribution_1_1_normal_a8bc035aa2eb7837781f50239bc0c3c38}} 
+\index{distribution.Normal@{distribution.Normal}!get\_parameters@{get\_parameters}}
+\index{get\_parameters@{get\_parameters}!distribution.Normal@{distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{get\_parameters()}{get\_parameters()}}
+{\footnotesize\ttfamily def distribution.\+Normal.\+get\+\_\+parameters (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{recalculate = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+Get the parameters of the distribution (mu,sigma) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & recalculate\+: tells if recalculate mean and stdev from data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mean and stdev 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdistribution_1_1_normal_af41f5276279c1f0fa8b3b2a5a455306a}\label{classdistribution_1_1_normal_af41f5276279c1f0fa8b3b2a5a455306a}} 
+\index{distribution.Normal@{distribution.Normal}!pdf@{pdf}}
+\index{pdf@{pdf}!distribution.Normal@{distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{pdf()}{pdf()}}
+{\footnotesize\ttfamily def distribution.\+Normal.\+pdf (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{recalculate = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+Calculate the probability from normal fdp. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & x\+: the value in R input of the fdp \\
+\hline
+{\em } & recalculate\+: tells if recalculate mean and stdev from data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the probability calculated 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/distribution.\+py\end{DoxyCompactItemize}

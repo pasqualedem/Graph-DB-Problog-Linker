@@ -1,0 +1,122 @@
+\hypertarget{class_structure_learning_1_1_structure_learner}{}\doxysection{Structure\+Learning.\+Structure\+Learner Class Reference}
+\label{class_structure_learning_1_1_structure_learner}\index{StructureLearning.StructureLearner@{StructureLearning.StructureLearner}}
+
+
+Represents the Prob\+F\+O\+IL module and permits to use it as an object.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{class_structure_learning_1_1_structure_learner_a879a2220cf6f0fb5780879d5f23c0e95}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, $\ast$data, log\+\_\+file=None, seed=None)
+\begin{DoxyCompactList}\small\item\em The constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_structure_learning_1_1_structure_learner_acc49d2301fa75b45466acf7b3ad7ecac}{set\+\_\+data}} (self, $\ast$data)
+\begin{DoxyCompactList}\small\item\em Set the data input of structure learning (BG and examples) \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_structure_learning_1_1_structure_learner_a110cb47cdbcbad1407b84e718b621b99}{set\+\_\+log\+\_\+file}} (self, log\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Set the log file. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_structure_learning_1_1_structure_learner_a8ae79bb3d533ca1f597cd7233cf8ad46}{learn}} (self, significance=None, max\+\_\+rule\+\_\+length=None, beam\+\_\+size=5, m\+\_\+estimator=1, deterministic=False)
+\begin{DoxyCompactList}\small\item\em Learns the structure and validate \+\_\+\+\_\+rules member. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_a27cd808f0d9d60e77c38a03162ee8d8a}\label{class_structure_learning_1_1_structure_learner_a27cd808f0d9d60e77c38a03162ee8d8a}} 
+def {\bfseries get\+\_\+learned\+\_\+rules} (self)
+\item 
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_a13d82e3cfd18b572126859bc34b00fdb}\label{class_structure_learning_1_1_structure_learner_a13d82e3cfd18b572126859bc34b00fdb}} 
+def {\bfseries accuracy} (self)
+\item 
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_aa990194df7e57ac4eec1c87c6fcb652e}\label{class_structure_learning_1_1_structure_learner_aa990194df7e57ac4eec1c87c6fcb652e}} 
+def {\bfseries precision} (self)
+\item 
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_ae8e38381a9d49ecf577d4853ada2cd5c}\label{class_structure_learning_1_1_structure_learner_ae8e38381a9d49ecf577d4853ada2cd5c}} 
+def {\bfseries recall} (self)
+\item 
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_a22b7dde154348272a0752e06aa6e5224}\label{class_structure_learning_1_1_structure_learner_a22b7dde154348272a0752e06aa6e5224}} 
+def {\bfseries get\+\_\+statistics} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents the Prob\+F\+O\+IL module and permits to use it as an object. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_a879a2220cf6f0fb5780879d5f23c0e95}\label{class_structure_learning_1_1_structure_learner_a879a2220cf6f0fb5780879d5f23c0e95}} 
+\index{StructureLearning.StructureLearner@{StructureLearning.StructureLearner}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!StructureLearning.StructureLearner@{StructureLearning.StructureLearner}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Structure\+Learning.\+Structure\+Learner.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{$\ast$}]{data,  }\item[{}]{log\+\_\+file = {\ttfamily None},  }\item[{}]{seed = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+The constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & $\ast$data\+: list of data sources \\
+\hline
+{\em } & log\+\_\+file\+: log file name (no log produced if None) \\
+\hline
+{\em } & seed\+: seed that initialize random generations \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_a8ae79bb3d533ca1f597cd7233cf8ad46}\label{class_structure_learning_1_1_structure_learner_a8ae79bb3d533ca1f597cd7233cf8ad46}} 
+\index{StructureLearning.StructureLearner@{StructureLearning.StructureLearner}!learn@{learn}}
+\index{learn@{learn}!StructureLearning.StructureLearner@{StructureLearning.StructureLearner}}
+\doxysubsubsection{\texorpdfstring{learn()}{learn()}}
+{\footnotesize\ttfamily def Structure\+Learning.\+Structure\+Learner.\+learn (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{significance = {\ttfamily None},  }\item[{}]{max\+\_\+rule\+\_\+length = {\ttfamily None},  }\item[{}]{beam\+\_\+size = {\ttfamily 5},  }\item[{}]{m\+\_\+estimator = {\ttfamily 1},  }\item[{}]{deterministic = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+Learns the structure and validate \+\_\+\+\_\+rules member. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & significance\+: minimum significance of learned rule \\
+\hline
+{\em } & beam\+\_\+size\+: size of the population of Beam search algorithm \\
+\hline
+{\em } & max\+\_\+rule\+\_\+length\+: max length of body of the learned rules \\
+\hline
+{\em } & m\+\_\+estimator \\
+\hline
+{\em } & deterministic\+: set if learn deterministic rules, so using Prob\+F\+O\+I\+L1 or Prob\+F\+O\+I\+L2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+time spent for learning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_acc49d2301fa75b45466acf7b3ad7ecac}\label{class_structure_learning_1_1_structure_learner_acc49d2301fa75b45466acf7b3ad7ecac}} 
+\index{StructureLearning.StructureLearner@{StructureLearning.StructureLearner}!set\_data@{set\_data}}
+\index{set\_data@{set\_data}!StructureLearning.StructureLearner@{StructureLearning.StructureLearner}}
+\doxysubsubsection{\texorpdfstring{set\_data()}{set\_data()}}
+{\footnotesize\ttfamily def Structure\+Learning.\+Structure\+Learner.\+set\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{$\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Set the data input of structure learning (BG and examples) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & $\ast$data\+: list of data sources \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_structure_learning_1_1_structure_learner_a110cb47cdbcbad1407b84e718b621b99}\label{class_structure_learning_1_1_structure_learner_a110cb47cdbcbad1407b84e718b621b99}} 
+\index{StructureLearning.StructureLearner@{StructureLearning.StructureLearner}!set\_log\_file@{set\_log\_file}}
+\index{set\_log\_file@{set\_log\_file}!StructureLearning.StructureLearner@{StructureLearning.StructureLearner}}
+\doxysubsubsection{\texorpdfstring{set\_log\_file()}{set\_log\_file()}}
+{\footnotesize\ttfamily def Structure\+Learning.\+Structure\+Learner.\+set\+\_\+log\+\_\+file (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{log\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+Set the log file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & log\+\_\+file\+: log file name \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/Structure\+Learning.\+py\end{DoxyCompactItemize}

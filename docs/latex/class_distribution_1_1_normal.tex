@@ -1,0 +1,119 @@
+\hypertarget{class_distribution_1_1_normal}{}\doxysection{Distribution.\+Normal Class Reference}
+\label{class_distribution_1_1_normal}\index{Distribution.Normal@{Distribution.Normal}}
+
+
+Represents a normal distribution.  
+
+
+Inheritance diagram for Distribution.\+Normal\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{class_distribution_1_1_normal}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_distribution_1_1_normal_a3380c452dffd4216e05654b8ac11d0a6}\label{class_distribution_1_1_normal_a3380c452dffd4216e05654b8ac11d0a6}} 
+def \mbox{\hyperlink{class_distribution_1_1_normal_a3380c452dffd4216e05654b8ac11d0a6}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_distribution_1_1_normal}{Normal}} constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_distribution_1_1_normal_afda3f35b5041087a06779a2f97b87c4f}{get\+\_\+parameters}} (self, recalculate=False)
+\begin{DoxyCompactList}\small\item\em get the parameters of the distribution (mu,sigma) \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_distribution_1_1_normal_ae8b65c41a1390f6d7706911fc6788b9c}{add}} (self, float value)
+\begin{DoxyCompactList}\small\item\em add a value to the data \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_distribution_1_1_normal_ac20ce188e30a070f311783caf40f5349}{calculate\+\_\+mean}} (self)
+\begin{DoxyCompactList}\small\item\em calculate the mean from data \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_distribution_1_1_normal_ac990e9648decd64751299ad37fb8f1bf}{calculate\+\_\+stdev}} (self)
+\begin{DoxyCompactList}\small\item\em calculate the stdev from data \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_distribution_1_1_normal_a82baf248b7785d1626932ea14c22245e}{pdf}} (self, x, recalculate=False)
+\begin{DoxyCompactList}\small\item\em calculate the probability from normal fdp \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a normal distribution. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_distribution_1_1_normal_ae8b65c41a1390f6d7706911fc6788b9c}\label{class_distribution_1_1_normal_ae8b65c41a1390f6d7706911fc6788b9c}} 
+\index{Distribution.Normal@{Distribution.Normal}!add@{add}}
+\index{add@{add}!Distribution.Normal@{Distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily def Distribution.\+Normal.\+add (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{float}]{value }\end{DoxyParamCaption})}
+
+
+
+add a value to the data 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & value\+: the value to be added \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_distribution_1_1_normal_ac20ce188e30a070f311783caf40f5349}\label{class_distribution_1_1_normal_ac20ce188e30a070f311783caf40f5349}} 
+\index{Distribution.Normal@{Distribution.Normal}!calculate\_mean@{calculate\_mean}}
+\index{calculate\_mean@{calculate\_mean}!Distribution.Normal@{Distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{calculate\_mean()}{calculate\_mean()}}
+{\footnotesize\ttfamily def Distribution.\+Normal.\+calculate\+\_\+mean (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+calculate the mean from data 
+
+\begin{DoxyReturn}{Returns}
+\+: mean 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_distribution_1_1_normal_ac990e9648decd64751299ad37fb8f1bf}\label{class_distribution_1_1_normal_ac990e9648decd64751299ad37fb8f1bf}} 
+\index{Distribution.Normal@{Distribution.Normal}!calculate\_stdev@{calculate\_stdev}}
+\index{calculate\_stdev@{calculate\_stdev}!Distribution.Normal@{Distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{calculate\_stdev()}{calculate\_stdev()}}
+{\footnotesize\ttfamily def Distribution.\+Normal.\+calculate\+\_\+stdev (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+calculate the stdev from data 
+
+\begin{DoxyReturn}{Returns}
+\+: stdev 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_distribution_1_1_normal_afda3f35b5041087a06779a2f97b87c4f}\label{class_distribution_1_1_normal_afda3f35b5041087a06779a2f97b87c4f}} 
+\index{Distribution.Normal@{Distribution.Normal}!get\_parameters@{get\_parameters}}
+\index{get\_parameters@{get\_parameters}!Distribution.Normal@{Distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{get\_parameters()}{get\_parameters()}}
+{\footnotesize\ttfamily def Distribution.\+Normal.\+get\+\_\+parameters (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{recalculate = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+get the parameters of the distribution (mu,sigma) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & recalculate\+: tells if recalculate mean and stdev from data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: mean and stdev 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_distribution_1_1_normal_a82baf248b7785d1626932ea14c22245e}\label{class_distribution_1_1_normal_a82baf248b7785d1626932ea14c22245e}} 
+\index{Distribution.Normal@{Distribution.Normal}!pdf@{pdf}}
+\index{pdf@{pdf}!Distribution.Normal@{Distribution.Normal}}
+\doxysubsubsection{\texorpdfstring{pdf()}{pdf()}}
+{\footnotesize\ttfamily def Distribution.\+Normal.\+pdf (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{recalculate = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+calculate the probability from normal fdp 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & x\+: the value in R input of the fdp \\
+\hline
+{\em } & recalculate\+: tells if recalculate mean and stdev from data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: the probability calculated 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/Distribution.\+py\end{DoxyCompactItemize}

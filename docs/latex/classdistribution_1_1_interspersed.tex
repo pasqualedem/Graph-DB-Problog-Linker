@@ -1,0 +1,103 @@
+\hypertarget{classdistribution_1_1_interspersed}{}\doxysection{distribution.\+Interspersed Class Reference}
+\label{classdistribution_1_1_interspersed}\index{distribution.Interspersed@{distribution.Interspersed}}
+
+
+A continuous distribution transformed into a multinomial interspersing the domain.  
+
+
+Inheritance diagram for distribution.\+Interspersed\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=5.000000cm]{classdistribution_1_1_interspersed}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdistribution_1_1_interspersed_acba03ee1a3b4c6ae11d7228c140c41bf}\label{classdistribution_1_1_interspersed_acba03ee1a3b4c6ae11d7228c140c41bf}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, list intervals=None, dict pseudocounts=None)
+\item 
+def \mbox{\hyperlink{classdistribution_1_1_interspersed_acbba32242bd7f5d1d61403194bf77a40}{lin\+\_\+intervals}} (self, start, end, num, infinite=True)
+\begin{DoxyCompactList}\small\item\em Generate linear intervals. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_interspersed_a6598af172ae97fb8d731d394216ad913}{log\+\_\+intervals}} (self, start, end, num, infinite=True)
+\begin{DoxyCompactList}\small\item\em Generate logarithmic intervals. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdistribution_1_1_interspersed_aa32f44aded2240bf5948445fc9d5dc60}{add}} (self, value)
+\begin{DoxyCompactList}\small\item\em adds an occurence of a value to the counts \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdistribution_1_1_interspersed_add664ea075a34331610ffd1e336edcfe}\label{classdistribution_1_1_interspersed_add664ea075a34331610ffd1e336edcfe}} 
+string {\bfseries name} = \char`\"{}interspersed\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A continuous distribution transformed into a multinomial interspersing the domain. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdistribution_1_1_interspersed_aa32f44aded2240bf5948445fc9d5dc60}\label{classdistribution_1_1_interspersed_aa32f44aded2240bf5948445fc9d5dc60}} 
+\index{distribution.Interspersed@{distribution.Interspersed}!add@{add}}
+\index{add@{add}!distribution.Interspersed@{distribution.Interspersed}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily def distribution.\+Interspersed.\+add (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{value }\end{DoxyParamCaption})}
+
+
+
+adds an occurence of a value to the counts 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & value\+: the value occurred \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classdistribution_1_1_multinomial_add9b4a4e583c535f349990d1ba65f06a}{distribution.\+Multinomial}}.
+
+\mbox{\Hypertarget{classdistribution_1_1_interspersed_acbba32242bd7f5d1d61403194bf77a40}\label{classdistribution_1_1_interspersed_acbba32242bd7f5d1d61403194bf77a40}} 
+\index{distribution.Interspersed@{distribution.Interspersed}!lin\_intervals@{lin\_intervals}}
+\index{lin\_intervals@{lin\_intervals}!distribution.Interspersed@{distribution.Interspersed}}
+\doxysubsubsection{\texorpdfstring{lin\_intervals()}{lin\_intervals()}}
+{\footnotesize\ttfamily def distribution.\+Interspersed.\+lin\+\_\+intervals (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{start,  }\item[{}]{end,  }\item[{}]{num,  }\item[{}]{infinite = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+Generate linear intervals. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & start\+: the starting interval left extreme \\
+\hline
+{\em } & end\+: the ending interval right extreme \\
+\hline
+{\em } & num\+: the number of intervals \\
+\hline
+{\em } & infinite\+: tells to add the intervals (-\/inf,start\mbox{]} and \mbox{[}end,inf) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdistribution_1_1_interspersed_a6598af172ae97fb8d731d394216ad913}\label{classdistribution_1_1_interspersed_a6598af172ae97fb8d731d394216ad913}} 
+\index{distribution.Interspersed@{distribution.Interspersed}!log\_intervals@{log\_intervals}}
+\index{log\_intervals@{log\_intervals}!distribution.Interspersed@{distribution.Interspersed}}
+\doxysubsubsection{\texorpdfstring{log\_intervals()}{log\_intervals()}}
+{\footnotesize\ttfamily def distribution.\+Interspersed.\+log\+\_\+intervals (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{start,  }\item[{}]{end,  }\item[{}]{num,  }\item[{}]{infinite = {\ttfamily True} }\end{DoxyParamCaption})}
+
+
+
+Generate logarithmic intervals. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & start\+: the starting interval left extreme \\
+\hline
+{\em } & end\+: the ending interval right extreme \\
+\hline
+{\em } & num\+: the number of intervals \\
+\hline
+{\em } & infinite\+: tells to add the intervals (-\/inf,start\mbox{]} and \mbox{[}end,inf) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/distribution.\+py\end{DoxyCompactItemize}

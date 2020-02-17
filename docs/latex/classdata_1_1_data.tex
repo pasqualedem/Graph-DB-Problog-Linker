@@ -1,0 +1,147 @@
+\hypertarget{classdata_1_1_data}{}\doxysection{data.\+Data Class Reference}
+\label{classdata_1_1_data}\index{data.Data@{data.Data}}
+
+
+Class that implements the data representation.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classdata_1_1_data_a888290c1967b3ff91b497fa490228dee}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{[}\mbox{[}tuple\mbox{]}\mbox{]} data, length, triple\+\_\+mode=False)
+\begin{DoxyCompactList}\small\item\em The constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_data_a9800438f9b33f617d05964abd552ac77}{set\+\_\+triples}} (self, triples)
+\begin{DoxyCompactList}\small\item\em Set the triples of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_data_ab29309a1def751609979a16a7b961238}{set\+\_\+triple\+\_\+mode}} (self, triple\+\_\+mode)
+\begin{DoxyCompactList}\small\item\em Set the triple mode truthness of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classdata_1_1_data_ab63c735db400d1240fa6ec751918b30d}\label{classdata_1_1_data_ab63c735db400d1240fa6ec751918b30d}} 
+def \mbox{\hyperlink{classdata_1_1_data_ab63c735db400d1240fa6ec751918b30d}{get\+\_\+triple\+\_\+mode}} (self)
+\begin{DoxyCompactList}\small\item\em Get the triple mode truthness of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_data_ac2cc9463654c86c795be11cf9ed60f6f}{get\+\_\+data}} (self)
+\begin{DoxyCompactList}\small\item\em Get the triples of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_data_a8320cd7a608c69466393fdf79fd93637}{to\+\_\+examples}} (self, examples=\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Create examples from triples. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_data_a3a527e8ce6d869ecc8e9ee9e7e77141d}{learn\+\_\+distributions}} (self, properties=dict())
+\begin{DoxyCompactList}\small\item\em Learn the property distribution for each property in properties. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classdata_1_1_data_a73f9921af086400c2ad734e117b9abf5}{parse}} (self, program=Simple\+Program())
+\begin{DoxyCompactList}\small\item\em Parse a list of triples into a Simple\+Program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class that implements the data representation. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classdata_1_1_data_a888290c1967b3ff91b497fa490228dee}\label{classdata_1_1_data_a888290c1967b3ff91b497fa490228dee}} 
+\index{data.Data@{data.Data}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def data.\+Data.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{\mbox{[}\mbox{[}tuple\mbox{]}\mbox{]}}]{data,  }\item[{}]{length,  }\item[{}]{triple\+\_\+mode = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+The constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triples\+: list of list of (subject -\/ predicate -\/ object) tuples \\
+\hline
+{\em } & length\+: number of tuples in triples \\
+\hline
+{\em } & triple\+\_\+mode\+: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdata_1_1_data_ac2cc9463654c86c795be11cf9ed60f6f}\label{classdata_1_1_data_ac2cc9463654c86c795be11cf9ed60f6f}} 
+\index{data.Data@{data.Data}!get\_data@{get\_data}}
+\index{get\_data@{get\_data}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{get\_data()}{get\_data()}}
+{\footnotesize\ttfamily def data.\+Data.\+get\+\_\+data (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Get the triples of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. 
+
+\begin{DoxyReturn}{Returns}
+triples 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdata_1_1_data_a3a527e8ce6d869ecc8e9ee9e7e77141d}\label{classdata_1_1_data_a3a527e8ce6d869ecc8e9ee9e7e77141d}} 
+\index{data.Data@{data.Data}!learn\_distributions@{learn\_distributions}}
+\index{learn\_distributions@{learn\_distributions}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{learn\_distributions()}{learn\_distributions()}}
+{\footnotesize\ttfamily def data.\+Data.\+learn\+\_\+distributions (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{properties = {\ttfamily dict()} }\end{DoxyParamCaption})}
+
+
+
+Learn the property distribution for each property in properties. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & properties\+: dictionary of properties \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+properties\+: dictionary of properties with their distributions 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdata_1_1_data_a73f9921af086400c2ad734e117b9abf5}\label{classdata_1_1_data_a73f9921af086400c2ad734e117b9abf5}} 
+\index{data.Data@{data.Data}!parse@{parse}}
+\index{parse@{parse}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily def data.\+Data.\+parse (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{program = {\ttfamily SimpleProgram()} }\end{DoxyParamCaption})}
+
+
+
+Parse a list of triples into a Simple\+Program. 
+
+\begin{DoxyReturn}{Returns}
+\+: program\+: a Simple\+Program that contains a list of clauses prop(subj, pred, obj) or pred(subj, obj) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdata_1_1_data_ab29309a1def751609979a16a7b961238}\label{classdata_1_1_data_ab29309a1def751609979a16a7b961238}} 
+\index{data.Data@{data.Data}!set\_triple\_mode@{set\_triple\_mode}}
+\index{set\_triple\_mode@{set\_triple\_mode}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{set\_triple\_mode()}{set\_triple\_mode()}}
+{\footnotesize\ttfamily def data.\+Data.\+set\+\_\+triple\+\_\+mode (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{triple\+\_\+mode }\end{DoxyParamCaption})}
+
+
+
+Set the triple mode truthness of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triple\+\_\+mode\+: if true atoms will be prop(subj, pred, obj) else will be pred(subj, obj) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdata_1_1_data_a9800438f9b33f617d05964abd552ac77}\label{classdata_1_1_data_a9800438f9b33f617d05964abd552ac77}} 
+\index{data.Data@{data.Data}!set\_triples@{set\_triples}}
+\index{set\_triples@{set\_triples}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{set\_triples()}{set\_triples()}}
+{\footnotesize\ttfamily def data.\+Data.\+set\+\_\+triples (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{triples }\end{DoxyParamCaption})}
+
+
+
+Set the triples of \mbox{\hyperlink{classdata_1_1_data}{Data}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & triples\+: list of subject -\/ predicate -\/ object tuples \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdata_1_1_data_a8320cd7a608c69466393fdf79fd93637}\label{classdata_1_1_data_a8320cd7a608c69466393fdf79fd93637}} 
+\index{data.Data@{data.Data}!to\_examples@{to\_examples}}
+\index{to\_examples@{to\_examples}!data.Data@{data.Data}}
+\doxysubsubsection{\texorpdfstring{to\_examples()}{to\_examples()}}
+{\footnotesize\ttfamily def data.\+Data.\+to\+\_\+examples (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{examples = {\ttfamily \mbox{[}\mbox{]}} }\end{DoxyParamCaption})}
+
+
+
+Create examples from triples. 
+
+\begin{DoxyReturn}{Returns}
+list of examples 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/data.\+py\end{DoxyCompactItemize}
