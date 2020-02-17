@@ -9,9 +9,12 @@ from math import floor
 from problog.logic import Constant, Term
 
 
-def normalize_uri(value):
+def normalize_result(value):
     if type(value) is not str:
         return value
+
+    if value.isNumeric():
+        return float(value)
 
     if ':' in value and '/' in value:
         value = value.replace("/", "_")
