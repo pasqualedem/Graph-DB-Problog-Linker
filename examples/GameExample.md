@@ -4,6 +4,10 @@ Supponiamo di avere un database Neo4j contenente gli esiti di un semplice gioco:
 
 si vince se tirando un dado si ottiene un numero maggiore di 3, e tirando una moneta si ottiene testa, altrimenti si perde.
 
+Tale grafo Neo4j è modellato nel seguente modo:
+
+![](./img/graph_structure.PNG)
+
 Inseriamo la query: 
 
 <b>MATCH (n:RollDice)<-[:GameStep]-(g:Game) MATCH (m:MoneyToss)<-[:GameStep]-(g:Game)  WHERE n:RollDice OR n:MoneyToss RETURN ID(g), n.number as number, m.side as side</b>

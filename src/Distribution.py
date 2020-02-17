@@ -35,7 +35,7 @@ class Discrete(Distribution):
 ##
 # Represents a normal distribution
 class Normal(Continuous):
-    name = "multinomial"
+    name = "normal"
 
     ## Normal constructor
     def __init__(self):
@@ -54,8 +54,8 @@ class Normal(Continuous):
 
     ## Add a value to the data
     # @param: value: the value to be added
-    def add(self, value: float):
-        self.__values.append(value)
+    def add(self, value):
+        self.__values.append(float(value))
 
     ## Calculate the mean from data
     # @returns mean
