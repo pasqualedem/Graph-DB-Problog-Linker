@@ -23,11 +23,11 @@ Queste possono essere trasformate in fatti logici nella forma prop(idgiocata, nu
 
 Passando al tab "Problog" inseriamo il soggetto relativo, il nome e il tipo di distribuzioni che vogliamo calcolare:
 
-![](./img/game_inference_query_distributions.JPG)
+![](./img/game_inference_distributions.JPG)
 
 Eseguendo dovrebbe aver aggiunto le relative clausole Problog.
 
-![](./img/game_inference_query_clauses.JPG)
+![](./img/game_inference_clauses.JPG)
 
 A questo punto carichiamo il file game_inference.pl il quale contiene la clausola che descrive il funzionamento della vittoria e la clausola contenente la query.
 
@@ -35,7 +35,7 @@ A questo punto carichiamo il file game_inference.pl il quale contiene la clausol
 
 Nella parte sottostante clicchiamo "inference" e scegliamo dove vogliamo che il file risultante venga salvato.
 
-![](./img/game_inference_query_inference.JPG)
+![](./img/game_inference_execution.JPG)
 
 Il risultato è *{win(game,true): 0.256536}*
 
