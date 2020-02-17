@@ -42,29 +42,14 @@ class UiMainWindow(object):
         self.graph_db = QtWidgets.QWidget()
         self.graph_db.setObjectName("graph_db")
         self.layoutWidget = QtWidgets.QWidget(self.graph_db)
-        self.layoutWidget.setGeometry(QtCore.QRect(20, 20, 801, 59))
+        self.layoutWidget.setGeometry(QtCore.QRect(20, 36, 801, 61))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
-        self.__parse_method_label = QtWidgets.QLabel(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__parse_method_label.setFont(font)
-        self.__parse_method_label.setObjectName("__parse_method_label")
-        self.gridLayout.addWidget(self.__parse_method_label, 1, 0, 1, 1)
-        self.__execute_user_query = QtWidgets.QPushButton(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__execute_user_query.setFont(font)
-        self.__execute_user_query.setObjectName("__execute_user_query")
-        self.gridLayout.addWidget(self.__execute_user_query, 0, 3, 1, 1)
-        self.__user_query_label = QtWidgets.QLabel(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.__user_query_label.setFont(font)
-        self.__user_query_label.setObjectName("__user_query_label")
-        self.gridLayout.addWidget(self.__user_query_label, 0, 0, 1, 1)
+        self.__user_query = QtWidgets.QLineEdit(self.layoutWidget)
+        self.__user_query.setObjectName("__user_query")
+        self.gridLayout.addWidget(self.__user_query, 1, 1, 1, 2)
         self.__parse_method_combo = QtWidgets.QComboBox(self.layoutWidget)
         self.__parse_method_combo.setObjectName("__parse_method_combo")
         self.__parse_method_combo.addItem("")
@@ -74,10 +59,25 @@ class UiMainWindow(object):
         self.__parse_method_combo.addItem("")
         self.__parse_method_combo.addItem("")
         self.__parse_method_combo.addItem("")
-        self.gridLayout.addWidget(self.__parse_method_combo, 1, 1, 1, 1)
-        self.__user_query = QtWidgets.QLineEdit(self.layoutWidget)
-        self.__user_query.setObjectName("__user_query")
-        self.gridLayout.addWidget(self.__user_query, 0, 1, 1, 2)
+        self.gridLayout.addWidget(self.__parse_method_combo, 2, 1, 1, 1)
+        self.__parse_method_label = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__parse_method_label.setFont(font)
+        self.__parse_method_label.setObjectName("__parse_method_label")
+        self.gridLayout.addWidget(self.__parse_method_label, 2, 0, 1, 1)
+        self.__user_query_label = QtWidgets.QLabel(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__user_query_label.setFont(font)
+        self.__user_query_label.setObjectName("__user_query_label")
+        self.gridLayout.addWidget(self.__user_query_label, 1, 0, 1, 1)
+        self.__execute_user_query = QtWidgets.QPushButton(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.__execute_user_query.setFont(font)
+        self.__execute_user_query.setObjectName("__execute_user_query")
+        self.gridLayout.addWidget(self.__execute_user_query, 2, 2, 1, 1)
         self.layoutWidget1 = QtWidgets.QWidget(self.graph_db)
         self.layoutWidget1.setGeometry(QtCore.QRect(20, 220, 801, 29))
         self.layoutWidget1.setObjectName("layoutWidget1")
@@ -247,6 +247,23 @@ class UiMainWindow(object):
         self.__triples_table.setHorizontalHeaderItem(2, item)
         self.__triples_table.horizontalHeader().setDefaultSectionSize(119)
         self.gridLayout_7.addWidget(self.__triples_table, 1, 0, 1, 1)
+        self.line = QtWidgets.QFrame(self.graph_db)
+        self.line.setGeometry(QtCore.QRect(0, 20, 851, 20))
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.graph_db)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, -1, 801, 31))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.__db_password_label = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.__db_password_label.setObjectName("__db_password_label")
+        self.horizontalLayout.addWidget(self.__db_password_label)
+        self.__db_password_ = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
+        self.__db_password_.setObjectName("__db_password_")
+        self.horizontalLayout.addWidget(self.__db_password_)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("neo4j-database-meta-image-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.__tabs.addTab(self.graph_db, icon, "")
@@ -694,7 +711,7 @@ class UiMainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.__tabs.setCurrentIndex(2)
+        self.__tabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     ## define label text, table headers and other GUI parameters
@@ -702,9 +719,6 @@ class UiMainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.__parse_method_label.setText(_translate("MainWindow", "Select query type (n,m nodes)"))
-        self.__execute_user_query.setText(_translate("MainWindow", "Execute"))
-        self.__user_query_label.setText(_translate("MainWindow", "Query"))
         self.__parse_method_combo.setItemText(0, _translate("MainWindow", "return ID(n), n.prop1,... n.propN "))
         self.__parse_method_combo.setItemText(1, _translate("MainWindow", "return n"))
         self.__parse_method_combo.setItemText(2, _translate("MainWindow", "return ID(n), properties(N)"))
@@ -714,6 +728,9 @@ class UiMainWindow(object):
         self.__parse_method_combo.setItemText(5, _translate("MainWindow", "return ID(n), TYPE(r), ID(m)"))
         self.__parse_method_combo.setItemText(6, _translate("MainWindow",
                                                             "return size(keys(n)), ID(n), n.prop1, ..., TYPE(r), size(keys(m)), ID(m), m.prop1, ..."))
+        self.__parse_method_label.setText(_translate("MainWindow", "Select query type (n,m nodes)"))
+        self.__user_query_label.setText(_translate("MainWindow", "Query"))
+        self.__execute_user_query.setText(_translate("MainWindow", "Execute"))
         self.__nodes_and_relationships.setText(_translate("MainWindow", "Get all nodes and relationship"))
         self.__relationships_without_properties.setText(
             _translate("MainWindow", "Get all nodes\' relationship without node properties"))
@@ -743,6 +760,7 @@ class UiMainWindow(object):
         item.setText(_translate("MainWindow", "Property"))
         item = self.__triples_table.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Value"))
+        self.__db_password_label.setText(_translate("MainWindow", "DB password"))
         self.__tabs.setTabText(self.__tabs.indexOf(self.graph_db), _translate("MainWindow", "Graph DB"))
         self.__sparql_user_query_label.setText(_translate("MainWindow", "Query"))
         self.__sparql_execute_user_query.setText(_translate("MainWindow", "Execute"))
@@ -1150,7 +1168,7 @@ class UiMainWindow(object):
                     4: "parse_node_rels_with_props_map",
                     5: "parse_node_rels",
                     6: "parse_node_rels_with_props_array"}[self.__parse_method_combo.currentIndex()]
-        dbms_query = DbmsQuery(self.__user_query.text(), function)
+        dbms_query = DbmsQuery(self.__user_query.text(), function, password=self.__db_password_.text())
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
@@ -1187,13 +1205,13 @@ class UiMainWindow(object):
     def nodes_and_relationships(self):
         dbms_query = DbmsQuery(
             "MATCH (n) OPTIONAL MATCH (n)-[r]->(m) RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
-            "parse_node_rels_with_props_map")
+            "parse_node_rels_with_props_map", password=self.__db_password_.text())
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
     ## method related to __relationships_without_properties, execute cypher query that retrieves all relationships between nodes
     def relationships_without_properties(self):
-        dbms_query = DbmsQuery("MATCH (n)-[r]->(m) RETURN ID(n), TYPE(r), ID(m)", "parse_node_rels")
+        dbms_query = DbmsQuery("MATCH (n)-[r]->(m) RETURN ID(n), TYPE(r), ID(m)", "parse_node_rels", password=self.__db_password_.text())
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
@@ -1220,7 +1238,7 @@ class UiMainWindow(object):
         first_node_label_text, second_node_label_text, relationship_text = self.__add_dots_to_filter()
         dbms_query = DbmsQuery(
             "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]->(m" + second_node_label_text + ") RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)",
-            "parse_node_rels_with_props_map")
+            "parse_node_rels_with_props_map", password=self.__db_password_.text())
 
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
@@ -1232,7 +1250,7 @@ class UiMainWindow(object):
 
         dbms_query = DbmsQuery(
             "MATCH (n" + first_node_label_text + ")-[r" + relationship_text + "]->(m" + second_node_label_text + ") RETURN ID(n), TYPE(r), ID(m)",
-            "parse_node_rels")
+            "parse_node_rels", password=self.__db_password_.text())
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
@@ -1251,7 +1269,7 @@ class UiMainWindow(object):
             query += "WHERE " + query_where
         query += " RETURN ID(n), properties(n)"
 
-        dbms_query = DbmsQuery(query, "parse_property_map")
+        dbms_query = DbmsQuery(query, "parse_property_map", password=self.__db_password_.text())
         self.__cypher_data = dbms_query.run_query()
         write_results(self.__triples_table, self.__cypher_data)
 
