@@ -17,6 +17,14 @@ Tale query, eseguita attraverso questo software viene convertita nella rappresen
 
 ![](./img/musicians_triple.PNG)
 
-Utilizzando la sezione problog, si caricano tali risultati come clausole rappresentanti fatti:
+Utilizzando la sezione problog (con il pulsante in figura), si caricano nel programma tali risultati come clausole rappresentanti fatti:
 
-![](./img/add_musician_facts)
+![](./img/add_musicians_facts.PNG) 
+
+![](./img/musicians_clauses.PNG)
+
+In seguito si aggiungono al programma la clausola, rappresentante il rapporto tra genere suonato e anno di nascita, e una query di esempio. Tali istruzoni sono presenti nel file music.pl.
+
+Eseguendo l'operazione di inferenza si ottiene:
+
+![](./img/music_results.PNG)
