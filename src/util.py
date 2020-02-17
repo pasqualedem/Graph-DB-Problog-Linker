@@ -13,12 +13,13 @@ def normalize_uri(value):
     if type(value) is not str:
         return value
 
-    value = value.replace("/", "_")
-    value = value.replace(":", "_")
-    value = value.replace("-", "_")
-    value = value.replace("(", "_")
-    value = value.replace(")", "_")
-    value = value.replace(".", "_")
+    if ':' in value and '/' in value:
+        value = value.replace("/", "_")
+        value = value.replace(":", "_")
+        value = value.replace("-", "_")
+        value = value.replace("(", "_")
+        value = value.replace(")", "_")
+        value = value.replace(".", "_")
     return value
 
 
