@@ -16,7 +16,3 @@ for i in range(0, 1000):
         query = "CREATE (:RollDice {number: " + str(roll_dice_number) + "})<-[:GameStep]-(:Game {win:False})-[:GameStep]->(:MoneyToss {side: \"" + sides[side_index] + "\"})"
 
     graph.run(query)
-
-r = graph.run("MATCH (n) OPTIONAL MATCH (n)-[r]-(m) RETURN ID(n), properties(n), TYPE(r), ID(m), properties(m)")
-
-r
