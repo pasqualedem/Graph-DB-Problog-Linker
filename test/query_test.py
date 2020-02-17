@@ -1,5 +1,5 @@
 import unittest
-from src.Query import CloudQuery, DbmsQuery
+from src.query import CloudQuery, DbmsQuery
 
 
 class DbmsQueryTest(unittest.TestCase):

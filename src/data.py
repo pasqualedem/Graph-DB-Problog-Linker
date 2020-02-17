@@ -5,7 +5,7 @@ from collections import defaultdict
 from problog.program import SimpleProgram
 from problog.logic import Constant, Var, Term, AnnotatedDisjunction
 from Distribution import Normal, Multinomial, Continuous, Discrete
-from Util import get_type, ClauseBuilder
+from util import get_type, ClauseBuilder
 
 
 ##

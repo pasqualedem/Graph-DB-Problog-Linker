@@ -2,7 +2,7 @@ import unittest
 
 from problog.program import SimpleProgram, PrologString
 
-from Data import Data, PropertyMap, Property
+from data import Data, PropertyMap, Property
 from problog import get_evaluatable
 from problog.logic import Term, Var, Constant
 

@@ -13,10 +13,10 @@ from problog.program import SimpleProgram, PrologString
 from problog.program import PrologFile
 from problog.tasks import sample
 
-from Data import PropertyMap, Property
-from StructureLearning import StructureLearner
-from Query import DbmsQuery
-from Query import CloudQuery
+from data import PropertyMap, Property
+from structure_learning import StructureLearner
+from query import DbmsQuery
+from query import CloudQuery
 from Distribution import *
 
 
