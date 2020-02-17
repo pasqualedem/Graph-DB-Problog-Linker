@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="graph_db">
      <attribute name="icon">
@@ -910,7 +910,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Learn probabilities on cypher results,
+          <string>Learn probabilities on query results,
  and add them to the program</string>
          </property>
          <property name="alignment">

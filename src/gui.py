@@ -793,7 +793,7 @@ class UiMainWindow(object):
         self.__distr_learning.setText(_translate("MainWindow", "Execute"))
         self.__add_distribution.setText(_translate("MainWindow", "Add distribution"))
         self.__sparql_distr.setText(_translate("MainWindow", "SPARQL"))
-        self.__prob_bgk_label.setText(_translate("MainWindow", "Learn probabilities on cypher results,\n"
+        self.__prob_bgk_label.setText(_translate("MainWindow", "Learn probabilities on query results,\n"
                                                                " and add them to the program"))
         self.__cyhper_distr.setText(_translate("MainWindow", "Cypher"))
         item = self.__prop_distr_table.horizontalHeaderItem(0)
