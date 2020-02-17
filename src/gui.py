@@ -1046,7 +1046,7 @@ class UiMainWindow(object):
     def sampling(self):
         file_name, _ = QtWidgets.QFileDialog.getSaveFileName(None, 'Save to File', "D:",
                                                              "All Files (*);;Prolog files (*.pl);;Text files (*.txt)")
-        results = list(sample.sample(self.__problog_program, n=int(self._sample_len.text()), format='dict', distributions={'normal' : normal_sampling}))
+        results = list(sample.sample(self.__problog_program, n=int(self.__sample_len.text()), format='dict', distributions={'normal' : normal_sampling}))
 
         if file_name:
             with open(file_name, 'w') as f:
