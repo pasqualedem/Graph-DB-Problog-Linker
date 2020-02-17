@@ -29,7 +29,7 @@ Si ottiene una clausola annotata da probabilità espressa come parametri di uan 
 
 ![](./img/elevation_clause.PNG)
 
-A tale clausola si aggiunge la query problog ``` query(elevation). ``` ; si utilizza il programma problog ottenuto per l'operazione di sampling generando, ad esempio, 20 campioni.
+A tale clausola si aggiunge la query problog ``` query(elevation). ``` (prsente nel file query_elevation.pl); si utilizza il programma problog ottenuto per l'operazione di sampling generando, ad esempio, 20 campioni.
 
 ![](./img/elevation_sampling.PNG)
 
