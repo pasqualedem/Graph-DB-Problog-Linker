@@ -29,7 +29,7 @@ class StructureLearner:
             self.__log_file = open(log_file, 'w')
         else:
             self.__log_file = None
-        self._log = None
+        self.__log = None
 
         if seed:
             self.__seed = seed
