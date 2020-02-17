@@ -1191,7 +1191,6 @@ class UiMainWindow(object):
         distribution = QtWidgets.QComboBox(self.layoutWidget)
         distribution.addItem("Normal")
         distribution.addItem("Multinomial")
-        distribution.addItem("Interspersed")
 
         table.setCellWidget(row_count, 0, name)
         table.setCellWidget(row_count, 1, property)
